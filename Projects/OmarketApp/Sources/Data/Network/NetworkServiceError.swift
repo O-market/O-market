@@ -1,6 +1,6 @@
 //
 //  NetworkServiceError.swift
-//  OmarketAppTests
+//  OmarketApp
 //
 //  Created by Lingo on 2022/08/17.
 //  Copyright © 2022 Omarket. All rights reserved.
@@ -24,7 +24,7 @@ enum NetworkServiceError: LocalizedError {
     case .createURLRequestFailure:
       return "잘못된 URL입니다. 고객센터로 연락주세요.\n1111-1111"
     case .errorIsOccurred(let error):
-      return "(error)오류가 발생했습니다. 고객센터로 연락주세요.\n1111-1111"
+      return "\(error)오류가 발생했습니다. 고객센터로 연락주세요.\n1111-1111"
     case .badRequest:
       return "잘못된 요청입니다. 고객센터로 연락주세요.\n1111-1111"
     case .unauthorized:
