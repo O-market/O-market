@@ -12,7 +12,7 @@ struct ProductDTO: Codable {
   let id: Int
   let vendorId: Int
   let name: String
-  let description: String
+  var description: String?
   let thumbnail: String
   let currency: String
   let price: Double

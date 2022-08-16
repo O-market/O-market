@@ -3,6 +3,7 @@
   "price": 15000,
   "stock": 1000,
   "currency": "KRW",
+  "discounted_price": 0,
   "secret": "your_secret_here",
   "descriptions": "description here"
 }
