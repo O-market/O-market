@@ -34,3 +34,26 @@ struct ProductDTO: Codable {
     case issuedAt = "issued_at"
   }
 }
+
+// MARK: - Extension
+
+extension ProductDTO {
+  func toDomain() -> Product {
+    return Product(
+      id: id,
+      vendorId: vendorId,
+      name: name,
+      description: description,
+      thumbnail: thumbnail,
+      currency: currency,
+      price: price,
+      bargainPrice: bargainPrice,
+      discountedPrice: discountedPrice,
+      stock: stock,
+      images: images?.map { $0.toDomain() },
+      vendor: vendor?.toDomain(),
+      createdAt: createdAt,
+      issuedAt: issuedAt
+    )
+  }
+}

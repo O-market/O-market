@@ -21,3 +21,17 @@ struct ProductImageDTO: Codable {
     case issuedAt = "issued_at"
   }
 }
+
+// MARK: - Extension
+
+extension ProductImageDTO {
+  func toDomain() -> ProductImage {
+    return ProductImage(
+      id: id,
+      url: url,
+      thumbnailURL: thumbnailURL,
+      succeed: succeed,
+      issuedAt: issuedAt
+    )
+  }
+}

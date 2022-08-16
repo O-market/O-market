@@ -20,3 +20,16 @@ struct VendorDTO: Codable {
     case issuedAt = "issued_at"
   }
 }
+
+// MARK: - Extension
+
+extension VendorDTO {
+  func toDomain() -> Vendor {
+    return Vendor(
+      id: id,
+      name: name,
+      createdAt: createdAt,
+      issuedAt: issuedAt
+    )
+  }
+}

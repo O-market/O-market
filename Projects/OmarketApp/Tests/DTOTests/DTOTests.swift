@@ -69,7 +69,7 @@ final class DTOTests: XCTestCase {
   func testProductRequestDTO_데이터가_주어졌을때_제대로_인코딩_되어야한다() {
     // given
     let encoder = JSONEncoder()
-    let productRequestDTO = ProductRequestDTO(
+    let productRequestDTO = ProductRequest(
       name: "Test Product",
       description: "description here",
       price: 15000,

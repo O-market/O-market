@@ -30,3 +30,16 @@ struct ProductResponseDTO: Codable {
     case products = "pages"
   }
 }
+
+// MARK: - Extension
+
+extension ProductResponseDTO {
+  func toDomain() -> ProductResponse {
+    return ProductResponse(
+      pageNumber: pageNumber,
+      itemsPerPage: itemsPerPage,
+      hasNext: hasNext,
+      products: products.map { $0.toDomain() }
+    )
+  }
+}
