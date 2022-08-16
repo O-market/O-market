@@ -1,0 +1,8 @@
+{
+  "name": "Test Product",
+  "price": 15000,
+  "stock": 1000,
+  "currency": "KRW",
+  "secret": "your_secret_here",
+  "descriptions": "description here"
+}
