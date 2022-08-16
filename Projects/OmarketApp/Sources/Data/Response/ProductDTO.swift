@@ -19,7 +19,7 @@ struct ProductDTO: Codable {
   let bargainPrice: Double
   let discountedPrice: Double
   let stock: Int
-  var images: [String]?
+  var images: [ProductImageDTO]?
   var vendor: String?
   let createdAt: Date
   let issuedAt: Date
