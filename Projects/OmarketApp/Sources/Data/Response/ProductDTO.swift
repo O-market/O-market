@@ -20,9 +20,9 @@ struct ProductDTO: Codable {
   let discountedPrice: Double
   let stock: Int
   var images: [ProductImageDTO]?
-  var vendor: String?
-  let createdAt: Date
-  let issuedAt: Date
+  var vendor: VendorDTO?
+  let createdAt: String
+  let issuedAt: String
 
   private enum CodingKeys: String, CodingKey {
     case id, name, description, thumbnail, currency, price, stock, images
