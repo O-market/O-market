@@ -67,6 +67,7 @@ extension Target {
       deploymentTarget: .iOS(targetVersion: "14.0", devices: [.iphone]),
       infoPlist: .default,
       sources: ["Tests/**"],
+      resources: ["Tests/Resources/**"],
       dependencies: [.target(name: name)] + testDependencies
     )
     
