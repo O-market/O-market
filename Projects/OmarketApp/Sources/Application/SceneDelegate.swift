@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import ODesignSystem
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   var window: UIWindow?
+  var appCoordinator: AppCoordinator?
   
   func scene(
     _ scene: UIScene,
@@ -18,11 +18,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     options connectionOptions: UIScene.ConnectionOptions
   ) {
     guard let windowScene = scene as? UIWindowScene else { return }
-    
-    let viewController = UIViewController()
-    viewController.view.backgroundColor = ODS.Color.example
+
+    let navigationController = UINavigationController()
+    appCoordinator = AppCoordinator(navigationController: navigationController)
+
     window = UIWindow(windowScene: windowScene)
-    window?.rootViewController = viewController
+    window?.rootViewController = navigationController
     window?.makeKeyAndVisible()
+
+    appCoordinator?.start()
   }
 }
