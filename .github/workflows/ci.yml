@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Tuist Fetch
+        uses: tuist/tuist-action@0.13.0
+        with:
+          command: "fetch"
+          args: ""
+      - name: Tuist Test
+        uses: tuist/tuist-action@0.13.0
+        with:
+          command: "test"
+          args: ""

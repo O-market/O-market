@@ -1,0 +1,11 @@
+disabled_rules:
+  - trailing_whitespace
+
+included:
+  - Projects
+
+excluded:
+  - Plugins
+  - Tuist
+  - Projects/*/Project.swift
+  - Projects/**/Tests
