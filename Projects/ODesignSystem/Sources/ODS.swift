@@ -12,4 +12,7 @@ public enum ODS {
   public enum Color {
     public static let example = UIColor.systemIndigo
   }
+  public enum Image {
+    public static let logo = UIImage(named: "Logo")
+  }
 }

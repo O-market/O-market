@@ -20,8 +20,15 @@ final class AppCoordinator: Coordinator {
   }
 
   func start() {
+    let splashCoordinator = SplashCoordinator(navigationController: navigationController)
+    splashCoordinator.parentCoordinator = self
+    childCoordinators.append(splashCoordinator)
+    splashCoordinator.start()
+  }
+
+  func showMain() {
     let viewController = UIViewController()
-    viewController.view.backgroundColor = ODS.Color.example
-    navigationController.pushViewController(viewController, animated: true)
+    viewController.view.backgroundColor = .systemIndigo
+    navigationController.setViewControllers([viewController], animated: true)
   }
 }
