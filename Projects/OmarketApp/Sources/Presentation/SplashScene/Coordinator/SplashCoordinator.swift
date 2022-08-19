@@ -20,12 +20,14 @@ final class SplashCoordinator: Coordinator {
   func start() {
     let splashViewController = SplashViewController()
     splashViewController.coordinator = self
-    navigationController.pushViewController(splashViewController, animated: true)
+    splashViewController.modalPresentationStyle = .fullScreen
+    navigationController.present(splashViewController, animated: false)
   }
 
   func showMain() {
     let appCoordinator = parentCoordinator as? AppCoordinator
     appCoordinator?.showMain()
+    navigationController.dismiss(animated: true)
     deallocate()
   }
 

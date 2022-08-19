@@ -27,8 +27,18 @@ final class AppCoordinator: Coordinator {
   }
 
   func showMain() {
-    let viewController = UIViewController()
-    viewController.view.backgroundColor = .systemIndigo
-    navigationController.setViewControllers([viewController], animated: true)
+    let tabBarController = UITabBarController()
+
+    let mainNavigationController = UINavigationController()
+    let mainCoordinator = MainCoordinator(navigationController: mainNavigationController)
+    mainCoordinator.parentCoordinator = self
+
+    mainNavigationController.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 0)
+
+    tabBarController.viewControllers = [mainNavigationController]
+    navigationController.viewControllers = [tabBarController]
+
+    childCoordinators.append(mainCoordinator)
+    mainCoordinator.start()
   }
 }
