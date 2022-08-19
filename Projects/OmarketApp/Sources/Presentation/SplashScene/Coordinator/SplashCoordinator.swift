@@ -28,6 +28,7 @@ final class SplashCoordinator: Coordinator {
     let appCoordinator = parentCoordinator as? AppCoordinator
     appCoordinator?.showMain()
     navigationController.dismiss(animated: true)
+    
     deallocate()
   }
 
