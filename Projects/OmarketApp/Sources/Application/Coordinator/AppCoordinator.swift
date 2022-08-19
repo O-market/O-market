@@ -28,12 +28,14 @@ final class AppCoordinator: Coordinator {
 
   func showMain() {
     let tabBarController = UITabBarController()
+    tabBarController.tabBar.backgroundColor = .systemBackground
+    tabBarController.tabBar.tintColor = .label
 
     let mainNavigationController = UINavigationController()
     let mainCoordinator = MainCoordinator(navigationController: mainNavigationController)
     mainCoordinator.parentCoordinator = self
 
-    mainNavigationController.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 0)
+    mainNavigationController.tabBarItem = UITabBarItem(title: nil, image: ODS.Icon.home, tag: 0)
 
     tabBarController.viewControllers = [mainNavigationController]
     navigationController.viewControllers = [tabBarController]

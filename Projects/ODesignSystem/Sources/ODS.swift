@@ -15,4 +15,7 @@ public enum ODS {
   public enum Image {
     public static let logo = UIImage(named: "Logo")
   }
+  public enum Icon {
+    public static let home = UIImage(systemName: "house.fill")
+  }
 }
