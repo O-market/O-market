@@ -9,3 +9,4 @@ excluded:
   - Tuist
   - Projects/*/Project.swift
   - Projects/**/Tests
+  - Projects/ODesignSystem
