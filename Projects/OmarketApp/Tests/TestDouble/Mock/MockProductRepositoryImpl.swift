@@ -7,3 +7,21 @@
 //
 
 import Foundation
+@testable import OmarketApp
+
+import RxSwift
+
+final class MockProductRepositoryImpl: ProductRepository {
+  var fetchAllProductCallCount: Int = 0
+  var fetchProductCallCount: Int = 0
+
+  func fetchAllProduct(endpoint: Endpoint) -> Observable<[Product]> {
+    fetchAllProductCallCount += 1
+    return .empty()
+  }
+
+  func fetchProduct(endpoint: Endpoint) -> Observable<Product> {
+    fetchProductCallCount += 1
+    return .empty()
+  }
+}
