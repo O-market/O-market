@@ -65,10 +65,11 @@ final class ProductRepositoryTests: XCTestCase {
   func testFetchAllProduct을_호출했을때_성공한_경우_Product_배열이_나와야한다() {
     // given
     let expectation = XCTestExpectation()
+    let endpoint = EndpointAPI.products(.init(pageNumber: 1, itemsPerPage: 10)).asEndpoint
     let input = dummyProductResponseDTO.products.map { $0.toDomain() }
 
     // when
-    sut.fetchAllProduct(query: .init(pageNumber: 1, itemsPerPage: 10))
+    sut.fetchAllProduct(endpoint: endpoint)
       .subscribe(onNext: { products in
         // then
         XCTAssertEqual(products, input)
@@ -85,11 +86,12 @@ final class ProductRepositoryTests: XCTestCase {
   func testFetchAllProduct을_호출했을때_실패한_경우_BadRequest가_나와야한다() {
     // given
     let expectation = XCTestExpectation()
+    let endpoint = EndpointAPI.products(.init(pageNumber: 1, itemsPerPage: 10)).asEndpoint
     networkService = StubNetworkServiceImpl(data: Data(), isSuccess: false)
     sut = ProductRepositoryImpl(networkService: networkService)
 
     // when
-    sut.fetchAllProduct(query: .init(pageNumber: 1, itemsPerPage: 10))
+    sut.fetchAllProduct(endpoint: endpoint)
       .subscribe(onNext: { _ in
         XCTFail()
 
@@ -106,6 +108,7 @@ final class ProductRepositoryTests: XCTestCase {
   func testFetchProduct을_호출했을때_성공한_경우_Product가_나와야한다() {
     // given
     let expectation = XCTestExpectation()
+    let endpoint = EndpointAPI.product(1).asEndpoint
     let product = dummyProductResponseDTO.products.first
     let data = try! JSONEncoder().encode(product)
     let input = dummyProductResponseDTO.products.map { $0.toDomain() }.first!
@@ -114,7 +117,7 @@ final class ProductRepositoryTests: XCTestCase {
     sut = ProductRepositoryImpl(networkService: networkService)
 
     // when
-    sut.fetchProduct(id: 1)
+    sut.fetchProduct(endpoint: endpoint)
       .subscribe(onNext: { product in
         // then
         XCTAssertEqual(product, input)
@@ -131,11 +134,12 @@ final class ProductRepositoryTests: XCTestCase {
   func testFetchProduct을_호출했을때_실패한_경우_BadRequest가_나와야한다() {
     // given
     let expectation = XCTestExpectation()
+    let endpoint = EndpointAPI.product(1).asEndpoint
     networkService = StubNetworkServiceImpl(data: Data(), isSuccess: false)
     sut = ProductRepositoryImpl(networkService: networkService)
 
     // when
-    sut.fetchProduct(id: 1)
+    sut.fetchProduct(endpoint: endpoint)
       .subscribe(onNext: { _ in
         XCTFail()
 

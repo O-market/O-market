@@ -10,12 +10,7 @@ import Foundation
 
 import RxSwift
 
-struct ProductRequestQuery {
-  let pageNumber: Int
-  let itemsPerPage: Int
-}
-
 protocol ProductRepository {
-  func fetchAllProduct(query: ProductRequestQuery) -> Observable<[Product]>
-  func fetchProduct(id: Int) -> Observable<Product>
+  func fetchAllProduct(endpoint: Endpoint) -> Observable<[Product]>
+  func fetchProduct(endpoint: Endpoint) -> Observable<Product>
 }

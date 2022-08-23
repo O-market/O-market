@@ -18,16 +18,14 @@ final class ProductRepositoryImpl: ProductRepository {
     self.networkService = networkService
   }
 
-  func fetchAllProduct(query: ProductRequestQuery) -> Observable<[Product]> {
-    let endpoint = EndpointAPI.products(query).asEndpoint
+  func fetchAllProduct(endpoint: Endpoint) -> Observable<[Product]> {
     return networkService.request(endpoint: endpoint)
       .decode(type: ProductResponseDTO.self, decoder: decoder)
       .map { $0.products }
       .map { $0.map { $0.toDomain() } }
   }
 
-  func fetchProduct(id: Int) -> Observable<Product> {
-    let endpoint = EndpointAPI.product(id).asEndpoint
+  func fetchProduct(endpoint: Endpoint) -> Observable<Product> {
     return networkService.request(endpoint: endpoint)
       .decode(type: ProductDTO.self, decoder: decoder)
       .map { $0.toDomain() }
