@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 
 final class StubURLProtocol: URLProtocol {
-  var requestHandler: ((URLRequest) throws -> (Data, URLResponse))?
+  static var requestHandler: ((URLRequest) throws -> (Data, URLResponse))?
 
   override class func canInit(with request: URLRequest) -> Bool {
     return true
@@ -21,7 +21,7 @@ final class StubURLProtocol: URLProtocol {
   }
 
   override func startLoading() {
-    guard let requestHandler = requestHandler else { return XCTFail("Request Fail") }
+    guard let requestHandler = Self.requestHandler else { return XCTFail("Request Fail") }
 
     do {
       let (data, response) = try requestHandler(request)
