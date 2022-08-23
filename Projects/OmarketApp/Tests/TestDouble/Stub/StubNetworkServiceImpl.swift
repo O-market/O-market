@@ -12,8 +12,8 @@ import Foundation
 import RxSwift
 
 final class StubNetworkServiceImpl: NetworkService {
-  private let data: Data
-  private let isSuccess: Bool
+  let data: Data
+  let isSuccess: Bool
 
   init(data: Data, isSuccess: Bool) {
     self.data = data
