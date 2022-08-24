@@ -20,7 +20,6 @@ final class DetailView: UIView {
   private lazy var priceAndStockStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [priceStackView,
                                                    stockStackView])
-    
     return stackView
   }()
   
@@ -28,7 +27,6 @@ final class DetailView: UIView {
     let stackView = UIStackView(arrangedSubviews: [bargainPriceStackView,
                                                    priceLabel])
     stackView.axis = .vertical
-    
     return stackView
   }()
   
@@ -65,7 +63,6 @@ final class DetailView: UIView {
     let label = UILabel()
     label.text = "원"
     label.font = .systemFont(ofSize: 19.1411)
-
     return label
   }()
   
@@ -88,7 +85,8 @@ final class DetailView: UIView {
     let label = UILabel()
     label.text = "잔여 수량"
     label.font = .systemFont(ofSize: 13)
-    
+    label.textAlignment = .center
+    label.setContentCompressionResistancePriority(.required, for: .horizontal)
     return label
   }()
   
