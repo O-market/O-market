@@ -10,6 +10,9 @@ import ProjectDescriptionHelpers
 
 let project = Project.app(
   name: "OmarketApp",
+  packages: [
+    .firebase,
+  ],
   targets: Target.appTarget(
     name: "OmarketApp",
     platform: .iOS,

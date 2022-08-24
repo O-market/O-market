@@ -8,7 +8,7 @@
 import ProjectDescription
 
 extension Project {
-  public static func app(name: String, targets: [Target]) -> Project {
+  public static func app(name: String, packages: [Package] = [], targets: [Target]) -> Project {
     return Project(
       name: "Omarket",
       organizationName: "Omarket",
@@ -16,6 +16,7 @@ extension Project {
         disableBundleAccessors: true,
         disableSynthesizedResourceAccessors: true
       ),
+      packages: packages,
       targets: targets,
       schemes: []
     )
