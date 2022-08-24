@@ -7,3 +7,11 @@
 //
 
 import Foundation
+import RxSwift
+
+protocol DetailViewModelInput {}
+
+protocol DetailViewModelOutput {
+}
+
+protocol DetailViewModel: DetailViewModelInput, DetailViewModelOutput {}
