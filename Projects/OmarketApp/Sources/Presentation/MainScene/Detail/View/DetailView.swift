@@ -151,7 +151,7 @@ final class DetailView: UIView {
     }
   }
   
-  func setContent(content: Content) {
+  func setContent(content: DetailViewModelItem) {
     titleLabel.text = content.title
     informationLabel.text = content.body
     stockLabel.text = content.stock
