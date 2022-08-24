@@ -152,4 +152,13 @@ final class DetailView: UIView {
       $0.leading.trailing.bottom.equalToSuperview()
     }
   }
+  
+  func setContent(content: Content) {
+    titleLabel.text = content.title
+    informationLabel.text = content.body
+    stockLabel.text = content.stock
+    priceLabel.text = content.price
+    discountedPriceLabel.text = content.bargainPrice
+    discountPercentageLabel.text = content.discountPercentage
+  }
 }
