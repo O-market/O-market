@@ -14,4 +14,8 @@ public extension TargetDependency {
   static let rxTest: TargetDependency = .external(name: "RxTest")
   static let rxDataSources: TargetDependency = .external(name: "RxDataSources")
   static let snapKit: TargetDependency = .external(name: "SnapKit")
+  static let firebaseAuth: TargetDependency = .external(name: "FirebaseAuth")
+  static let rxKakaoSDKAuth: TargetDependency = .external(name: "RxKakaoSDKAuth")
+  static let rxKakaoSDKCommon: TargetDependency = .external(name: "RxKakaoSDKCommon")
+  static let rxKakaoSDKUser: TargetDependency = .external(name: "RxKakaoSDKUser")
 }

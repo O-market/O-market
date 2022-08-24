@@ -19,7 +19,11 @@ let project = Project.app(
       .rxSwift,
       .rxCocoa,
       .rxRelay,
-      .rxDataSources
+      .rxDataSources,
+      .firebaseAuth,
+      .rxKakaoSDKAuth,
+      .rxKakaoSDKCommon,
+      .rxKakaoSDKUser
     ],
     testDependencies: [
       .rxSwift,
