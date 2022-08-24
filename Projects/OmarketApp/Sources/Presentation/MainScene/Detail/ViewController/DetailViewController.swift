@@ -12,13 +12,26 @@ import RxSwift
 import SnapKit
 
 final class DetailViewController: UIViewController {
+  let viewModel: DetailViewModel
+  
+  let bag = DisposeBag()
   let scrollView = UIScrollView()
   let mainView = DetailView(frame: .zero)
   let pageViewController = UIPageViewController(transitionStyle: .scroll,
                                                 navigationOrientation: .horizontal)
   
+  init(viewModel: DetailViewModel) {
+      self.viewModel = viewModel
+      super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    bind()
     configureUI()
   }
 }
@@ -60,3 +73,13 @@ extension DetailViewController {
   }
 }
 
+extension DetailViewController {
+  private func bind() {
+    viewModel
+      .productInfomation
+      .subscribe { [weak self] in
+        self?.mainView.setContent(content: $0)
+      }
+      .disposed(by: bag)
+  }
+}
