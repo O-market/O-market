@@ -46,9 +46,9 @@ struct Content {
     self.title = product.name
     self.body = product.description
     self.thumbnail = product.thumbnail
-    self.price = String(product.price) + " 원"
-    self.bargainPrice = String(product.bargainPrice)
-    self.discountPercentage = String(round(product.discountedPrice / product.price * 100)) + "%"
-    self.stock = String(product.stock)
+    self.price = String(Int(product.price)) + " 원"
+    self.bargainPrice = String(Int(product.bargainPrice))
+    self.discountPercentage = String(Int(round(product.discountedPrice / product.price * 100))) + "%"
+    self.stock = String(product.stock) + " 개"
   }
 }
