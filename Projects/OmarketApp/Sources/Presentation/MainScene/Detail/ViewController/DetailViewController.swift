@@ -77,6 +77,7 @@ extension DetailViewController {
   private func bind() {
     viewModel
       .productInfomation
+      .observe(on: MainScheduler.instance)
       .subscribe { [weak self] in
         self?.mainView.setContent(content: $0)
       }
