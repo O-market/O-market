@@ -18,10 +18,12 @@ public extension TargetDependency {
   static let rxKakaoSDKCommon: TargetDependency = .external(name: "RxKakaoSDKCommon")
   static let rxKakaoSDKUser: TargetDependency = .external(name: "RxKakaoSDKUser")
   static let firebaseAuth: TargetDependency = .package(product: "FirebaseAuth")
+  static let googleSignIn: TargetDependency = .package(product: "GoogleSignIn")
 }
 
 // MARK: - Package
 
 public extension Package {
   static let firebase: Package = .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .exact("9.5.0"))
+  static let googleSignIn: Package = .package(url: "https://github.com/google/GoogleSignIn-iOS.git", .exact("6.2.3"))
 }

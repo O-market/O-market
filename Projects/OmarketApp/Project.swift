@@ -12,6 +12,7 @@ let project = Project.app(
   name: "OmarketApp",
   packages: [
     .firebase,
+    .googleSignIn
   ],
   targets: Target.appTarget(
     name: "OmarketApp",
@@ -26,7 +27,8 @@ let project = Project.app(
       .firebaseAuth,
       .rxKakaoSDKAuth,
       .rxKakaoSDKCommon,
-      .rxKakaoSDKUser
+      .rxKakaoSDKUser,
+      .googleSignIn
     ],
     testDependencies: [
       .rxSwift,
