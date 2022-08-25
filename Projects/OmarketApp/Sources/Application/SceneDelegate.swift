@@ -8,6 +8,9 @@
 
 import UIKit
 
+import KakaoSDKAuth
+import GoogleSignIn
+
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   var window: UIWindow?
   var appCoordinator: AppCoordinator?
@@ -18,14 +21,26 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     options connectionOptions: UIScene.ConnectionOptions
   ) {
     guard let windowScene = scene as? UIWindowScene else { return }
-
+    
     let navigationController = UINavigationController()
     appCoordinator = AppCoordinator(navigationController: navigationController)
-
+    
     window = UIWindow(windowScene: windowScene)
     window?.rootViewController = navigationController
     window?.makeKeyAndVisible()
-
+    
     appCoordinator?.start()
+  }
+  
+  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    if let url = URLContexts.first?.url {
+      if (AuthApi.isKakaoTalkLoginUrl(url)) {
+        _ = AuthController.handleOpenUrl(url: url)
+      }
+      
+      if GIDSignIn.sharedInstance.handle(url) {
+        
+      }
+    }
   }
 }
