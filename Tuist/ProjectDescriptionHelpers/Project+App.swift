@@ -30,31 +30,13 @@ extension Target {
     appDependencies: [TargetDependency],
     testDependencies: [TargetDependency]
   ) -> [Target] {
-    let infoPlist: [String: InfoPlist.Value] = [
-      "CFBundleShortVersionString": "1.0",
-      "CFBundleVersion": "1",
-      "UIMainStoryboardFile": "",
-      "UILaunchStoryboardName": "LaunchScreen",
-      "UIApplicationSceneManifest": .dictionary([
-        "UIApplicationSupportsMultipleScenes": false,
-        "UISceneConfigurations": .dictionary([
-          "UIWindowSceneSessionRoleApplication": [
-            .dictionary([
-              "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate",
-              "UISceneConfigurationName": "Default Configuration",
-            ])
-          ]
-        ])
-      ])
-    ]
-    
     let appTarget = Target(
       name: name,
       platform: platform,
       product: .app,
       bundleId: "com.omarket.\(name)",
       deploymentTarget: .iOS(targetVersion: "14.0", devices: [.iphone]),
-      infoPlist: .extendingDefault(with: infoPlist),
+      infoPlist: .file(path: "Resources/Info.plist"),
       sources: ["Sources/**"],
       resources: ["Resources/**"],
       dependencies: appDependencies
