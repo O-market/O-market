@@ -14,7 +14,7 @@ final class ImageDownloader {
   private var sessionConfiguration = URLSessionConfiguration.ephemeral
   private let session: URLSession
 
-  var name: String
+  let name: String
 
   init(name: String) {
     self.name = name
