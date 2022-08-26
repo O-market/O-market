@@ -36,7 +36,7 @@ extension Target {
       product: .app,
       bundleId: "com.omarket.\(name)",
       deploymentTarget: .iOS(targetVersion: "14.0", devices: [.iphone]),
-      infoPlist: .file(path: "Resources/Info.plist"),
+      infoPlist: .file(path: "SupportingFiles/\(name)-Info.plist"),
       sources: ["Sources/**"],
       resources: ["Resources/**"],
       dependencies: appDependencies
