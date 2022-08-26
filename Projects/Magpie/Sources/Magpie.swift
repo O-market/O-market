@@ -6,5 +6,20 @@
 //  Copyright © 2022 Omarket. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
+public struct Magpie<Base> {
+  public let base: Base
+
+  public init(_ base: Base) {
+    self.base = base
+  }
+}
+
+public protocol MagpieCompatible: AnyObject {}
+
+extension MagpieCompatible {
+  public var mp: Magpie<Self> {
+    get { Magpie(self) }
+  }
+}
