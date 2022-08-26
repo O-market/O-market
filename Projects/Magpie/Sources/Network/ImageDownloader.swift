@@ -9,12 +9,16 @@
 import Foundation
 
 final class ImageDownloader {
-  static let `default` = ImageDownloader()
+  static let `default` = ImageDownloader(name: "default")
 
   private var sessionConfiguration = URLSessionConfiguration.ephemeral
   private let session: URLSession
 
-  init() {
+  var name: String
+
+  init(name: String) {
+    self.name = name
+
     session = URLSession(
       configuration: sessionConfiguration,
       delegate: nil,
