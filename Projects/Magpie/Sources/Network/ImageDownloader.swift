@@ -9,6 +9,8 @@
 import Foundation
 
 final class ImageDownloader {
+  static let `default` = ImageDownloader()
+
   private var sessionConfiguration = URLSessionConfiguration.ephemeral
   private let session: URLSession
 
@@ -21,10 +23,10 @@ final class ImageDownloader {
   }
 
   func download(
-    urlRequest: URLRequest,
+    with url: URL,
     completion: @escaping (Result<Data, MagpieError>) -> Void
   ) -> DownloadTask {
-    let task = session.dataTask(with: urlRequest) { data, response, error in
+    let task = session.dataTask(with: url) { data, response, error in
       guard error == nil, let data = data else {
         completion(.failure(.imageDownloadError(reason: .errorIsOccurred(error.debugDescription))))
         return

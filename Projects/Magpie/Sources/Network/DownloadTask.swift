@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DownloadTask {
+public protocol DownloadTask {
   func suspend()
   func cancel()
 }

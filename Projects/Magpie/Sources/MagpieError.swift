@@ -8,8 +8,8 @@
 
 import Foundation
 
-enum MagpieError: Error {
-  enum ImageDownloadErrorReason {
+public enum MagpieError: Error {
+  public enum ImageDownloadErrorReason {
     case errorIsOccurred(_ error: String)
     case badRequest
     case unauthorized
@@ -20,5 +20,11 @@ enum MagpieError: Error {
     case unknown
   }
 
+  public enum ImageSettingErrorReason {
+    case invalidateURL
+    case invalidateImage
+  }
+
   case imageDownloadError(reason: ImageDownloadErrorReason)
+  case imageSettingError(reason: ImageSettingErrorReason)
 }
