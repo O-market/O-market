@@ -10,3 +10,4 @@ excluded:
   - Projects/*/Project.swift
   - Projects/**/Tests
   - Projects/ODesignSystem
+  - Projects/Magpie
