@@ -53,7 +53,7 @@ class TestCollectionViewController: UICollectionViewController {
     collectionView.register(ProductCell.self, forCellWithReuseIdentifier: "cell")
     
     self.dataSource
-      .bind(to: collectionView.rx.items(cellIdentifier: "cell", cellType: ProductCell.self)) { index, item, cell in
+      .bind(to: collectionView.rx.items(cellIdentifier: "cell", cellType: ProductCell.self)) { _, item, cell in
         cell.bind(with: ProductCellViewModel(product: item))
       }
       .disposed(by: disposeBag)
@@ -63,7 +63,11 @@ class TestCollectionViewController: UICollectionViewController {
 }
 
 extension TestCollectionViewController: UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+  ) -> CGSize {
     let cellWidth: CGFloat = 180
     let cellHeight: CGFloat = cellWidth * 25/16
     return CGSize(width: cellWidth, height: cellHeight)

@@ -101,7 +101,6 @@ final class ProductCell: UICollectionViewCell {
   func bind(with viewModel: ProductCellViewModelType) {
     self.viewModel = viewModel
     
-    // TODO: dummy 이미지 바꾸기
     self.productImageView.image = UIImage(systemName: "swift")
     self.productNameLabel.text = viewModel.productName
     
@@ -171,7 +170,7 @@ private extension UILabel {
     attributedString.addAttribute(
       NSAttributedString.Key.strikethroughStyle,
       value: NSUnderlineStyle.single.rawValue,
-      range: NSMakeRange(0, attributedString.length)
+      range: NSRange(location: 0, length: attributedString.length)
     )
     self.attributedText = attributedString
   }
