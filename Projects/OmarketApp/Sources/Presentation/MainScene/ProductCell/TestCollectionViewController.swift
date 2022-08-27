@@ -50,7 +50,7 @@ class TestCollectionViewController: UICollectionViewController {
     collectionView.dataSource = nil
     collectionView.delegate = nil
     
-    collectionView.register(ProductCell.self, forCellWithReuseIdentifier: "cell")
+    collectionView.register(ProductCell.self, forCellWithReuseIdentifier: ProductCell.identifier)
     
     self.dataSource
       .bind(to: collectionView.rx.items(cellIdentifier: "cell", cellType: ProductCell.self)) { _, item, cell in
