@@ -53,7 +53,10 @@ class TestCollectionViewController: UICollectionViewController {
     collectionView.register(ProductCell.self, forCellWithReuseIdentifier: ProductCell.identifier)
     
     self.dataSource
-      .bind(to: collectionView.rx.items(cellIdentifier: ProductCell.identifier, cellType: ProductCell.self)) { _, item, cell in
+      .bind(to: collectionView.rx.items(
+        cellIdentifier: ProductCell.identifier,
+        cellType: ProductCell.self
+      )) { _, item, cell in
         cell.bind(with: ProductCellViewModel(product: item))
       }
       .disposed(by: disposeBag)
