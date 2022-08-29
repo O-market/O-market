@@ -6,7 +6,7 @@
 //  Copyright © 2022 Omarket. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public struct Magpie<Base> {
   public let base: Base
@@ -23,3 +23,7 @@ extension MagpieCompatible {
     get { Magpie(self) }
   }
 }
+
+// MARK: - Extension MagpieCompatible
+
+extension UIImageView: MagpieCompatible {}

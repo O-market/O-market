@@ -15,7 +15,7 @@ final class MemoryStorage<T: AnyObject>: Storage {
     storage.setObject(object, forKey: key as NSString)
   }
 
-  func value(forKey key: String) -> T? {
-    return storage.value(forKey: key) as? T
+  func object(forKey key: String) -> T? {
+    return storage.object(forKey: key as NSString)
   }
 }

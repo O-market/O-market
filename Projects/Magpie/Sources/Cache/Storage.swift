@@ -12,5 +12,5 @@ protocol Storage {
   associatedtype T
 
   func setObject(_ object: T, forKey key: String)
-  func value(forKey key: String) -> T?
+  func object(forKey key: String) -> T?
 }
