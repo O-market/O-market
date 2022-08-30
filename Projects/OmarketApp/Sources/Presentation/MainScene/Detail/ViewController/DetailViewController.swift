@@ -21,12 +21,12 @@ final class DetailViewController: UIViewController {
                                                 navigationOrientation: .horizontal)
   
   init(viewModel: DetailViewModel) {
-      self.viewModel = viewModel
-      super.init(nibName: nil, bundle: nil)
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
   }
   
   required init?(coder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
+    fatalError("init(coder:) has not been implemented")
   }
   
   override func viewDidLoad() {
@@ -41,13 +41,6 @@ final class DetailViewController: UIViewController {
 extension DetailViewController {
   private func configureUI() {
     view.backgroundColor = .systemBackground
-    
-    guard let image = UIImage(systemName: "swift") else { return }
-    let startVC = ProductImageViewController(image: image)
-    
-    pageViewController.setViewControllers([startVC],
-                                          direction: .reverse,
-                                          animated: true)
     
     self.addChild(pageViewController)
     self.view.addSubview(scrollView)
@@ -76,11 +69,27 @@ extension DetailViewController {
 extension DetailViewController {
   private func bind() {
     viewModel
+      .productImageURL
+      .observe(on: MainScheduler.instance)
+      .subscribe(onNext: { [weak self] in
+        guard let firstImageURL = $0?.first else { return }
+        let startVC = ProductImageViewController(imageURL: firstImageURL)
+        
+        self?.pageViewController.setViewControllers([startVC],
+                                                    direction: .reverse,
+                                                    animated: true)
+      })
+      .disposed(by: bag)
+    
+    
+    viewModel
       .productInfomation
       .observe(on: MainScheduler.instance)
       .subscribe { [weak self] in
         self?.mainView.setContent(content: $0)
       }
       .disposed(by: bag)
+    
+    
   }
 }
