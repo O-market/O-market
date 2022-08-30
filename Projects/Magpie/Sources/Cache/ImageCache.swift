@@ -34,11 +34,11 @@ final class ImageCache {
   }
 
   func retrieve(forKey key: String) -> UIImage? {
-    if let memoryImage = memoryStorage.value(forKey: key) {
+    if let memoryImage = memoryStorage.object(forKey: key) {
       return memoryImage
     }
 
-    if let diskImage = diskStorage.value(forKey: key) {
+    if let diskImage = diskStorage.object(forKey: key) {
       memoryStorage.setObject(diskImage, forKey: key)
       return diskImage
     }

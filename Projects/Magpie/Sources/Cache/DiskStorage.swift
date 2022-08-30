@@ -16,5 +16,5 @@ final class DiskStorage<T>: Storage {
   }
 
   func setObject(_ object: T, forKey key: String) {}
-  func value(forKey key: String) -> T? { return nil }
+  func object(forKey key: String) -> T? { return nil }
 }

@@ -1,5 +1,5 @@
 //
-//  UIImageView+Extension.swift
+//  UIImageView+Magpie.swift
 //  Magpie
 //
 //  Created by Lingo on 2022/08/26.
@@ -8,13 +8,28 @@
 
 import UIKit
 
+private var imageTaskKey: Void?
+
 extension Magpie where Base: UIImageView {
+  private var imageTask: DownloadTask? {
+    get { objc_getAssociatedObject(base, &imageTaskKey) as? DownloadTask }
+    set { objc_setAssociatedObject(base, &imageTaskKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+  }
+
   @discardableResult
   public func setImage(
     with urlString: String,
     placeholder: UIImage? = nil,
     completion: ((Result<UIImage, MagpieError>) -> Void)? = nil
   ) -> DownloadTask? {
+    var mutatingSelf = self
+
+    if let task = mutatingSelf.imageTask {
+      mutatingSelf.imageTask = nil
+      task.suspend()
+      task.cancel()
+    }
+
     guard let url = URL(string: urlString) else {
       completion?(.failure(.imageSettingError(reason: .invalidateURL)))
       return nil
@@ -29,7 +44,9 @@ extension Magpie where Base: UIImageView {
       switch result {
       case .success(let data):
         if let image = UIImage(data: data) {
-          self.base.image = image
+          DispatchQueue.main.async { [weak view = base as UIImageView] in
+            view?.image = image
+          }
           ImageCache.default.store(image, forKey: url.absoluteString)
           completion?(.success(image))
           return
@@ -39,8 +56,12 @@ extension Magpie where Base: UIImageView {
       case .failure(let error):
         completion?(.failure(error))
       }
-      self.base.image = placeholder
+
+      DispatchQueue.main.async { [weak view = base as UIImageView] in
+        view?.image = placeholder
+      }
     }
+    mutatingSelf.imageTask = task
     return task
   }
 }
