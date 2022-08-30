@@ -8,11 +8,13 @@
 
 import UIKit
 
+import Magpie
+
 final class ProductImageViewController: UIViewController {
-  let imageView: UIImageView
+  let imageView: UIImageView = .init()
   
-  init(image: UIImage) {
-    self.imageView = UIImageView(image: image)
+  init(imageURL: String) {
+    self.imageView.mp.setImage(with: imageURL)
     super.init(nibName: nil, bundle: nil)
   }
   
