@@ -40,6 +40,7 @@ extension DetailViewController {
   private func configureUI() {
     title = "상품상세"
     view.backgroundColor = .systemBackground
+    scrollView.showsVerticalScrollIndicator = false
     
     self.view.addSubview(scrollView)
     
