@@ -42,7 +42,7 @@ extension DetailViewController {
     view.backgroundColor = .systemBackground
     scrollView.showsVerticalScrollIndicator = false
     
-    self.view.addSubview(scrollView)
+    view.addSubview(scrollView)
     
     scrollView.snp.makeConstraints {
       $0.edges.equalTo(self.view.safeAreaLayoutGuide)
