@@ -21,6 +21,8 @@ final class DetailView: UIView {
     let pageControl = UIPageControl()
     pageControl.currentPage = 0
     pageControl.backgroundStyle = .prominent
+    pageControl.hidesForSinglePage = true
+    pageControl.isEnabled = false
     return pageControl
   }()
   
@@ -205,9 +207,13 @@ extension DetailView {
     let section = NSCollectionLayoutSection(group: group)
     section.orthogonalScrollingBehavior = .paging
     
-    section.visibleItemsInvalidationHandler = { [weak self] visibleItems, point, environment in
-      print(point)
-      print(environment.container.contentSize)
+    section.visibleItemsInvalidationHandler = { [weak self] _, point, environment in
+      let currentPoint = point.x
+      let collectionViewWidth = environment.container.contentSize.width
+      
+      let currentPage = round(currentPoint / collectionViewWidth)
+      
+      self?.pageControl.currentPage = Int(currentPage)
     }
     
     return UICollectionViewCompositionalLayout(section: section)
