@@ -30,7 +30,6 @@ final class DetailView: UIView {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.font = ODS.Font.H_B21
-
     return label
   }()
   
