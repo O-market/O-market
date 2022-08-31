@@ -54,6 +54,8 @@ extension DetailViewController {
   }
 }
 
+// MARK: - Extension
+
 extension DetailViewController {
   private func bind() {
     viewModel
