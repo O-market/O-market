@@ -17,8 +17,6 @@ final class DetailViewController: UIViewController {
   let bag = DisposeBag()
   let scrollView = UIScrollView()
   let mainView = DetailView(frame: .zero)
-  let pageViewController = UIPageViewController(transitionStyle: .scroll,
-                                                navigationOrientation: .horizontal)
   
   init(viewModel: DetailViewModel) {
     self.viewModel = viewModel
@@ -42,26 +40,16 @@ extension DetailViewController {
   private func configureUI() {
     view.backgroundColor = .systemBackground
     
-    self.addChild(pageViewController)
     self.view.addSubview(scrollView)
     
     scrollView.snp.makeConstraints {
       $0.edges.equalTo(self.view.safeAreaLayoutGuide)
     }
     
-    scrollView.addSubview(pageViewController.view)
-    
-    pageViewController.view.snp.makeConstraints {
-      $0.trailing.leading.top.equalToSuperview()
-      $0.width.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.55)
-    }
-    
     scrollView.addSubview(mainView)
     
     mainView.snp.makeConstraints {
-      $0.top.equalTo(self.pageViewController.view.snp.bottom).inset(-16)
-      $0.trailing.leading.bottom.equalToSuperview().inset(16)
+      $0.edges.width.equalToSuperview()
     }
   }
 }
@@ -71,16 +59,12 @@ extension DetailViewController {
     viewModel
       .productImageURL
       .observe(on: MainScheduler.instance)
-      .subscribe(onNext: { [weak self] in
-        guard let firstImageURL = $0?.first else { return }
-        let startVC = ProductImageViewController(imageURL: firstImageURL)
-        
-        self?.pageViewController.setViewControllers([startVC],
-                                                    direction: .reverse,
-                                                    animated: true)
-      })
-      .disposed(by: bag)
-    
+      .bind(to: mainView.imageCollectionView.rx.items(
+        cellIdentifier: ProductImageCell.identifier,
+        cellType: ProductImageCell.self)) { row, item, cell in
+          cell.setImage(imageURL: item)
+        }
+        .disposed(by: bag)
     
     viewModel
       .productInfomation
@@ -90,6 +74,12 @@ extension DetailViewController {
       }
       .disposed(by: bag)
     
-    
+    viewModel
+      .productImageCount
+      .observe(on: MainScheduler.instance)
+      .subscribe { [weak self] in
+        self?.mainView.pageControl.numberOfPages = $0
+      }
+      .disposed(by: bag)
   }
 }
