@@ -11,6 +11,19 @@ import UIKit
 import SnapKit
 
 final class DetailView: UIView {
+  private(set) lazy var imageCollectionView: UICollectionView = {
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+    collectionView.isScrollEnabled = false
+    return collectionView
+  }()
+  
+  let pageControl: UIPageControl = {
+    let pageControl = UIPageControl()
+    pageControl.currentPage = 0
+    pageControl.backgroundStyle = .prominent
+    return pageControl
+  }()
+  
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.font = .systemFont(ofSize: 19.1411, weight: .bold)
@@ -121,33 +134,50 @@ final class DetailView: UIView {
   }()
   
   override init(frame: CGRect) {
-      super.init(frame: frame)
-      configureUI()
+    super.init(frame: frame)
+    configureUI()
   }
   
   required init?(coder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
+    fatalError("init(coder:) has not been implemented")
   }
   
   private func configureUI() {
+    addSubview(imageCollectionView)
+    imageCollectionView.register(ProductImageCell.self, forCellWithReuseIdentifier: ProductImageCell.identifier)
+    
+    imageCollectionView.snp.makeConstraints {
+      $0.trailing.leading.top.equalToSuperview()
+      $0.width.equalToSuperview()
+      $0.height.equalTo(imageCollectionView.snp.width).multipliedBy(40/39)
+    }
+    
+    addSubview(pageControl)
+    
+    pageControl.snp.makeConstraints {
+      $0.bottom.equalTo(imageCollectionView.snp.bottom).inset(15)
+      $0.centerX.equalToSuperview()
+    }
+    
     addSubview(titleLabel)
     
     titleLabel.snp.makeConstraints {
-      $0.trailing.leading.top.equalToSuperview()
+      $0.top.equalTo(self.imageCollectionView.snp.bottom).inset(-16)
+      $0.leading.trailing.equalToSuperview().inset(16)
     }
     
     addSubview(priceAndStockStackView)
     
     priceAndStockStackView.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).inset(-16)
-      $0.leading.trailing.equalToSuperview().inset(8)
+      $0.leading.trailing.equalToSuperview().inset(24)
     }
     
     addSubview(informationStackView)
     
     informationStackView.snp.makeConstraints {
       $0.top.equalTo(priceAndStockStackView.snp.bottom).inset(-32)
-      $0.leading.trailing.bottom.equalToSuperview()
+      $0.leading.trailing.bottom.equalToSuperview().inset(16)
     }
   }
   
@@ -158,5 +188,28 @@ final class DetailView: UIView {
     priceLabel.text = content.price
     discountedPriceLabel.text = content.bargainPrice
     discountPercentageLabel.text = content.discountPercentage
+  }
+}
+
+extension DetailView {
+  var collectionViewLayout: UICollectionViewCompositionalLayout {
+    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                          heightDimension: .fractionalHeight(1))
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    
+    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalHeight(1),
+                                           heightDimension: .fractionalHeight(1))
+    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                   subitems: [item])
+    
+    let section = NSCollectionLayoutSection(group: group)
+    section.orthogonalScrollingBehavior = .paging
+    
+    section.visibleItemsInvalidationHandler = { [weak self] visibleItems, point, environment in
+      print(point)
+      print(environment.container.contentSize)
+    }
+    
+    return UICollectionViewCompositionalLayout(section: section)
   }
 }
