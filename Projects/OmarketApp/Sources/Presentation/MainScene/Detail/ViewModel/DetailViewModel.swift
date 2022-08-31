@@ -14,7 +14,7 @@ protocol DetailViewModelInput {}
 
 protocol DetailViewModelOutput {
   var productInfomation: Observable<DetailViewModelItem> { get }
-  var productImageURL: Observable<[String]?> { get }
+  var productImageURL: Observable<[String]> { get }
 }
 
 protocol DetailViewModel: DetailViewModelInput, DetailViewModelOutput {}
@@ -33,9 +33,9 @@ final class DetailViewModelImpl: DetailViewModel {
       .map { DetailViewModelItem(product: $0) }
   }
   
-  var productImageURL: Observable<[String]?> {
+  var productImageURL: Observable<[String]> {
     return useCase.fetchOne(id: productId)
-      .map { item in
+      .compactMap { item in
         item.images?.compactMap { $0.url }
       }
   }
