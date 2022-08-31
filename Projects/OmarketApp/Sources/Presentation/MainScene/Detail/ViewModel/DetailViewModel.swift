@@ -15,6 +15,7 @@ protocol DetailViewModelInput {}
 protocol DetailViewModelOutput {
   var productInfomation: Observable<DetailViewModelItem> { get }
   var productImageURL: Observable<[String]> { get }
+  var productImageCount: Observable<Int> { get }
 }
 
 protocol DetailViewModel: DetailViewModelInput, DetailViewModelOutput {}
@@ -38,5 +39,10 @@ final class DetailViewModelImpl: DetailViewModel {
       .compactMap { item in
         item.images?.compactMap { $0.url }
       }
+  }
+  
+  var productImageCount: Observable<Int> {
+    return productImageURL
+      .map { $0.count }
   }
 }
