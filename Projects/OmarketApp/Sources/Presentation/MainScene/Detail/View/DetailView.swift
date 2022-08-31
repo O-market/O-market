@@ -152,7 +152,7 @@ final class DetailView: UIView {
     imageCollectionView.snp.makeConstraints {
       $0.trailing.leading.top.equalToSuperview()
       $0.width.equalToSuperview()
-      $0.height.equalTo(imageCollectionView.snp.width).multipliedBy(40/39)
+      $0.height.equalTo(imageCollectionView.snp.width)
     }
     
     addSubview(pageControl)
