@@ -9,6 +9,7 @@
 import UIKit
 
 import SnapKit
+import ODesignSystem
 
 final class DetailView: UIView {
   private(set) lazy var imageCollectionView: UICollectionView = {
@@ -28,7 +29,8 @@ final class DetailView: UIView {
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 19.1411, weight: .bold)
+    label.font = ODS.Font.H_B21
+
     return label
   }()
   
@@ -54,7 +56,7 @@ final class DetailView: UIView {
   
   private let discountPercentageLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 19.1411, weight: .bold)
+    label.font = ODS.Font.H_B18
     label.textColor = .systemRed
     label.setContentHuggingPriority(.required, for: .horizontal)
     return label
@@ -69,7 +71,7 @@ final class DetailView: UIView {
   
   private let discountedPriceLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 19.1411, weight: .bold)
+    label.font = ODS.Font.H_B18
     label.setContentHuggingPriority(.required, for: .horizontal)
     return label
   }()
@@ -77,13 +79,13 @@ final class DetailView: UIView {
   private let priceSignLabel: UILabel = {
     let label = UILabel()
     label.text = "원"
-    label.font = .systemFont(ofSize: 19.1411)
+    label.font = ODS.Font.H_B18
     return label
   }()
   
   private let priceLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 14.3558)
+    label.font = ODS.Font.B_R13
     label.textColor = .systemGray3
     return label
   }()
@@ -99,7 +101,7 @@ final class DetailView: UIView {
   private let stockGuideLabel: UILabel = {
     let label = UILabel()
     label.text = "잔여 수량"
-    label.font = .systemFont(ofSize: 13)
+    label.font = ODS.Font.B_R13
     label.textAlignment = .center
     label.setContentCompressionResistancePriority(.required, for: .horizontal)
     return label
@@ -107,7 +109,7 @@ final class DetailView: UIView {
   
   private let stockLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 17, weight: .bold)
+    label.font = ODS.Font.H_B16
     label.textAlignment = .center
     label.setContentHuggingPriority(.required, for: .horizontal)
     return label
@@ -124,13 +126,13 @@ final class DetailView: UIView {
   private let informationGuideLabel: UILabel = {
     let label = UILabel()
     label.text = "상품 상세 정보"
-    label.font = .systemFont(ofSize: 16, weight: .bold)
+    label.font = ODS.Font.H_B16
     return label
   }()
   
   private let informationLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 16)
+    label.font = ODS.Font.H_R16
     label.numberOfLines = 0
     return label
   }()
