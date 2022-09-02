@@ -24,8 +24,12 @@ final class MainViewController: UIViewController {
   private lazy var collectionView: UICollectionView = {
     let layout = configureCompositionalLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    collectionView.showsVerticalScrollIndicator = false
+    collectionView.alwaysBounceVertical = false
     collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+    collectionView.register(
+      ProductCell.self,
+      forCellWithReuseIdentifier: ProductCell.identifier
+    )
     collectionView.register(
       MainProductCollectionViewHeader.self,
       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -62,9 +66,22 @@ final class MainViewController: UIViewController {
 
   private func configureCollectionViewDataSource() -> MainDataSource {
     let dataSource = MainDataSource { dataSource, collectionView, indexPath, product in
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-      cell.backgroundColor = [.red, .blue, .green].randomElement()
-      return cell
+      if indexPath.section == .zero {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        cell.backgroundColor = [.red, .blue, .green].randomElement()
+        return cell
+
+      } else {
+        guard let cell = collectionView.dequeueReusableCell(
+          withReuseIdentifier: ProductCell.identifier,
+          for: indexPath
+        ) as? ProductCell else {
+          return UICollectionViewCell()
+        }
+        cell.bind(with: ProductCellViewModel(product: product))
+
+        return cell
+      }
     }
 
     dataSource.configureSupplementaryView = { [weak self] dataSource, collectionView, kind, indexPath in
@@ -104,7 +121,8 @@ extension MainViewController {
 
   private func configureProductSection() -> NSCollectionLayoutSection {
     let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-    let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4)), subitem: item, count: 2)
+    let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.8), heightDimension: .fractionalHeight(0.4)), subitem: item, count: 2)
+    group.interItemSpacing = .fixed(8.0)
 
     let headerSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1.0),
@@ -117,8 +135,10 @@ extension MainViewController {
     )
 
     let section = NSCollectionLayoutSection(group: group)
-    section.orthogonalScrollingBehavior = .groupPaging
+    section.orthogonalScrollingBehavior = .continuous
     section.boundarySupplementaryItems = [header]
+    section.interGroupSpacing = 8.0
+    section.contentInsets = .init(top: 0, leading: 16.0, bottom: 0, trailing: 0)
 
     return section
   }
