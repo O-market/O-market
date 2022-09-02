@@ -18,8 +18,8 @@ final class MainCoordinator: Coordinator {
   }
 
   func start() {
-    let viewController = UIViewController()
-    viewController.view.backgroundColor = .systemIndigo
-    navigationController.pushViewController(viewController, animated: true)
+    let mainViewModel = MainViewModel()
+    let mainViewController = MainViewController(viewModel: mainViewModel)
+    navigationController.pushViewController(mainViewController, animated: true)
   }
 }
