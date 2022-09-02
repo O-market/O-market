@@ -65,7 +65,7 @@ extension DetailViewController {
       .observe(on: MainScheduler.instance)
       .bind(to: mainView.imageCollectionView.rx.items(
         cellIdentifier: ProductImageCell.identifier,
-        cellType: ProductImageCell.self)) { row, item, cell in
+        cellType: ProductImageCell.self)) { _, item, cell in
           cell.setImage(imageURL: item)
         }
         .disposed(by: bag)
