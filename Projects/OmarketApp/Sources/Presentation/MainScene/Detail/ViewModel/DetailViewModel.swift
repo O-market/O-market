@@ -27,6 +27,13 @@ final class DetailViewModelImpl: DetailViewModel {
   private let productBuffer = ReplaySubject<Product>.create(bufferSize: 1)
   private let bag = DisposeBag()
   
+  private let numberFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.maximumFractionDigits = 0
+    return formatter
+  }()
+  
   init(useCase: ProductFetchUseCase, productId: Int) {
     self.useCase = useCase
     self.productId = productId
@@ -43,7 +50,9 @@ final class DetailViewModelImpl: DetailViewModel {
   
   var productInfomation: Observable<DetailViewModelItem> {
     return productBuffer
-      .map { DetailViewModelItem(product: $0) }
+      .map { [weak self] in
+        DetailViewModelItem(product: $0, formatter: self?.numberFormatter)
+      }
   }
   
   var productImageURL: Observable<[String]> {
