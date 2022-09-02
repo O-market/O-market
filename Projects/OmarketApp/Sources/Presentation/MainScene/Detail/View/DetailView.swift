@@ -63,7 +63,7 @@ final class DetailView: UIView {
   
   private lazy var discountedPriceStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [discountedPriceLabel,
-                                                   priceSignLabel])
+                                                   currencyLabel])
     stackView.spacing = 4
     return stackView
   }()
@@ -75,9 +75,8 @@ final class DetailView: UIView {
     return label
   }()
   
-  private let priceSignLabel: UILabel = {
+  private let currencyLabel: UILabel = {
     let label = UILabel()
-    label.text = "원"
     label.font = ODS.Font.H_B18
     return label
   }()
@@ -187,15 +186,17 @@ final class DetailView: UIView {
   func setContent(content: DetailViewModelItem) {
     titleLabel.text = content.title
     informationLabel.text = content.body
+    currencyLabel.text = content.currency
     stockLabel.text = content.stock
     priceLabel.text = content.price
+    addUnderline(label: priceLabel)
     discountedPriceLabel.text = content.bargainPrice
     discountPercentageLabel.text = content.discountPercentage
   }
 }
 
 extension DetailView {
-  var collectionViewLayout: UICollectionViewCompositionalLayout {
+  private var collectionViewLayout: UICollectionViewCompositionalLayout {
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                           heightDimension: .fractionalHeight(1))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -218,5 +219,13 @@ extension DetailView {
     }
     
     return UICollectionViewCompositionalLayout(section: section)
+  }
+  
+  private func addUnderline(label: UILabel) {
+    guard let text = label.text else { return }
+    
+    let attributeString = NSMutableAttributedString(string: text)
+    attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
+    label.attributedText = attributeString
   }
 }
