@@ -13,7 +13,8 @@ import ODesignSystem
 
 final class DetailView: UIView {
   private(set) lazy var imageCollectionView: UICollectionView = {
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+    let collectionView = UICollectionView(frame: .zero,
+                                          collectionViewLayout: collectionViewLayout)
     collectionView.isScrollEnabled = false
     return collectionView
   }()
@@ -101,7 +102,8 @@ final class DetailView: UIView {
     label.text = "잔여 수량"
     label.font = ODS.Font.B_R13
     label.textAlignment = .center
-    label.setContentCompressionResistancePriority(.required, for: .horizontal)
+    label.setContentCompressionResistancePriority(.required,
+                                                  for: .horizontal)
     return label
   }()
   
@@ -109,7 +111,8 @@ final class DetailView: UIView {
     let label = UILabel()
     label.font = ODS.Font.H_B16
     label.textAlignment = .center
-    label.setContentHuggingPriority(.required, for: .horizontal)
+    label.setContentHuggingPriority(.required,
+                                    for: .horizontal)
     return label
   }()
   
@@ -146,7 +149,8 @@ final class DetailView: UIView {
   
   private func configureUI() {
     addSubview(imageCollectionView)
-    imageCollectionView.register(ProductImageCell.self, forCellWithReuseIdentifier: ProductImageCell.identifier)
+    imageCollectionView.register(ProductImageCell.self,
+                                 forCellWithReuseIdentifier: ProductImageCell.identifier)
     
     imageCollectionView.snp.makeConstraints {
       $0.trailing.leading.top.equalToSuperview()
@@ -225,7 +229,9 @@ extension DetailView {
     guard let text = label.text else { return }
     
     let attributeString = NSMutableAttributedString(string: text)
-    attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
+    attributeString.addAttribute(.strikethroughStyle,
+                                 value: NSUnderlineStyle.single.rawValue,
+                                 range: NSMakeRange(0, attributeString.length))
     label.attributedText = attributeString
   }
 }
