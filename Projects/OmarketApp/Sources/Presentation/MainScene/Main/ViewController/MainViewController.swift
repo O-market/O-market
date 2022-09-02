@@ -27,6 +27,10 @@ final class MainViewController: UIViewController {
     collectionView.alwaysBounceVertical = false
     collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     collectionView.register(
+      MainEventCollectionViewCell.self,
+      forCellWithReuseIdentifier: MainEventCollectionViewCell.identifier
+    )
+    collectionView.register(
       ProductCell.self,
       forCellWithReuseIdentifier: ProductCell.identifier
     )
@@ -35,7 +39,14 @@ final class MainViewController: UIViewController {
       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
       withReuseIdentifier: MainProductCollectionViewHeader.identifier
     )
+
     return collectionView
+  }()
+  private let pageControl: UIPageControl = {
+    let pageControl = UIPageControl()
+    pageControl.currentPage = 0
+    pageControl.isUserInteractionEnabled = false
+    return pageControl
   }()
 
   private let disposeBag = DisposeBag()
@@ -62,13 +73,23 @@ final class MainViewController: UIViewController {
     viewModel.sections
       .bind(to: collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
+
+    viewModel.sections
+      .compactMap { $0.first }
+      .map { $0.items.count }
+      .bind(to: pageControl.rx.numberOfPages)
+      .disposed(by: disposeBag)
   }
 
   private func configureCollectionViewDataSource() -> MainDataSource {
     let dataSource = MainDataSource { dataSource, collectionView, indexPath, product in
       if indexPath.section == .zero {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainEventCollectionViewCell.identifier, for: indexPath) as? MainEventCollectionViewCell else {
+          return UICollectionViewCell()
+        }
         cell.backgroundColor = [.red, .blue, .green].randomElement()
+        cell.bind()
+
         return cell
 
       } else {
@@ -116,6 +137,14 @@ extension MainViewController {
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5)), subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
     section.orthogonalScrollingBehavior = .groupPaging
+
+    section.visibleItemsInvalidationHandler = { [weak self] _, point, environment in
+      let currentPointX = point.x
+      let collectionViewWidth = environment.container.contentSize.width
+      let currentPage = currentPointX / collectionViewWidth
+      self?.pageControl.currentPage = Int(currentPage)
+    }
+
     return section
   }
 
@@ -147,6 +176,7 @@ extension MainViewController {
     view.backgroundColor = .systemBackground
     view.addSubview(menuSegmentControl)
     view.addSubview(collectionView)
+    view.addSubview(pageControl)
 
     menuSegmentControl.snp.makeConstraints {
       $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -156,6 +186,11 @@ extension MainViewController {
     collectionView.snp.makeConstraints {
       $0.top.equalTo(menuSegmentControl.snp.bottom)
       $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+    }
+
+    pageControl.snp.makeConstraints {
+      $0.centerY.equalToSuperview()
+      $0.centerX.equalToSuperview()
     }
   }
 }
