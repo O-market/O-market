@@ -228,10 +228,12 @@ extension DetailView {
   private func addUnderline(label: UILabel) {
     guard let text = label.text else { return }
     
-    let attributeString = NSMutableAttributedString(string: text)
-    attributeString.addAttribute(.strikethroughStyle,
-                                 value: NSUnderlineStyle.single.rawValue,
-                                 range: NSMakeRange(0, attributeString.length))
-    label.attributedText = attributeString
+    let attributedString = NSMutableAttributedString(string: text)
+    attributedString.addAttribute(
+      NSAttributedString.Key.strikethroughStyle,
+      value: NSUnderlineStyle.single.rawValue,
+      range: NSRange(location: 0, length: attributedString.length)
+    )
+    label.attributedText = attributedString
   }
 }
