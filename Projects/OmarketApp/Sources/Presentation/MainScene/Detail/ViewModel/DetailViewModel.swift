@@ -24,18 +24,30 @@ final class DetailViewModelImpl: DetailViewModel {
   let useCase: ProductFetchUseCase
   let productId: Int
   
+  private let productBuffer = ReplaySubject<Product>.create(bufferSize: 1)
+  private let bag = DisposeBag()
+  
   init(useCase: ProductFetchUseCase, productId: Int) {
     self.useCase = useCase
     self.productId = productId
+    
+    self.useCase
+      .fetchOne(id: productId)
+      .subscribe(onNext: { [weak self] in
+        self?.productBuffer.onNext($0)
+      }, onError: { [weak self] in
+        self?.productBuffer.onError($0)
+      })
+      .disposed(by: bag)
   }
   
   var productInfomation: Observable<DetailViewModelItem> {
-    return useCase.fetchOne(id: productId)
+    return productBuffer
       .map { DetailViewModelItem(product: $0) }
   }
   
   var productImageURL: Observable<[String]> {
-    return useCase.fetchOne(id: productId)
+    return productBuffer
       .compactMap { item in
         item.images?.compactMap { $0.url }
       }
