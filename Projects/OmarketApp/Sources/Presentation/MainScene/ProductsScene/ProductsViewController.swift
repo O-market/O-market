@@ -68,7 +68,7 @@ class ProductsViewController: UIViewController {
         to: view.productsCollectionView.rx.items(
         cellIdentifier: ProductCell.identifier,
         cellType: ProductCell.self
-      )) { index, item, cell in
+      )) { _, item, cell in
         cell.bind(with: ProductCellViewModel(product: item))
     }
     .disposed(by: disposeBag)
