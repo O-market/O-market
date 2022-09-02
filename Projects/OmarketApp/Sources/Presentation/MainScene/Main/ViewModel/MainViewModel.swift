@@ -11,7 +11,10 @@ import Foundation
 import RxSwift
 import RxRelay
 
-protocol MainViewModelInput {}
+protocol MainViewModelInput {
+  func showProductAllScene()
+}
+
 protocol MainViewModelOutput {
   var sections: BehaviorRelay<[ProductSection]> { get }
 }
@@ -35,4 +38,6 @@ final class MainViewModel: MainViewModelable {
   ])
 
   init() {}
+
+  func showProductAllScene() {}
 }

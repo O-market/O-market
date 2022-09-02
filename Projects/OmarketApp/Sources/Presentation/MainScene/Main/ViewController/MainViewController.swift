@@ -26,6 +26,11 @@ final class MainViewController: UIViewController {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     collectionView.showsVerticalScrollIndicator = false
     collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+    collectionView.register(
+      MainProductCollectionViewHeader.self,
+      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+      withReuseIdentifier: MainProductCollectionViewHeader.identifier
+    )
     return collectionView
   }()
 
@@ -56,11 +61,23 @@ final class MainViewController: UIViewController {
   }
 
   private func configureCollectionViewDataSource() -> MainDataSource {
-    return MainDataSource { dataSource, collectionView, indexPath, product in
+    let dataSource = MainDataSource { dataSource, collectionView, indexPath, product in
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
       cell.backgroundColor = [.red, .blue, .green].randomElement()
       return cell
     }
+
+    dataSource.configureSupplementaryView = { [weak self] dataSource, collectionView, kind, indexPath in
+      guard let self = self else { return UICollectionReusableView() }
+      guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainProductCollectionViewHeader.identifier, for: indexPath) as? MainProductCollectionViewHeader else {
+        return UICollectionReusableView()
+      }
+      header.bind(viewModel: self.viewModel)
+
+      return header
+    }
+
+    return dataSource
   }
 }
 
