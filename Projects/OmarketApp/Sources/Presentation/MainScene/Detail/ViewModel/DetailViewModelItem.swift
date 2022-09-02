@@ -27,7 +27,8 @@ struct DetailViewModelItem {
     if product.discountedPrice == 0 {
       self.price = nil
     } else {
-      self.price = (formatter?.string(from: product.price as NSNumber) ?? "\(Int(product.price))") + " \(self.currency)"
+      let formattedPrice = formatter?.string(from: product.price as NSNumber)
+      self.price = (formattedPrice ?? "\(Int(product.price))") + " \(self.currency)"
     }
     
     self.bargainPrice = formatter?.string(from: product.bargainPrice as NSNumber) ?? "\(Int(product.bargainPrice))"
