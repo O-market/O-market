@@ -64,8 +64,7 @@ class ProductsViewController: UIViewController {
       .disposed(by: disposeBag)
     
     viewModel.products
-      .bind(
-        to: view.productsCollectionView.rx.items(
+      .bind(to: view.productsCollectionView.rx.items(
         cellIdentifier: ProductCell.identifier,
         cellType: ProductCell.self
       )) { _, item, cell in

@@ -16,14 +16,14 @@ protocol ProductsViewModelInput {
   func prefetchIndexPath(_ row: Int)
 }
 
-protocol ProductsViewModelOutout {
+protocol ProductsViewModelOutput {
   var title: String { get }
   var products: BehaviorRelay<[Product]> { get }
   var showProductAddScene: PublishRelay<Void> { get }
   var showProductDetailScene: PublishRelay<Product> { get }
 }
 
-protocol ProductsViewModelType: ProductsViewModelInput, ProductsViewModelOutout {}
+protocol ProductsViewModelType: ProductsViewModelInput, ProductsViewModelOutput {}
 
 final class ProductsViewModel: ProductsViewModelType {
   private let productFetchUseCase: ProductFetchUseCase
@@ -57,8 +57,9 @@ extension ProductsViewModel {
     productFetchUseCase.fetchAll(
       query: ProductRequestQuery(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     )
-    .withUnretained(self)
-    .subscribe { `self`, item in
+    .subscribe { [weak self] item in
+      guard let self = self else { return }
+      
       self.products.accept(self.products.value + item)
     }
     .disposed(by: disposeBag)

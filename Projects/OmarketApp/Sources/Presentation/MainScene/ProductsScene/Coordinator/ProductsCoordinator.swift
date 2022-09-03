@@ -22,10 +22,10 @@ final class ProductsCoordinator: Coordinator {
     let repository = ProductRepositoryImpl(networkService: networkService)
     let usecase = ProductFetchUseCaseImpl(repository: repository)
     let viewModel = ProductsViewModel(useCase: usecase)
-    let viewControler = ProductsViewController(viewModel)
+    let viewController = ProductsViewController(viewModel)
     
-    viewControler.coordinator = self
-    navigationController.pushViewController(viewControler, animated: true)
+    viewController.coordinator = self
+    navigationController.pushViewController(viewController, animated: true)
   }
   
   func showDetailView(_ id: Int) {
