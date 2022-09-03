@@ -195,7 +195,7 @@ extension MainViewController {
     ]
     view.backgroundColor = ODS.Color.brand010
 
-    [menuSegmentControl, collectionView, pageControl].forEach { view.addSubview($0) }
+    view.addSubviews([menuSegmentControl, collectionView, pageControl])
 
     menuSegmentControl.snp.makeConstraints {
       $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)

@@ -58,12 +58,13 @@ final class MainProductCollectionViewHeader: UICollectionReusableView {
   }
 
   private func configureUI() {
-    [titleLabel, showProductsButton].forEach { addSubview($0) }
+    addSubviews([titleLabel, showProductsButton])
 
     titleLabel.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.leading.equalToSuperview()
     }
+
     showProductsButton.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.trailing.equalToSuperview().inset(16.0)

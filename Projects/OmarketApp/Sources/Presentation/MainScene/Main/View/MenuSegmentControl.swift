@@ -77,13 +77,14 @@ final class MenuSegmentControl: UIView {
 extension MenuSegmentControl {
   private func configureUI() {
     self.backgroundColor = .systemBackground
-    [segmentControl, underLineView].forEach { addSubview($0) }
+    addSubviews([segmentControl, underLineView])
 
     segmentControl.snp.makeConstraints {
       $0.top.equalToSuperview()
       $0.leading.equalToSuperview().offset(16.0)
       $0.height.equalTo(43.0)
     }
+    
     underLineView.snp.makeConstraints {
       $0.top.equalTo(segmentControl.snp.bottom)
       $0.height.equalTo(5.0)
