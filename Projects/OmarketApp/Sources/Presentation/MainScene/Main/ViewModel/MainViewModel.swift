@@ -16,12 +16,15 @@ protocol MainViewModelInput {
 }
 
 protocol MainViewModelOutput {
+  var title: String { get }
   var sections: Observable<[ProductSection]> { get }
 }
 
-protocol MainViewModelable: MainViewModelInput & MainViewModelOutput {}
+protocol MainViewModelable: MainViewModelInput, MainViewModelOutput {}
 
 final class MainViewModel: MainViewModelable {
+  // Input
+  var title = "오픈 마켓"
   var sections: Observable<[ProductSection]> {
     return Observable.combineLatest(
       Observable.just(ProductEvent.items),
@@ -44,6 +47,7 @@ final class MainViewModel: MainViewModelable {
     self.useCase = useCase
   }
 
+  // Output
   func showProductsButtonDidTapEvent() {
     coordinator?.showProductsScene()
   }

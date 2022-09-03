@@ -15,7 +15,7 @@ import SnapKit
 import ODesignSystem
 
 final class MainViewController: UIViewController {
-  typealias MainDataSource = RxCollectionViewSectionedReloadDataSource<ProductSection>
+  private typealias MainDataSource = RxCollectionViewSectionedReloadDataSource<ProductSection>
 
   private let menuSegmentControl = MenuSegmentControl()
   private lazy var collectionView: UICollectionView = {
@@ -51,7 +51,6 @@ final class MainViewController: UIViewController {
   init(viewModel: MainViewModelable) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
-    title = "오픈 마켓"
   }
 
   required init?(coder: NSCoder) {
@@ -61,6 +60,7 @@ final class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
+    configureNavigationBar()
     bindUI()
   }
 
@@ -189,12 +189,15 @@ extension MainViewController {
     return section
   }
 
-  private func configureUI() {
+  private func configureNavigationBar() {
+    title = viewModel.title
     navigationController?.navigationBar.titleTextAttributes = [
       .foregroundColor: UIColor.white
     ]
-    view.backgroundColor = ODS.Color.brand010
+  }
 
+  private func configureUI() {
+    view.backgroundColor = ODS.Color.brand010
     view.addSubviews([menuSegmentControl, collectionView, pageControl])
 
     menuSegmentControl.snp.makeConstraints {
