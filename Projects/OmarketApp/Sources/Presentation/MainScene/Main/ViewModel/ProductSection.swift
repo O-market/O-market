@@ -10,6 +10,8 @@ import Foundation
 
 import RxDataSources
 
+protocol ProductSectionItemType {}
+
 enum ProductSectionType {
   case event
   case product
@@ -17,22 +19,26 @@ enum ProductSectionType {
 
 struct ProductSection {
   var sectionType: ProductSectionType
-  var items: [CellItem]
+  var items: [ProductSectionItemType]
 }
 
 extension ProductSection: SectionModelType {
-  typealias Item = CellItem
+  typealias Item = ProductSectionItemType
 
-  init(original: ProductSection, items: [CellItem]) {
+  init(original: ProductSection, items: [ProductSectionItemType]) {
     self = original
     self.items = items
   }
 }
 
-protocol CellItem {}
-
-extension Product: CellItem {}
-
-struct ProductEvent: CellItem {
+struct ProductEvent: ProductSectionItemType {
   var name: String
+}
+
+// MARK: - Extension
+
+extension Product: ProductSectionItemType {}
+
+extension ProductEvent {
+  static let items = ["event01", "event02", "event03", "event04"].map { ProductEvent(name: $0) }
 }

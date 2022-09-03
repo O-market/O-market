@@ -22,7 +22,6 @@ final class MainViewController: UIViewController {
     let layout = configureCompositionalLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     collectionView.alwaysBounceVertical = false
-    collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     collectionView.register(
       MainEventCollectionViewCell.self,
       forCellWithReuseIdentifier: MainEventCollectionViewCell.identifier
@@ -63,7 +62,6 @@ final class MainViewController: UIViewController {
     super.viewDidLoad()
     configureUI()
     bindUI()
-    viewModel.viewDidLoadEvent()
   }
 
   private func bindUI() {
@@ -81,35 +79,38 @@ final class MainViewController: UIViewController {
   }
 
   private func configureCollectionViewDataSource() -> MainDataSource {
-    let dataSource = MainDataSource { dataSource, collectionView, indexPath, product in
+    let dataSource = MainDataSource { dataSource, collectionView, indexPath, item in
       if indexPath.section == .zero {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainEventCollectionViewCell.identifier, for: indexPath) as? MainEventCollectionViewCell else {
-          return UICollectionViewCell()
-        }
-        cell.bind(with: product)
+        guard let cell = collectionView.dequeueReusableCell(
+          withReuseIdentifier: MainEventCollectionViewCell.identifier,
+          for: indexPath
+        ) as? MainEventCollectionViewCell else { return UICollectionViewCell() }
 
+        cell.bind(with: item)
         return cell
 
       } else {
         guard let cell = collectionView.dequeueReusableCell(
           withReuseIdentifier: ProductCell.identifier,
           for: indexPath
-        ) as? ProductCell else {
-          return UICollectionViewCell()
-        }
-        cell.bind(with: ProductCellViewModel(product: product as! Product))
+        ) as? ProductCell else { return UICollectionViewCell() }
 
+        guard let product = item as? Product else { return UICollectionViewCell() }
+
+        cell.bind(with: ProductCellViewModel(product: product))
         return cell
       }
     }
 
     dataSource.configureSupplementaryView = { [weak self] dataSource, collectionView, kind, indexPath in
       guard let self = self else { return UICollectionReusableView() }
-      guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainProductCollectionViewHeader.identifier, for: indexPath) as? MainProductCollectionViewHeader else {
-        return UICollectionReusableView()
-      }
-      header.bind(with: self.viewModel)
+      guard let header = collectionView.dequeueReusableSupplementaryView(
+        ofKind: kind,
+        withReuseIdentifier: MainProductCollectionViewHeader.identifier,
+        for: indexPath
+      ) as? MainProductCollectionViewHeader else { return UICollectionReusableView() }
 
+      header.bind(with: self.viewModel)
       return header
     }
 
@@ -131,11 +132,20 @@ extension MainViewController {
   }
 
   private func configureEventSection() -> NSCollectionLayoutSection {
-    let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-    let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5)), subitems: [item])
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1.0),
+      heightDimension: .fractionalHeight(1.0)
+    )
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1.0),
+      heightDimension: .fractionalHeight(0.5)
+    )
+    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
     let section = NSCollectionLayoutSection(group: group)
     section.orthogonalScrollingBehavior = .groupPaging
-
     section.visibleItemsInvalidationHandler = { [weak self] _, point, environment in
       let currentPointX = point.x
       let collectionViewWidth = environment.container.contentSize.width
@@ -147,8 +157,17 @@ extension MainViewController {
   }
 
   private func configureProductSection() -> NSCollectionLayoutSection {
-    let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-    let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.8), heightDimension: .fractionalHeight(0.4)), subitem: item, count: 2)
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1.0),
+      heightDimension: .fractionalHeight(1.0)
+    )
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(0.8),
+      heightDimension: .fractionalHeight(0.4)
+    )
+    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
     group.interItemSpacing = .fixed(8.0)
 
     let headerSize = NSCollectionLayoutSize(
@@ -174,11 +193,9 @@ extension MainViewController {
     navigationController?.navigationBar.titleTextAttributes = [
       .foregroundColor: UIColor.white
     ]
-
     view.backgroundColor = ODS.Color.brand010
-    view.addSubview(menuSegmentControl)
-    view.addSubview(collectionView)
-    view.addSubview(pageControl)
+
+    [menuSegmentControl, collectionView, pageControl].forEach { view.addSubview($0) }
 
     menuSegmentControl.snp.makeConstraints {
       $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)

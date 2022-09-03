@@ -28,8 +28,9 @@ final class MainEventCollectionViewCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func bind(with cellItem: CellItem) {
+  func bind(with cellItem: ProductSectionItemType) {
     guard let cellItem = cellItem as? ProductEvent else { return }
+
     imageView.image = UIImage(named: cellItem.name)
   }
 }
