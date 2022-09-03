@@ -79,7 +79,7 @@ final class MainViewController: UIViewController {
   }
 
   private func configureCollectionViewDataSource() -> MainDataSource {
-    let dataSource = MainDataSource { dataSource, collectionView, indexPath, item in
+    let dataSource = MainDataSource { _, collectionView, indexPath, item in
       if indexPath.section == .zero {
         guard let cell = collectionView.dequeueReusableCell(
           withReuseIdentifier: MainEventCollectionViewCell.identifier,
@@ -122,7 +122,7 @@ final class MainViewController: UIViewController {
 
 extension MainViewController {
   private func configureCompositionalLayout() -> UICollectionViewLayout {
-    return UICollectionViewCompositionalLayout { [weak self] section, environment in
+    return UICollectionViewCompositionalLayout { [weak self] section, _ in
       if section == .zero {
         return self?.configureEventSection()
       } else {
