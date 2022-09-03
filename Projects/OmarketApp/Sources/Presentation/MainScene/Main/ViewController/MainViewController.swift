@@ -102,7 +102,7 @@ final class MainViewController: UIViewController {
       }
     }
 
-    dataSource.configureSupplementaryView = { [weak self] dataSource, collectionView, kind, indexPath in
+    dataSource.configureSupplementaryView = { [weak self] _, collectionView, kind, indexPath in
       guard let self = self else { return UICollectionReusableView() }
       guard let header = collectionView.dequeueReusableSupplementaryView(
         ofKind: kind,
