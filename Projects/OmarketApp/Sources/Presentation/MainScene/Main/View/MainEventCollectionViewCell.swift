@@ -15,6 +15,7 @@ final class MainEventCollectionViewCell: UICollectionViewCell {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFill
     imageView.clipsToBounds = true
+
     return imageView
   }()
 
@@ -27,8 +28,9 @@ final class MainEventCollectionViewCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func bind() {
-    imageView.mp.setImage(with: "https://s3.ap-northeast-2.amazonaws.com/media.yagom-academy.kr/training-resources/22/thumb/005bd2af79b211ec9173fda99364e03a.png")
+  func bind(with cellItem: CellItem) {
+    guard let cellItem = cellItem as? ProductEvent else { return }
+    imageView.image = UIImage(named: cellItem.name)
   }
 }
 

@@ -18,19 +18,25 @@ final class MainProductCollectionViewHeader: UICollectionReusableView {
 
   private let titleLabel: UILabel = {
     let label = UILabel()
+    label.font = ODS.Font.H_B16
     label.text = "이런 제품은 어떤가요?"
-    label.font = ODS.Font.H_B18
+
     return label
   }()
-  private let showAllProductButton: UIButton = {
+
+  private let showProductsButton: UIButton = {
     let button = UIButton()
-    button.titleLabel?.font = ODS.Font.B_R15
-    button.setTitle("전체보기", for: .normal)
-    button.setImage(ODS.Icon.chevronRight, for: .normal)
+    button.titleLabel?.font = ODS.Font.B_R13
+    button.imageView?.contentMode = .scaleAspectFit
     button.semanticContentAttribute = .forceRightToLeft
-    button.imageEdgeInsets = .init(top: 0, left: 4.0, bottom: 0, right: 0)
+    button.imageEdgeInsets = .init(top: 4.0, left: 4.0, bottom: 4.0, right: 4.0)
+
     button.tintColor = .label
     button.setTitleColor(UIColor.label, for: .normal)
+
+    button.setTitle("전체보기", for: .normal)
+    button.setImage(ODS.Icon.chevronRight, for: .normal)
+
     return button
   }()
 
@@ -45,22 +51,20 @@ final class MainProductCollectionViewHeader: UICollectionReusableView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func bind(viewModel: MainViewModelable) {
-    showAllProductButton.rx.tap
-      .bind(onNext: viewModel.showProductAllScene)
+  func bind(with viewModel: MainViewModelable) {
+    showProductsButton.rx.tap
+      .bind(onNext: viewModel.showProductsButtonDidTapEvent)
       .disposed(by: disposeBag)
   }
 
   private func configureUI() {
-    self.addSubview(titleLabel)
-    self.addSubview(showAllProductButton)
+    [titleLabel, showProductsButton].forEach { addSubview($0) }
 
     titleLabel.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.leading.equalToSuperview()
     }
-
-    showAllProductButton.snp.makeConstraints {
+    showProductsButton.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.trailing.equalToSuperview().inset(16.0)
     }

@@ -10,15 +10,29 @@ import Foundation
 
 import RxDataSources
 
+enum ProductSectionType {
+  case event
+  case product
+}
+
 struct ProductSection {
-  var items: [Product]
+  var sectionType: ProductSectionType
+  var items: [CellItem]
 }
 
 extension ProductSection: SectionModelType {
-  typealias Item = Product
+  typealias Item = CellItem
 
-  init(original: ProductSection, items: [Product]) {
+  init(original: ProductSection, items: [CellItem]) {
     self = original
     self.items = items
   }
+}
+
+protocol CellItem {}
+
+extension Product: CellItem {}
+
+struct ProductEvent: CellItem {
+  var name: String
 }

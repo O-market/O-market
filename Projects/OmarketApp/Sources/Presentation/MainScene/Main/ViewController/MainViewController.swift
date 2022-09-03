@@ -12,15 +12,12 @@ import RxDataSources
 import RxCocoa
 import RxSwift
 import SnapKit
+import ODesignSystem
 
 final class MainViewController: UIViewController {
   typealias MainDataSource = RxCollectionViewSectionedReloadDataSource<ProductSection>
 
-  private let menuSegmentControl: UIView = {
-    let view = UIView()
-    view.backgroundColor = .cyan
-    return view
-  }()
+  private let menuSegmentControl = MenuSegmentControl()
   private lazy var collectionView: UICollectionView = {
     let layout = configureCompositionalLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -55,6 +52,7 @@ final class MainViewController: UIViewController {
   init(viewModel: MainViewModelable) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
+    title = "오픈 마켓"
   }
 
   required init?(coder: NSCoder) {
@@ -65,6 +63,7 @@ final class MainViewController: UIViewController {
     super.viewDidLoad()
     configureUI()
     bindUI()
+    viewModel.viewDidLoadEvent()
   }
 
   private func bindUI() {
@@ -87,8 +86,7 @@ final class MainViewController: UIViewController {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainEventCollectionViewCell.identifier, for: indexPath) as? MainEventCollectionViewCell else {
           return UICollectionViewCell()
         }
-        cell.backgroundColor = [.red, .blue, .green].randomElement()
-        cell.bind()
+        cell.bind(with: product)
 
         return cell
 
@@ -99,7 +97,7 @@ final class MainViewController: UIViewController {
         ) as? ProductCell else {
           return UICollectionViewCell()
         }
-        cell.bind(with: ProductCellViewModel(product: product))
+        cell.bind(with: ProductCellViewModel(product: product as! Product))
 
         return cell
       }
@@ -110,7 +108,7 @@ final class MainViewController: UIViewController {
       guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainProductCollectionViewHeader.identifier, for: indexPath) as? MainProductCollectionViewHeader else {
         return UICollectionReusableView()
       }
-      header.bind(viewModel: self.viewModel)
+      header.bind(with: self.viewModel)
 
       return header
     }
@@ -173,7 +171,11 @@ extension MainViewController {
   }
 
   private func configureUI() {
-    view.backgroundColor = .systemBackground
+    navigationController?.navigationBar.titleTextAttributes = [
+      .foregroundColor: UIColor.white
+    ]
+
+    view.backgroundColor = ODS.Color.brand010
     view.addSubview(menuSegmentControl)
     view.addSubview(collectionView)
     view.addSubview(pageControl)
