@@ -14,7 +14,7 @@ import SnapKit
 final class DetailViewController: UIViewController {
   private let viewModel: DetailViewModel
   
-  private let bag = DisposeBag()
+  private let disposeBag = DisposeBag()
   private let scrollView = UIScrollView()
   private let mainView = DetailView(frame: .zero)
   
@@ -68,7 +68,7 @@ extension DetailViewController {
         cellType: ProductImageCell.self)) { _, item, cell in
           cell.setImage(imageURL: item)
         }
-        .disposed(by: bag)
+        .disposed(by: disposeBag)
     
     viewModel
       .productInfomation
@@ -76,7 +76,7 @@ extension DetailViewController {
       .subscribe { [weak self] in
         self?.mainView.setContent(content: $0)
       }
-      .disposed(by: bag)
+      .disposed(by: disposeBag)
     
     viewModel
       .productImageCount
@@ -84,6 +84,6 @@ extension DetailViewController {
       .subscribe { [weak self] in
         self?.mainView.pageControl.numberOfPages = $0
       }
-      .disposed(by: bag)
+      .disposed(by: disposeBag)
   }
 }

@@ -25,7 +25,7 @@ final class DetailViewModelImpl: DetailViewModel {
   let productId: Int
   
   private let productBuffer = ReplaySubject<Product>.create(bufferSize: 1)
-  private let bag = DisposeBag()
+  private let disposeBag = DisposeBag()
   
   private let numberFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
@@ -45,7 +45,7 @@ final class DetailViewModelImpl: DetailViewModel {
       }, onError: { [weak self] in
         self?.productBuffer.onError($0)
       })
-      .disposed(by: bag)
+      .disposed(by: disposeBag)
   }
   
   var productInfomation: Observable<DetailViewModelItem> {
