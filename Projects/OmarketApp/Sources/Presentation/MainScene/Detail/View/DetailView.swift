@@ -12,6 +12,8 @@ import SnapKit
 import ODesignSystem
 
 final class DetailView: UIView {
+  private let scrollView = UIScrollView()
+  
   private(set) lazy var imageCollectionView: UICollectionView = {
     let collectionView = UICollectionView(
       frame: .zero,
@@ -172,18 +174,26 @@ final class DetailView: UIView {
   }
   
   private func configureUI() {
+    addSubview(scrollView)
+    
+    scrollView.showsVerticalScrollIndicator = false
+    
     [imageCollectionView,
      pageControl,
      titleLabel,
      priceAndStockStackView,
      informationStackView].forEach {
-      addSubview($0)
+      scrollView.addSubview($0)
     }
     
     imageCollectionView.register(
       ProductImageCell.self,
       forCellWithReuseIdentifier: ProductImageCell.identifier
     )
+    
+    scrollView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
     
     imageCollectionView.snp.makeConstraints {
       $0.trailing.leading.top.equalToSuperview()

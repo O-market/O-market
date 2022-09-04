@@ -12,10 +12,9 @@ import RxSwift
 import SnapKit
 
 final class DetailViewController: UIViewController {
-  private let viewModel: DetailViewModel
   
+  private let viewModel: DetailViewModel
   private let disposeBag = DisposeBag()
-  private let scrollView = UIScrollView()
   private let mainView = DetailView(frame: .zero)
   
   init(viewModel: DetailViewModel) {
@@ -40,18 +39,10 @@ extension DetailViewController {
   private func configureUI() {
     title = "상품상세"
     view.backgroundColor = .systemBackground
-    scrollView.showsVerticalScrollIndicator = false
-    
-    view.addSubview(scrollView)
-    
-    scrollView.snp.makeConstraints {
-      $0.edges.equalTo(self.view.safeAreaLayoutGuide)
-    }
-    
-    scrollView.addSubview(mainView)
+    view.addSubview(mainView)
     
     mainView.snp.makeConstraints {
-      $0.edges.width.equalToSuperview()
+      $0.edges.equalTo(self.view.safeAreaLayoutGuide)
     }
   }
 }
