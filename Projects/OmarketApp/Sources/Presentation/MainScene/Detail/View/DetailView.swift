@@ -13,8 +13,10 @@ import ODesignSystem
 
 final class DetailView: UIView {
   private(set) lazy var imageCollectionView: UICollectionView = {
-    let collectionView = UICollectionView(frame: .zero,
-                                          collectionViewLayout: collectionViewLayout)
+    let collectionView = UICollectionView(
+      frame: .zero,
+      collectionViewLayout: collectionViewLayout
+    )
     collectionView.isScrollEnabled = false
     return collectionView
   }()
@@ -35,21 +37,27 @@ final class DetailView: UIView {
   }()
   
   private lazy var priceAndStockStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [priceStackView,
-                                                   stockStackView])
+    let stackView = UIStackView(
+      arrangedSubviews: [priceStackView,
+                         stockStackView]
+    )
     return stackView
   }()
   
   private lazy var priceStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [bargainPriceStackView,
-                                                   priceLabel])
+    let stackView = UIStackView(
+      arrangedSubviews: [bargainPriceStackView,
+                         priceLabel]
+    )
     stackView.axis = .vertical
     return stackView
   }()
   
   private lazy var bargainPriceStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [discountPercentageLabel,
-                                                   discountedPriceStackView])
+    let stackView = UIStackView(
+      arrangedSubviews: [discountPercentageLabel,
+                         discountedPriceStackView]
+    )
     stackView.spacing = 8
     return stackView
   }()
@@ -58,13 +66,18 @@ final class DetailView: UIView {
     let label = UILabel()
     label.font = ODS.Font.H_B18
     label.textColor = .systemRed
-    label.setContentHuggingPriority(.required, for: .horizontal)
+    label.setContentHuggingPriority(
+      .required,
+      for: .horizontal
+    )
     return label
   }()
   
   private lazy var discountedPriceStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [discountedPriceLabel,
-                                                   currencyLabel])
+    let stackView = UIStackView(
+      arrangedSubviews: [discountedPriceLabel,
+                         currencyLabel]
+    )
     stackView.spacing = 4
     return stackView
   }()
@@ -72,7 +85,10 @@ final class DetailView: UIView {
   private let discountedPriceLabel: UILabel = {
     let label = UILabel()
     label.font = ODS.Font.H_B18
-    label.setContentHuggingPriority(.required, for: .horizontal)
+    label.setContentHuggingPriority(
+      .required,
+      for: .horizontal
+    )
     return label
   }()
   
@@ -90,8 +106,10 @@ final class DetailView: UIView {
   }()
   
   private lazy var stockStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [stockGuideLabel,
-                                                   stockLabel])
+    let stackView = UIStackView(
+      arrangedSubviews: [stockGuideLabel,
+                         stockLabel]
+    )
     stackView.axis = .vertical
     stackView.distribution = .fillEqually
     return stackView
@@ -102,8 +120,10 @@ final class DetailView: UIView {
     label.text = "잔여 수량"
     label.font = ODS.Font.B_R13
     label.textAlignment = .center
-    label.setContentCompressionResistancePriority(.required,
-                                                  for: .horizontal)
+    label.setContentCompressionResistancePriority(
+      .required,
+      for: .horizontal
+    )
     return label
   }()
   
@@ -111,14 +131,18 @@ final class DetailView: UIView {
     let label = UILabel()
     label.font = ODS.Font.H_B16
     label.textAlignment = .center
-    label.setContentHuggingPriority(.required,
-                                    for: .horizontal)
+    label.setContentHuggingPriority(
+      .required,
+      for: .horizontal
+    )
     return label
   }()
   
   private lazy var informationStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [informationGuideLabel,
-                                                   informationLabel])
+    let stackView = UIStackView(
+      arrangedSubviews: [informationGuideLabel,
+                         informationLabel]
+    )
     stackView.axis = .vertical
     stackView.spacing = 24
     return stackView
@@ -148,9 +172,18 @@ final class DetailView: UIView {
   }
   
   private func configureUI() {
-    addSubview(imageCollectionView)
-    imageCollectionView.register(ProductImageCell.self,
-                                 forCellWithReuseIdentifier: ProductImageCell.identifier)
+    [imageCollectionView,
+     pageControl,
+     titleLabel,
+     priceAndStockStackView,
+     informationStackView].forEach {
+      addSubview($0)
+    }
+    
+    imageCollectionView.register(
+      ProductImageCell.self,
+      forCellWithReuseIdentifier: ProductImageCell.identifier
+    )
     
     imageCollectionView.snp.makeConstraints {
       $0.trailing.leading.top.equalToSuperview()
@@ -158,28 +191,20 @@ final class DetailView: UIView {
       $0.height.equalTo(imageCollectionView.snp.width)
     }
     
-    addSubview(pageControl)
-    
     pageControl.snp.makeConstraints {
       $0.bottom.equalTo(imageCollectionView.snp.bottom).inset(15)
       $0.centerX.equalToSuperview()
     }
-    
-    addSubview(titleLabel)
     
     titleLabel.snp.makeConstraints {
       $0.top.equalTo(self.imageCollectionView.snp.bottom).inset(-16)
       $0.leading.trailing.equalToSuperview().inset(16)
     }
     
-    addSubview(priceAndStockStackView)
-    
     priceAndStockStackView.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).inset(-16)
       $0.leading.trailing.equalToSuperview().inset(24)
     }
-    
-    addSubview(informationStackView)
     
     informationStackView.snp.makeConstraints {
       $0.top.equalTo(priceAndStockStackView.snp.bottom).inset(-32)
@@ -201,14 +226,20 @@ final class DetailView: UIView {
 
 extension DetailView {
   private var collectionViewLayout: UICollectionViewCompositionalLayout {
-    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                          heightDimension: .fractionalHeight(1))
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .fractionalHeight(1)
+    )
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     
-    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalHeight(1),
-                                           heightDimension: .fractionalHeight(1))
-    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                   subitems: [item])
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalHeight(1),
+      heightDimension: .fractionalHeight(1)
+    )
+    let group = NSCollectionLayoutGroup.horizontal(
+      layoutSize: groupSize,
+      subitems: [item]
+    )
     
     let section = NSCollectionLayoutSection(group: group)
     section.orthogonalScrollingBehavior = .paging
