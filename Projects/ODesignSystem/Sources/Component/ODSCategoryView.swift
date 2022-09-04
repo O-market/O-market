@@ -67,25 +67,25 @@ public class ODSCategoryView: BaseView {
 
 extension ODSCategoryView {
   private func configureSegmentControl() {
-     segmentControl.backgroundColor = .systemBackground
-     segmentControl.selectedSegmentTintColor = .clear
-     segmentControl.setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
-     segmentControl.setDividerImage(
+    segmentControl.backgroundColor = .systemBackground
+    segmentControl.selectedSegmentTintColor = .clear
+    segmentControl.setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
+    segmentControl.setDividerImage(
       UIImage(),
       forLeftSegmentState: .normal,
       rightSegmentState: .normal,
       barMetrics: .default
-     )
-     segmentControl.setTitleTextAttributes(
+    )
+    segmentControl.setTitleTextAttributes(
       [.font: ODS.Font.B_R15, .foregroundColor: ODS.Color.gray050],
       for: .normal
-     )
-     segmentControl.setTitleTextAttributes(
+    )
+    segmentControl.setTitleTextAttributes(
       [.font: ODS.Font.B_B15, .foregroundColor: selectedColor],
       for: .selected
-     )
-     segmentControl.selectedSegmentIndex = .zero
-     segmentControl.addTarget(self, action: #selector(selectedSegmentDidChange), for: .valueChanged)
+    )
+    segmentControl.selectedSegmentIndex = .zero
+    segmentControl.addTarget(self, action: #selector(selectedSegmentDidChange), for: .valueChanged)
   }
 
   @objc private func selectedSegmentDidChange(_ sender: UISegmentedControl) {
