@@ -38,8 +38,11 @@ public class ODSCategoryView: BaseView {
   public override func layoutSubviews() {
     super.layoutSubviews()
 
-    segmentControl.setTitleTextAttributes([.font: ODS.Font.B_B15, .foregroundColor: selectedColor], for: .selected)
     underlineView.backgroundColor = selectedColor
+    segmentControl.setTitleTextAttributes(
+      [.font: ODS.Font.B_B15, .foregroundColor: selectedColor],
+      for: .selected
+    )
   }
 
   override func layout() {
@@ -67,12 +70,22 @@ extension ODSCategoryView {
      segmentControl.backgroundColor = .systemBackground
      segmentControl.selectedSegmentTintColor = .clear
      segmentControl.setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
-     segmentControl.setDividerImage(UIImage(), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
-     segmentControl.setTitleTextAttributes([.font: ODS.Font.B_R15, .foregroundColor: ODS.Color.gray050], for: .normal)
-     segmentControl.setTitleTextAttributes([.font: ODS.Font.B_B15, .foregroundColor: selectedColor], for: .selected)
-
+     segmentControl.setDividerImage(
+      UIImage(),
+      forLeftSegmentState: .normal,
+      rightSegmentState: .normal,
+      barMetrics: .default
+     )
+     segmentControl.setTitleTextAttributes(
+      [.font: ODS.Font.B_R15, .foregroundColor: ODS.Color.gray050],
+      for: .normal
+     )
+     segmentControl.setTitleTextAttributes(
+      [.font: ODS.Font.B_B15, .foregroundColor: selectedColor],
+      for: .selected
+     )
      segmentControl.selectedSegmentIndex = .zero
-     segmentControl.addTarget(self, action: #selector(selectedSegmentDidChange(_:)), for: .valueChanged)
+     segmentControl.addTarget(self, action: #selector(selectedSegmentDidChange), for: .valueChanged)
   }
 
   @objc private func selectedSegmentDidChange(_ sender: UISegmentedControl) {
