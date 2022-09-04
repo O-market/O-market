@@ -93,9 +93,7 @@ extension ODSCategoryView {
     let segmentControlWidth = sender.frame.width / CGFloat(sender.numberOfSegments)
     let leadingConstant = segmentControlIndex * segmentControlWidth
 
-    UIView.animate(withDuration: 0.2) { [weak self] in
-      guard let self = self else { return }
-
+    UIView.animate(withDuration: 0.2) {
       self.underlineView.snp.updateConstraints {
         $0.leading.equalTo(self.segmentControl).offset(leadingConstant)
       }
