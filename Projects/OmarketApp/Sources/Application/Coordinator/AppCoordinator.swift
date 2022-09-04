@@ -39,6 +39,7 @@ final class AppCoordinator: Coordinator {
 
     tabBarController.viewControllers = [mainNavigationController]
     navigationController.viewControllers = [tabBarController]
+    navigationController.setNavigationBarHidden(true, animated: false)
 
     childCoordinators.append(mainCoordinator)
     mainCoordinator.start()

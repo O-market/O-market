@@ -18,8 +18,13 @@ final class MainCoordinator: Coordinator {
   }
 
   func start() {
-    let viewController = UIViewController()
-    viewController.view.backgroundColor = .systemIndigo
-    navigationController.pushViewController(viewController, animated: true)
+    let repository = ProductRepositoryImpl(networkService: NetworkServiceImpl(urlSession: .shared))
+    let useCase = ProductFetchUseCaseImpl(repository: repository)
+    let mainViewModel = MainViewModel(useCase: useCase)
+    mainViewModel.coordinator = self
+    let mainViewController = MainViewController(viewModel: mainViewModel)
+    navigationController.pushViewController(mainViewController, animated: true)
   }
+
+  func showProductsScene() {}
 }
