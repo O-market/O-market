@@ -12,7 +12,7 @@ import Magpie
 import SnapKit
 
 final class ProductImageCell: UICollectionViewCell {
-  let imageView: UIImageView = .init()
+  private let imageView = UIImageView()
   
   override init(frame: CGRect) {
     super.init(frame: frame)

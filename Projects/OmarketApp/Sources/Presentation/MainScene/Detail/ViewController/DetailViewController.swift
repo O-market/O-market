@@ -12,11 +12,11 @@ import RxSwift
 import SnapKit
 
 final class DetailViewController: UIViewController {
-  let viewModel: DetailViewModel
+  private let viewModel: DetailViewModel
   
-  let bag = DisposeBag()
-  let scrollView = UIScrollView()
-  let mainView = DetailView(frame: .zero)
+  private let bag = DisposeBag()
+  private let scrollView = UIScrollView()
+  private let mainView = DetailView(frame: .zero)
   
   init(viewModel: DetailViewModel) {
     self.viewModel = viewModel
