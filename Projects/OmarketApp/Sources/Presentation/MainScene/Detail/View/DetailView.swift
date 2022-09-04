@@ -228,7 +228,7 @@ final class DetailView: UIView {
     currencyLabel.text = content.currency
     stockLabel.text = content.stock
     priceLabel.text = content.price
-    addUnderline(label: priceLabel)
+    addStroke(label: priceLabel)
     discountedPriceLabel.text = content.bargainPrice
     discountPercentageLabel.text = content.discountPercentage
   }
@@ -266,7 +266,7 @@ extension DetailView {
     return UICollectionViewCompositionalLayout(section: section)
   }
   
-  private func addUnderline(label: UILabel) {
+  private func addStroke(label: UILabel) {
     guard let text = label.text else { return }
     
     let attributedString = NSMutableAttributedString(string: text)
