@@ -21,9 +21,10 @@ final class DetailCoordinator: Coordinator {
     let network = NetworkServiceImpl()
     let repository = ProductRepositoryImpl(networkService: network)
     let useCase = ProductFetchUseCaseImpl(repository: repository)
-    
     let viewModel = DetailViewModelImpl(useCase: useCase, productId: productId)
     let viewController = DetailViewController(viewModel: viewModel)
+    
+    viewController.coordinator = self
     navigationController.pushViewController(viewController, animated: true)
   }
 }

@@ -15,6 +15,7 @@ final class DetailViewController: UIViewController {
   
   private let viewModel: DetailViewModel
   private let disposeBag = DisposeBag()
+  weak var coordinator: DetailCoordinator?
   private let mainView = DetailView(frame: .zero)
   
   init(viewModel: DetailViewModel) {
