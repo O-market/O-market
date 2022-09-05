@@ -8,8 +8,8 @@
 
 import UIKit
 
-import SnapKit
 import ODesignSystem
+import SnapKit
 
 final class DetailView: UIView {
   private let scrollView = UIScrollView()
