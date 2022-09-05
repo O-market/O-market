@@ -8,16 +8,16 @@
 
 import UIKit
 
+import ODesignSystem
 import RxDataSources
 import RxCocoa
 import RxSwift
 import SnapKit
-import ODesignSystem
 
 final class MainViewController: UIViewController {
   private typealias MainDataSource = RxCollectionViewSectionedReloadDataSource<ProductSection>
 
-  private let menuSegmentControl = MenuSegmentControl()
+  private lazy var menuSegmentControl = ODSCategoryView(items: ["오픈마켓", "이벤트"])
   private lazy var collectionView: UICollectionView = {
     let layout = configureCompositionalLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -150,7 +150,7 @@ extension MainViewController {
       let currentPointX = point.x
       let collectionViewWidth = environment.container.contentSize.width
       let currentPage = currentPointX / collectionViewWidth
-      self?.pageControl.currentPage = Int(currentPage)
+      self?.pageControl.currentPage = Int(currentPage.rounded())
     }
 
     return section
