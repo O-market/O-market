@@ -8,6 +8,8 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
 import SnapKit
 
 public class ODSCategoryView: BaseView {
@@ -15,8 +17,8 @@ public class ODSCategoryView: BaseView {
   private lazy var underlineView = UIView()
 
   /// 외부 열람/설정 가능 프로퍼티
-  public var selectedSegmentIndex: Int {
-    return segmentControl.selectedSegmentIndex
+  public var selectedSegmentIndex: Observable<Int> {
+    return segmentControl.rx.selectedSegmentIndex.asObservable()
   }
 
   public var selectedColor: UIColor = ODS.Color.brand010 {
