@@ -150,7 +150,7 @@ extension MainViewController {
       let currentPointX = point.x
       let collectionViewWidth = environment.container.contentSize.width
       let currentPage = currentPointX / collectionViewWidth
-      self?.pageControl.currentPage = Int(currentPage)
+      self?.pageControl.currentPage = Int(currentPage.rounded())
     }
 
     return section
