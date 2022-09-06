@@ -37,7 +37,7 @@ final class ProductCellViewModel: ProductCellViewModelType {
   // MARK: - OutPut
   
   var imageURL: String {
-    return product.images?.first?.url ?? ""
+    return product.thumbnail
   }
   
   var productName: String {
@@ -53,7 +53,10 @@ final class ProductCellViewModel: ProductCellViewModelType {
   }
   
   var dicountPercentage: String {
-    return "\(Int(product.discountedPrice / product.price * 100))%"
+    if product.price == 0 { return "0%" }
+    
+    let percentage = Int((product.discountedPrice / product.price * 100).rounded())
+    return percentage == 0 ? "1%" : "\(percentage)%"
   }
   
   var stockTitle: String {

@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Magpie
+import ODesignSystem
 import SnapKit
 
 final class ProductCell: UICollectionViewCell {
@@ -17,13 +19,14 @@ final class ProductCell: UICollectionViewCell {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFill
     imageView.clipsToBounds = true
+    imageView.layer.cornerRadius = 20
     
     return imageView
   }()
   
   private let productNameLabel: UILabel = {
     let label = UILabel()
-    label.font = .preferredFont(forTextStyle: .headline)
+    label.font = ODS.Font.H_M16
     
     return label
   }()
@@ -37,21 +40,21 @@ final class ProductCell: UICollectionViewCell {
   
   private let bargainStackView: UIStackView = {
     let stackView = UIStackView()
-    stackView.spacing = 8
+    stackView.spacing = 4
     
     return stackView
   }()
   
   private let discountPercentLabel: UILabel = {
     let label = UILabel()
-    label.font = .preferredFont(forTextStyle: .caption1)
+    label.font = ODS.Font.B_R09
     label.textColor = .systemRed
     return label
   }()
   
   private let priceLabel: UILabel = {
     let label = UILabel()
-    label.font = .preferredFont(forTextStyle: .caption2)
+    label.font = ODS.Font.B_R09
     label.textColor = .systemGray
     
     return label
@@ -59,7 +62,7 @@ final class ProductCell: UICollectionViewCell {
   
   private let bargainPriceLabel: UILabel = {
     let label = UILabel()
-    label.font = .preferredFont(forTextStyle: .caption1)
+    label.font = ODS.Font.B_R09
     
     return label
   }()
@@ -74,14 +77,14 @@ final class ProductCell: UICollectionViewCell {
   
   private let stockTitleLabel: UILabel = {
     let label = UILabel()
-    label.font = .preferredFont(forTextStyle: .caption2)
+    label.font = ODS.Font.B_R09
     
     return label
   }()
   
   private let stockLabel: UILabel = {
     let label = UILabel()
-    label.font = .preferredFont(forTextStyle: .caption1)
+    label.font = ODS.Font.B_R09
     
     return label
   }()
@@ -101,7 +104,7 @@ final class ProductCell: UICollectionViewCell {
   func bind(with viewModel: ProductCellViewModelType) {
     self.viewModel = viewModel
     
-    self.productImageView.image = UIImage(systemName: "swift")
+    self.productImageView.mp.setImage(with: viewModel.imageURL)
     self.productNameLabel.text = viewModel.productName
     
     self.discountPercentLabel.text = viewModel.dicountPercentage
@@ -146,19 +149,19 @@ final class ProductCell: UICollectionViewCell {
     }
     
     productNameLabel.snp.makeConstraints {
-      $0.top.equalTo(productImageView.snp.bottom).offset(16)
-      $0.leading.equalTo(productImageView).offset(8)
-      $0.trailing.equalTo(productImageView).offset(-8)
+      $0.top.equalTo(productImageView.snp.bottom).offset(8)
+      $0.leading.equalTo(productImageView).offset(4)
+      $0.trailing.equalTo(productImageView).offset(-4)
     }
     
     costStackView.snp.makeConstraints {
-      $0.top.equalTo(productNameLabel.snp.bottom).offset(16)
-      $0.leading.equalTo(productImageView).offset(16)
+      $0.top.equalTo(productNameLabel.snp.bottom).offset(8)
+      $0.leading.equalTo(productImageView).offset(8)
     }
     
     stockStackView.snp.makeConstraints {
       $0.top.equalTo(costStackView)
-      $0.trailing.equalTo(productImageView).offset(-16)
+      $0.trailing.equalTo(productImageView).offset(-8)
     }
   }
 }
