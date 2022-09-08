@@ -8,6 +8,14 @@
 
 import Foundation
 
+#if DEBUG
+enum UserInformation {
+    static let id = 79
+    static let identifier = "680a5dc5-d1b8-11ec-9676-819f7cbd69a2"
+    static let password = "dxx7xmmtfz"
+}
+#endif
+
 enum EndpointAPI {
   private enum Base {
     static let baseURL = "https://market-training.yagom-academy.kr/"
@@ -15,6 +23,7 @@ enum EndpointAPI {
 
   case products(ProductRequestQuery)
   case product(Int)
+  case productCreation(Data, String)
 
   var asEndpoint: Endpoint {
     switch self {
@@ -35,6 +44,17 @@ enum EndpointAPI {
         path: "/api/products/\(id)",
         method: .get
       )
+      
+    case .productCreation(let payload, let boundary):
+      return Endpoint(
+        base: Base.baseURL,
+        path: "/api/products",
+        method: .post,
+        headers: [
+          "Content-Type": "multipart/form-data; boundary=\(boundary)",
+          "identifier": UserInformation.identifier
+        ],
+        payload: payload)
     }
   }
 }
