@@ -17,7 +17,7 @@ enum MIMEType: String {
 struct FormData {
   var type: MIMEType
   var name: String
-  var filename: String? = nil
+  var filename: String?
   var data: Data?
 }
 
