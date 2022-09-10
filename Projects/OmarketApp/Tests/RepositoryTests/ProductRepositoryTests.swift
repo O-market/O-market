@@ -153,7 +153,7 @@ final class ProductRepositoryTests: XCTestCase {
     wait(for: [expectation], timeout: 5.0)
   }
   
-  func testCreateProduct을_호출했을때_성공한_경우_() {
+  func testCreateProduct을_호출했을때_성공한_경우_에러가_방출되지_않아야한다() {
     // given
     let expectation = XCTestExpectation()
     let endpoint = EndpointAPI.productCreation(Data(), UUID().uuidString).asEndpoint
