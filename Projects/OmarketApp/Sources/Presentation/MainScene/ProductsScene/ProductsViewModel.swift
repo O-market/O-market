@@ -57,11 +57,11 @@ extension ProductsViewModel {
     productFetchUseCase.fetchAll(
       query: ProductRequestQuery(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
     )
-    .subscribe { [weak self] item in
+    .subscribe(onNext: { [weak self] item in
       guard let self = self else { return }
       
       self.products.accept(self.products.value + item)
-    }
+    })
     .disposed(by: disposeBag)
   }
   
