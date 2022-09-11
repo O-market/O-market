@@ -1,0 +1,38 @@
+//
+//  LoginViewModel.swift
+//  OmarketApp
+//
+//  Created by 조민호 on 2022/09/11.
+//  Copyright © 2022 Omarket. All rights reserved.
+//
+
+import RxSwift
+import RxRelay
+
+protocol LoginViewModelInput {
+
+}
+
+protocol LoginViewModelOutput {
+  var title: String { get }
+}
+
+protocol LoginViewModelType: LoginViewModelInput, LoginViewModelOutput {}
+
+final class LoginViewModel: LoginViewModelType {
+  private let disposeBag = DisposeBag()
+  
+  init() {
+    
+  }
+  
+  // MARK: Output
+  
+  let title = "로그인"
+}
+
+extension LoginViewModel {
+  
+  // MARK: Input
+
+}

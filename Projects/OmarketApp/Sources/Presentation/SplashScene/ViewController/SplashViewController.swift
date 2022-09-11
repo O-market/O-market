@@ -25,7 +25,7 @@ final class SplashViewController: UIViewController {
     configureUI()
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-      self?.coordinator?.showMain()
+      self?.coordinator?.showLogin()
     }
   }
 }

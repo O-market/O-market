@@ -25,6 +25,13 @@ final class AppCoordinator: Coordinator {
     childCoordinators.append(splashCoordinator)
     splashCoordinator.start()
   }
+  
+  func showLogin() {
+    let loginCoordinator = LoginCoordinator(navigationController: navigationController)
+    loginCoordinator.parentCoordinator = self
+    childCoordinators.append(loginCoordinator)
+    loginCoordinator.start()
+  }
 
   func showMain() {
     let tabBarController = UITabBarController()
