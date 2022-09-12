@@ -14,7 +14,7 @@ protocol LoginViewModelInput {
 }
 
 protocol LoginViewModelOutput {
-  var title: String { get }
+  
 }
 
 protocol LoginViewModelType: LoginViewModelInput, LoginViewModelOutput {}
@@ -28,7 +28,6 @@ final class LoginViewModel: LoginViewModelType {
   
   // MARK: Output
   
-  let title = "로그인"
 }
 
 extension LoginViewModel {

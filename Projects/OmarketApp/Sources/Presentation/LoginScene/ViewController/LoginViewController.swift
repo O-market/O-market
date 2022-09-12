@@ -34,17 +34,23 @@ final class LoginViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    setupNavigation()
     bind()
   }
   
-  private func setupNavigation() {
-    self.navigationController?.navigationBar.prefersLargeTitles = true
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    if self.isMovingFromParent {
+      coordinator?.deallocate()
+    }
   }
   
   private func bind() {
     guard let view = view as? LoginView else { return }
     
-    self.title = viewModel.title
+    view.emailLoginButton.rx.tap
+      .bind { [weak self] in
+        self?.coordinator?.showEmailLogin()
+      }
+      .disposed(by: disposeBag)
   }
 }

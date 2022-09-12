@@ -25,7 +25,22 @@ final class LoginCoordinator: Coordinator {
     navigationController.pushViewController(viewController, animated: true)
   }
   
-  private func deallocate() {
+  func showEmailLogin() {
+    let emailLoginCoordinator = EmailLoginCoordinator(navigationController: navigationController)
+    emailLoginCoordinator.parentCoordinator = self
+    emailLoginCoordinator.appCoordinator = parentCoordinator
+    childCoordinators.append(emailLoginCoordinator)
+    emailLoginCoordinator.start()
+  }
+  
+  func showMain() {
+    let appCoordinator = parentCoordinator as? AppCoordinator
+    appCoordinator?.showMain()
+    navigationController.dismiss(animated: true)
+    deallocate()
+  }
+  
+  func deallocate() {
     parentCoordinator?.removeChildCoordinator(child: self)
   }
 }

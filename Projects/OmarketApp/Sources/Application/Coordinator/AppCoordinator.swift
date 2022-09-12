@@ -32,7 +32,7 @@ final class AppCoordinator: Coordinator {
     childCoordinators.append(loginCoordinator)
     loginCoordinator.start()
   }
-
+  
   func showMain() {
     let tabBarController = UITabBarController()
     tabBarController.tabBar.backgroundColor = .systemBackground
@@ -48,6 +48,7 @@ final class AppCoordinator: Coordinator {
     navigationController.viewControllers = [tabBarController]
     navigationController.setNavigationBarHidden(true, animated: false)
 
+    childCoordinators.removeAll()
     childCoordinators.append(mainCoordinator)
     mainCoordinator.start()
   }
