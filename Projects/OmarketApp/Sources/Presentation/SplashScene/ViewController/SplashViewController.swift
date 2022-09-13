@@ -23,9 +23,13 @@ final class SplashViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
-
+    
     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-      self?.coordinator?.showLogin()
+      if UserDefaultsManager.USER_EMAIL.isEmpty {
+        self?.coordinator?.showLogin()
+      } else {
+        self?.coordinator?.showMain()
+      }
     }
   }
 }
