@@ -31,10 +31,12 @@ final class EmailLoginView: UIView {
   
   private(set) var emailTextField: UITextField = {
     let textField = UITextField()
-    textField.placeholder = "이메일을 입력해주세요."
+    textField.placeholder = "이메일을 입력해주세요. ex) example@example.com"
     textField.font = ODS.Font.B_R13
     textField.clearButtonMode = .whileEditing
-    textField.borderStyle = .roundedRect
+    textField.layer.borderWidth = 1
+    textField.layer.cornerRadius = 6
+    textField.layer.borderColor = UIColor.systemGray5.cgColor
     
     let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
     textField.leftView = paddingView
@@ -67,7 +69,9 @@ final class EmailLoginView: UIView {
     textField.font = ODS.Font.B_R13
     textField.isSecureTextEntry = true
     textField.clearButtonMode = .whileEditing
-    textField.borderStyle = .roundedRect
+    textField.layer.borderWidth = 1
+    textField.layer.cornerRadius = 6
+    textField.layer.borderColor = UIColor.systemGray5.cgColor
     
     let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
     textField.leftView = paddingView
@@ -78,7 +82,6 @@ final class EmailLoginView: UIView {
   
   private(set) var passwordCheckLabel: UILabel = {
     let label = UILabel()
-    label.text = "소문자,대문자,숫자를 조합하여 10자리 이상 입력해주세요."
     label.font = ODS.Font.B_R11
     return label
   }()

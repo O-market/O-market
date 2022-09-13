@@ -88,9 +88,9 @@ final class LoginViewController: UIViewController {
       googleLoginManager.error,
       appleLoginManager.error
     )
-    .subscribe (onNext: { error in
-      print("로그인 실패 \(error)")
-    })
+    .bind {
+      print("로그인 실패")
+    }
     .disposed(by: disposeBag)
   }
 }
