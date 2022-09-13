@@ -57,7 +57,7 @@ final class LoginView: UIView {
   private(set) var emailLoginButton: UIButton = {
     let button = UIButton()
     button.setTitle("이메일로 로그인하기", for: .normal)
-    button.backgroundColor = .green
+    button.backgroundColor = .purple
     button.layer.cornerRadius = 6
     return button
   }()
