@@ -24,4 +24,8 @@ final class StubProductFetchUseCaseImpl: ProductFetchUseCase {
   func fetchOne(id: Int) -> Observable<Product> {
     return .just(products.first!)
   }
+  
+  func createProduct(product: Product, images: [Data]) -> Observable<Void> {
+    return .just(Void())
+  }
 }

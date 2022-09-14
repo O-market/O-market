@@ -14,6 +14,7 @@ import RxSwift
 final class MockProductRepositoryImpl: ProductRepository {
   var fetchAllProductCallCount: Int = 0
   var fetchProductCallCount: Int = 0
+  var createProductCallCount: Int = 0
 
   func fetchAllProduct(endpoint: Endpoint) -> Observable<[Product]> {
     fetchAllProductCallCount += 1
@@ -22,6 +23,11 @@ final class MockProductRepositoryImpl: ProductRepository {
 
   func fetchProduct(endpoint: Endpoint) -> Observable<Product> {
     fetchProductCallCount += 1
+    return .empty()
+  }
+  
+  func createProduct(endpoint: Endpoint) -> Observable<Void> {
+    createProductCallCount += 1
     return .empty()
   }
 }

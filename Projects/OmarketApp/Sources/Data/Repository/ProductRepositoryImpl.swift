@@ -30,4 +30,9 @@ final class ProductRepositoryImpl: ProductRepository {
       .decode(type: ProductDTO.self, decoder: decoder)
       .map { $0.toDomain() }
   }
+  
+  func createProduct(endpoint: Endpoint) -> Observable<Void> {
+    return networkService.request(endpoint: endpoint)
+      .map { _ in }
+  }
 }
