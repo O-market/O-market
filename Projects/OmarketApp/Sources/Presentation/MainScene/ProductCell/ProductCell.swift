@@ -19,8 +19,6 @@ final class ProductCell: UICollectionViewCell {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFill
     imageView.clipsToBounds = true
-    imageView.layer.cornerRadius = 20
-    
     return imageView
   }()
   
@@ -47,14 +45,14 @@ final class ProductCell: UICollectionViewCell {
   
   private let discountPercentLabel: UILabel = {
     let label = UILabel()
-    label.font = ODS.Font.B_R09
+    label.font = ODS.Font.B_R13
     label.textColor = .systemRed
     return label
   }()
   
   private let priceLabel: UILabel = {
     let label = UILabel()
-    label.font = ODS.Font.B_R09
+    label.font = ODS.Font.B_R13
     label.textColor = .systemGray
     
     return label
@@ -62,7 +60,7 @@ final class ProductCell: UICollectionViewCell {
   
   private let bargainPriceLabel: UILabel = {
     let label = UILabel()
-    label.font = ODS.Font.B_R09
+    label.font = ODS.Font.B_R15
     
     return label
   }()
@@ -70,21 +68,21 @@ final class ProductCell: UICollectionViewCell {
   private let stockStackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
-    stackView.alignment = .center
+    stackView.alignment = .trailing
     
     return stackView
   }()
   
   private let stockTitleLabel: UILabel = {
     let label = UILabel()
-    label.font = ODS.Font.B_R09
+    label.font = ODS.Font.B_R13
     
     return label
   }()
   
   private let stockLabel: UILabel = {
     let label = UILabel()
-    label.font = ODS.Font.B_R09
+    label.font = ODS.Font.B_R13
     
     return label
   }()
@@ -145,7 +143,7 @@ final class ProductCell: UICollectionViewCell {
   private func setupLayout() {
     productImageView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalTo(productImageView.snp.width).multipliedBy(9/8)
+      $0.height.equalTo(productImageView.snp.width).multipliedBy(1.2)
     }
     
     productNameLabel.snp.makeConstraints {
@@ -169,6 +167,7 @@ final class ProductCell: UICollectionViewCell {
 private extension UILabel {
   func strike() {
     guard let text = self.text else { return }
+
     let attributedString = NSMutableAttributedString(string: text)
     attributedString.addAttribute(
       NSAttributedString.Key.strikethroughStyle,
@@ -180,9 +179,7 @@ private extension UILabel {
   
   func boldNumber() {
     guard let text = self.text,
-          let number = text.components(separatedBy: " ").first else {
-      return
-    }
+          let number = text.components(separatedBy: " ").first else { return }
     
     let boldFont = UIFont.boldSystemFont(ofSize: self.font.pointSize)
     

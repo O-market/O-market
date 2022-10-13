@@ -24,8 +24,9 @@ final class ProductsView: UIView {
   }()
   
   private(set) lazy var productsCollectionView: UICollectionView = {
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeCollectionViewLayout())
-    
+    let layout = makeCollectionViewLayout()
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+
     return collectionView
   }()
   
@@ -53,12 +54,12 @@ final class ProductsView: UIView {
   
   private func setupLayout() {
     productsCollectionView.snp.makeConstraints {
-      $0.edges.equalTo(self.safeAreaLayoutGuide)
+      $0.edges.equalToSuperview()
     }
     
     addProductButton.snp.makeConstraints {
       $0.width.height.equalTo(50)
-      $0.trailing.bottom.equalTo(self.safeAreaLayoutGuide).inset(20)
+      $0.trailing.bottom.equalToSuperview().offset(-20.0)
     }
   }
   
@@ -69,26 +70,30 @@ final class ProductsView: UIView {
       forCellWithReuseIdentifier: ProductCell.identifier
     )
   }
-  
+
   private func makeCollectionViewLayout() -> UICollectionViewCompositionalLayout {
     return UICollectionViewCompositionalLayout { _, environment in
-      let itemWidth = environment.container.effectiveContentSize.width / 2
-      let itemHeight = itemWidth * 7 / 5
-    
+      let itemWidth = (environment.container.effectiveContentSize.width - 40.0) * 0.5
+      let itemHeight = itemWidth * 1.5
+
       let itemSize = NSCollectionLayoutSize(
         widthDimension: .absolute(itemWidth),
         heightDimension: .absolute(itemHeight)
       )
       let item = NSCollectionLayoutItem(layoutSize: itemSize)
-      item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-      
+
       let groupSize = NSCollectionLayoutSize(
         widthDimension: .fractionalWidth(1.0),
         heightDimension: .absolute(itemHeight)
       )
       let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-      
-      return NSCollectionLayoutSection(group: group)
+      group.interItemSpacing = .fixed(8.0)
+
+      let section = NSCollectionLayoutSection(group: group)
+      section.interGroupSpacing = 48.0
+      section.contentInsets = .init(top: 8.0, leading: 16.0, bottom: 16.0, trailing: 16.0)
+
+      return section
     }
   }
 }
