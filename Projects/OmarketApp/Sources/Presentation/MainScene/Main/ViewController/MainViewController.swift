@@ -17,7 +17,7 @@ import SnapKit
 final class MainViewController: UIViewController {
   private typealias MainDataSource = RxCollectionViewSectionedReloadDataSource<ProductSection>
 
-  private lazy var menuSegmentControl = ODSCategoryView(items: ["오픈마켓", "이벤트"])
+  private lazy var menuSegmentControl = ODSCategoryView(items: viewModel.categories)
   private lazy var collectionView: UICollectionView = {
     let layout = configureCompositionalLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -60,8 +60,12 @@ final class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
-    configureNavigationBar()
     bindUI()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    configureNavigationBar()
   }
 
   private func bindUI() {
@@ -172,7 +176,7 @@ extension MainViewController {
 
     let headerSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1.0),
-      heightDimension: .absolute(48.0)
+      heightDimension: .absolute(60.0)
     )
     let header = NSCollectionLayoutBoundarySupplementaryItem(
       layoutSize: headerSize,
@@ -190,7 +194,7 @@ extension MainViewController {
   }
 
   private func configureNavigationBar() {
-    title = viewModel.title
+    navigationItem.title = viewModel.title
     navigationController?.navigationBar.titleTextAttributes = [
       .foregroundColor: UIColor.white
     ]
@@ -211,8 +215,7 @@ extension MainViewController {
     }
 
     pageControl.snp.makeConstraints {
-      $0.centerY.equalToSuperview()
-      $0.centerX.equalToSuperview()
+      $0.center.equalToSuperview()
     }
   }
 }

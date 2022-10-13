@@ -17,6 +17,7 @@ protocol MainViewModelInput {
 
 protocol MainViewModelOutput {
   var title: String { get }
+  var categories: [String] { get }
   var sections: Observable<[ProductSection]> { get }
 }
 
@@ -24,7 +25,8 @@ protocol MainViewModelable: MainViewModelInput, MainViewModelOutput {}
 
 final class MainViewModel: MainViewModelable {
   // Input
-  var title = "오픈 마켓"
+  let title = "오픈마켓"
+  let categories = ["오픈마켓", "신상품"]
   var sections: Observable<[ProductSection]> {
     return Observable.combineLatest(
       Observable.just(ProductEvent.items),

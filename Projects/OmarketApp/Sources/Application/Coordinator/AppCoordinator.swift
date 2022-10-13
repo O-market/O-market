@@ -36,6 +36,7 @@ final class AppCoordinator: Coordinator {
     mainCoordinator.parentCoordinator = self
 
     mainNavigationController.tabBarItem = UITabBarItem(title: nil, image: ODS.Icon.home, tag: 0)
+    mainNavigationController.navigationBar.tintColor = .label
 
     tabBarController.viewControllers = [mainNavigationController]
     navigationController.viewControllers = [tabBarController]
