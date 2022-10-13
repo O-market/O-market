@@ -28,7 +28,7 @@ final class MainViewModel: MainViewModelable {
   var sections: Observable<[ProductSection]> {
     return Observable.combineLatest(
       Observable.just(ProductEvent.items),
-      useCase.fetchAll(query: .init(pageNumber: 1, itemsPerPage: 20))
+      useCase.fetchAll(query: .init(pageNumber: 1, itemsPerPage: 20)).catchAndReturn([])
     )
     .map { events, products in
       var sections = [ProductSection]()

@@ -20,13 +20,8 @@ struct ProductResponseDTO: Codable {
   let products: [ProductDTO]
 
   private enum CodingKeys: String, CodingKey {
-    case offset, limit
-    case pageNumber = "page_no"
-    case itemsPerPage = "items_per_page"
-    case totalCount = "total_count"
-    case lastPage = "last_page"
-    case hasNext = "has_next"
-    case hasPrev = "has_prev"
+    case offset, limit, itemsPerPage, totalCount, lastPage, hasNext, hasPrev
+    case pageNumber = "pageNo"
     case products = "pages"
   }
 }

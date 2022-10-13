@@ -18,7 +18,7 @@ enum UserInformation {
 
 enum EndpointAPI {
   private enum Base {
-    static let baseURL = "https://market-training.yagom-academy.kr/"
+    static let baseURL = "https://openmarket.yagom-academy.kr"
   }
 
   case products(ProductRequestQuery)
