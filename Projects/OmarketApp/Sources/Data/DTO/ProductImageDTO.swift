@@ -12,11 +12,10 @@ struct ProductImageDTO: Codable {
   let id: Int
   let url: String
   let thumbnailURL: String
-  let succeed: Bool
   let issuedAt: String
 
   private enum CodingKeys: String, CodingKey {
-    case id, url, succeed
+    case id, url
     case thumbnailURL = "thumbnail_url"
     case issuedAt = "issued_at"
   }
@@ -30,7 +29,6 @@ extension ProductImageDTO {
       id: id,
       url: url,
       thumbnailURL: thumbnailURL,
-      succeed: succeed,
       issuedAt: issuedAt
     )
   }

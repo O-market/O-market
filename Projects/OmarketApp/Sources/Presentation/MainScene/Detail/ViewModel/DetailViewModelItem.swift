@@ -33,7 +33,7 @@ struct DetailViewModelItem {
     
     self.bargainPrice = formatter?.string(from: product.bargainPrice as NSNumber) ?? "\(Int(product.bargainPrice))"
     
-    let percentage = Int((product.discountedPrice / product.price * 100).rounded())
+    let percentage = 0 // Int((product.discountedPrice / product.price * 100).rounded())
     if percentage == 0 {
       self.discountPercentage = nil
     } else if percentage < 1 {

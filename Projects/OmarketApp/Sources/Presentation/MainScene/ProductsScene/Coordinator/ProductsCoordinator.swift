@@ -29,8 +29,10 @@ final class ProductsCoordinator: Coordinator {
   }
   
   func showDetailView(_ id: Int) {
-    // detailCoordinator를 생성하고 start호출
-    debugPrint("call showDetailViewController")
+    let detailCoordinator = DetailCoordinator(navigationController: navigationController)
+    childCoordinators.append(detailCoordinator)
+    detailCoordinator.parentCoordinator = self
+    detailCoordinator.start(productId: id)
   }
   
   func showCreateView() {

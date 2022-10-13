@@ -11,13 +11,9 @@ import Foundation
 struct VendorDTO: Codable {
   let id: Int
   let name: String
-  let createdAt: String
-  let issuedAt: String
 
   private enum CodingKeys: String, CodingKey {
     case id, name
-    case createdAt = "created_at"
-    case issuedAt = "issued_at"
   }
 }
 
@@ -27,9 +23,7 @@ extension VendorDTO {
   func toDomain() -> Vendor {
     return Vendor(
       id: id,
-      name: name,
-      createdAt: createdAt,
-      issuedAt: issuedAt
+      name: name
     )
   }
 }

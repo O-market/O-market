@@ -26,5 +26,10 @@ final class MainCoordinator: Coordinator {
     navigationController.pushViewController(mainViewController, animated: true)
   }
 
-  func showProductsScene() {}
+  func showProductsScene() {
+    let productsCoordinator = ProductsCoordinator(navigationController: navigationController)
+    childCoordinators.append(productsCoordinator)
+    productsCoordinator.parentCoordinator = self
+    productsCoordinator.start()
+  }
 }

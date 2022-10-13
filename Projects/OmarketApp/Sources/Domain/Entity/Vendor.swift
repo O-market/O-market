@@ -11,6 +11,4 @@ import Foundation
 struct Vendor {
   let id: Int
   let name: String
-  let createdAt: String
-  let issuedAt: String
 }

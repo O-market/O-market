@@ -12,6 +12,5 @@ struct ProductImage {
   let id: Int
   let url: String
   let thumbnailURL: String
-  let succeed: Bool
   let issuedAt: String
 }
