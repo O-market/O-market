@@ -10,7 +10,7 @@ import ProjectDescription
 extension Project {
   public static func app(name: String, packages: [Package] = [], targets: [Target]) -> Project {
     return Project(
-      name: "Omarket",
+      name: name,
       organizationName: "Omarket",
       options: .options(
         disableBundleAccessors: true,

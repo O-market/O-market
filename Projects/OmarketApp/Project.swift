@@ -10,10 +10,6 @@ import ProjectDescriptionHelpers
 
 let project = Project.app(
   name: "OmarketApp",
-  packages: [
-    .firebase,
-    .googleSignIn
-  ],
   targets: Target.appTarget(
     name: "OmarketApp",
     platform: .iOS,
@@ -24,12 +20,7 @@ let project = Project.app(
       .rxSwift,
       .rxCocoa,
       .rxRelay,
-      .rxDataSources,
-      .firebaseAuth,
-      .rxKakaoSDKAuth,
-      .rxKakaoSDKCommon,
-      .rxKakaoSDKUser,
-      .googleSignIn
+      .rxDataSources
     ],
     testDependencies: [
       .rxSwift,
