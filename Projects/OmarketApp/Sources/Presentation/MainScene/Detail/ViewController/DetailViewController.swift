@@ -17,6 +17,7 @@ final class DetailViewController: UIViewController {
   private let disposeBag = DisposeBag()
   weak var coordinator: DetailCoordinator?
   private let mainView = DetailView(frame: .zero)
+  private let ellipsisButten = UIBarButtonItem(image: UIImage(systemName: "ellipsis"))
   
   init(viewModel: DetailViewModel) {
     self.viewModel = viewModel
@@ -41,7 +42,7 @@ extension DetailViewController {
     title = "상품상세"
     view.backgroundColor = .systemBackground
     view.addSubview(mainView)
-    
+    navigationItem.rightBarButtonItem = ellipsisButten
     mainView.snp.makeConstraints {
       $0.edges.equalTo(self.view.safeAreaLayoutGuide)
     }
@@ -52,6 +53,27 @@ extension DetailViewController {
 
 extension DetailViewController {
   private func bind() {
+    ellipsisButten.rx.tap
+      .bind { [weak self] in
+        let alert = UIAlertController(
+          title: nil,
+          message: nil,
+          preferredStyle: UIAlertController.Style.actionSheet
+        )
+        let editAction = UIAlertAction(title: "수정", style: .default) {_ in
+          // action
+        }
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) {_ in
+          // action
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        
+        [editAction, deleteAction, cancelAction].forEach {
+          alert.addAction($0)
+        }
+        self?.present(alert, animated: true)
+      }.disposed(by: disposeBag)
+    
     viewModel
       .productImageURL
       .observe(on: MainScheduler.instance)
