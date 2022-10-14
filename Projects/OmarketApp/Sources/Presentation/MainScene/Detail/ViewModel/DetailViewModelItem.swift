@@ -14,7 +14,7 @@ struct DetailViewModelItem {
   let thumbnail: String
   let currency: String
   let price: String?
-  let bargainPrice: String
+  let discountPrice: String
   var discountPercentage: String?
   let stock: String
   
@@ -24,9 +24,9 @@ struct DetailViewModelItem {
     self.thumbnail = product.thumbnail
     self.currency = product.currency == "KRW" ? "원" : "달러"
     self.stock = "\(product.stock) 개"
-    self.bargainPrice = formatter?.string(from: product.bargainPrice as NSNumber) ?? "\(Int(product.bargainPrice))"
+    self.discountPrice = formatter?.string(from: product.discountedPrice as NSNumber) ?? "\(Int(product.discountedPrice))"
     
-    if product.discountedPrice == 0 {
+    if product.bargainPrice == 0 {
       self.price = nil
     } else {
       let formattedPrice = formatter?.string(from: product.price as NSNumber)
@@ -39,7 +39,7 @@ struct DetailViewModelItem {
   }
   
   private func calculateDiscountPercent(product: Product) -> String {
-    let percentage = Int((product.discountedPrice / product.price * 100).rounded())
+    let percentage = Int((product.bargainPrice / product.price * 100).rounded())
     
     if percentage < 1 { return "1%" }
     return "\(percentage)%"
