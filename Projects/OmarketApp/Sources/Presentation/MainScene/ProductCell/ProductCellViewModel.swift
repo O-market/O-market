@@ -16,7 +16,7 @@ protocol ProductCellViewModelOutput {
   var imageURL: String { get }
   var productName: String { get }
   var price: String { get }
-  var bargainPrice: String { get }
+  var discountedPrice: String { get }
   var dicountPercentage: String { get }
   var stockTitle: String { get }
   var stock: String { get }
@@ -48,14 +48,14 @@ final class ProductCellViewModel: ProductCellViewModelType {
     return formattedString(product.price)
   }
   
-  var bargainPrice: String {
-    return formattedString(product.bargainPrice)
+  var discountedPrice: String {
+    return formattedString(product.discountedPrice)
   }
   
   var dicountPercentage: String {
     if product.price == 0 { return "0%" }
     
-    let percentage = Int((product.discountedPrice / product.price * 100).rounded())
+    let percentage = Int((product.bargainPrice / product.price * 100).rounded())
     return percentage == 0 ? "1%" : "\(percentage)%"
   }
   
@@ -67,7 +67,7 @@ final class ProductCellViewModel: ProductCellViewModelType {
     return "\(product.stock) 개"
   }
   var isSale: Bool {
-    return product.discountedPrice != .zero
+    return product.bargainPrice != .zero
   }
   
   init(product: Product) {
