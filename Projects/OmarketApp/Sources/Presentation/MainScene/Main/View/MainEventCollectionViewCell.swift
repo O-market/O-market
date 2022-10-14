@@ -42,7 +42,7 @@ extension MainEventCollectionViewCell {
     contentView.addSubview(imageView)
 
     imageView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.directionalEdges.equalToSuperview()
     }
   }
 }

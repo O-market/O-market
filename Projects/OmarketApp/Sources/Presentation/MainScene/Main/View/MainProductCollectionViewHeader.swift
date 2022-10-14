@@ -18,7 +18,7 @@ final class MainProductCollectionViewHeader: UICollectionReusableView {
 
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.font = ODS.Font.H_B16
+    label.font = ODS.Font.H_B18
     label.text = "이런 제품은 어떤가요?"
 
     return label
@@ -26,10 +26,10 @@ final class MainProductCollectionViewHeader: UICollectionReusableView {
 
   private let showProductsButton: UIButton = {
     let button = UIButton()
-    button.titleLabel?.font = ODS.Font.B_R13
+    button.titleLabel?.font = ODS.Font.B_R15
     button.imageView?.contentMode = .scaleAspectFit
     button.semanticContentAttribute = .forceRightToLeft
-    button.imageEdgeInsets = .init(top: 4.0, left: 4.0, bottom: 4.0, right: 4.0)
+    button.imageEdgeInsets = .init(top: 4.0, left: 8.0, bottom: 4.0, right: 4.0)
 
     button.tintColor = .label
     button.setTitleColor(UIColor.label, for: .normal)

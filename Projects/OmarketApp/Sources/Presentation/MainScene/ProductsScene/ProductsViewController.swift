@@ -28,22 +28,29 @@ class ProductsViewController: UIViewController {
   
   override func loadView() {
     super.loadView()
-    
     view = ProductsView()
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     bind()
     viewModel.requestProducts(pageNumber: 1, itemsPerPage: 20)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    configureNavigationBar()
+  }
+
+  private func configureNavigationBar() {
+    navigationItem.title = viewModel.title
+    navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: nil)
+    navigationController?.navigationBar.titleTextAttributes = nil
   }
   
   private func bind() {
     guard let view = view as? ProductsView else { return }
-    
-    self.title = viewModel.title
-    
+
     view.addProductButton.rx.tap
       .bind { [weak self] in
         self?.viewModel.didTapAddProductButton()

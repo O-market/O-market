@@ -1,5 +1,5 @@
 //
-//  UICollectionViewCell+.swift
+//  UICollectionViewCell+Extension.swift
 //  OmarketApp
 //
 //  Created by 김도연 on 2022/08/27.
