@@ -24,7 +24,9 @@ struct DetailViewModelItem {
     self.thumbnail = product.thumbnail
     self.currency = product.currency == "KRW" ? "원" : "달러"
     self.stock = "\(product.stock) 개"
-    self.discountPrice = formatter?.string(from: product.discountedPrice as NSNumber) ?? "\(Int(product.discountedPrice))"
+    self.discountPrice = formatter?.string(
+      from: product.discountedPrice as NSNumber
+    ) ?? "\(Int(product.discountedPrice))"
     
     if product.bargainPrice == 0 {
       self.price = nil
