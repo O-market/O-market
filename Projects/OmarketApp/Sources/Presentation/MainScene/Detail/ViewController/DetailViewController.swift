@@ -17,7 +17,7 @@ final class DetailViewController: UIViewController {
   private let disposeBag = DisposeBag()
   weak var coordinator: DetailCoordinator?
   private let mainView = DetailView(frame: .zero)
-  private let ellipsisButten = UIBarButtonItem(image: UIImage(systemName: "ellipsis"))
+  private let editBarButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"))
   
   init(viewModel: DetailViewModel) {
     self.viewModel = viewModel
@@ -42,7 +42,7 @@ extension DetailViewController {
     title = "상품상세"
     view.backgroundColor = .systemBackground
     view.addSubview(mainView)
-    navigationItem.rightBarButtonItem = ellipsisButten
+    navigationItem.rightBarButtonItem = editBarButton
     mainView.snp.makeConstraints {
       $0.edges.equalTo(self.view.safeAreaLayoutGuide)
     }
@@ -53,7 +53,7 @@ extension DetailViewController {
 
 extension DetailViewController {
   private func bind() {
-    ellipsisButten.rx.tap
+    editBarButton.rx.tap
       .bind { [weak self] in
         let alert = UIAlertController(
           title: nil,
