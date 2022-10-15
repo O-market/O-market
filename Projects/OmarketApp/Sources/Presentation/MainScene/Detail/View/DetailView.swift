@@ -229,7 +229,7 @@ final class DetailView: UIView {
     stockLabel.text = content.stock
     priceLabel.text = content.price
     addStroke(label: priceLabel)
-    discountedPriceLabel.text = content.bargainPrice
+    discountedPriceLabel.text = content.discountPrice
     discountPercentageLabel.text = content.discountPercentage
   }
 }
