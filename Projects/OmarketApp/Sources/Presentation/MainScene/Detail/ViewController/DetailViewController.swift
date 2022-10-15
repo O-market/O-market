@@ -13,13 +13,13 @@ import SnapKit
 
 final class DetailViewController: UIViewController {
   
-  private let viewModel: DetailViewModel
+  private let viewModel: DetailViewModelable
   private let disposeBag = DisposeBag()
   weak var coordinator: DetailCoordinator?
   private let mainView = DetailView(frame: .zero)
   private let editBarButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"))
   
-  init(viewModel: DetailViewModel) {
+  init(viewModel: DetailViewModelable) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }

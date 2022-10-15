@@ -18,9 +18,9 @@ protocol DetailViewModelOutput {
   var productImageCount: Observable<Int> { get }
 }
 
-protocol DetailViewModel: DetailViewModelInput, DetailViewModelOutput {}
+protocol DetailViewModelable: DetailViewModelInput, DetailViewModelOutput {}
 
-final class DetailViewModelImpl: DetailViewModel {
+final class DetailViewModel: DetailViewModelable {
   let useCase: ProductFetchUseCase
   let productId: Int
   

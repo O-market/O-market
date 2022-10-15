@@ -12,7 +12,7 @@ import XCTest
 import RxSwift
 
 final class DetailViewModelTest: XCTestCase {
-  private var sut: DetailViewModel!
+  private var sut: DetailViewModelable!
   private var productFetchuseCase: StubProductFetchUseCaseImpl!
   private var disposeBag: DisposeBag!
   private var dummyProduct: Product!
@@ -42,7 +42,7 @@ final class DetailViewModelTest: XCTestCase {
     )
     
     productFetchuseCase = StubProductFetchUseCaseImpl(products: [dummyProduct])
-    sut = DetailViewModelImpl(useCase: productFetchuseCase, productId: 1)
+    sut = DetailViewModel(useCase: productFetchuseCase, productId: 1)
     disposeBag = DisposeBag()
   }
   
