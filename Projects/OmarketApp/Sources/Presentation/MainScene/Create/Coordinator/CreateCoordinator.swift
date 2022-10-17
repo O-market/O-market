@@ -6,4 +6,17 @@
 //  Copyright © 2022 Omarket. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+final class CreateCoordinator: Coordinator {
+  var navigationController: UINavigationController
+  weak var parentCoordinator: Coordinator?
+  var childCoordinators: [Coordinator] = []
+  
+  init(navigationController: UINavigationController) {
+    self.navigationController = navigationController
+  }
+
+  func start() {
+  }
+}
