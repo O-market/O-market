@@ -16,6 +16,7 @@ public final class ODSPhotoButtonView: UIButton {
     view.layer.cornerRadius = 10
     view.layer.borderWidth = 5
     view.layer.borderColor = UIColor.systemGray5.cgColor
+    view.backgroundColor = .clear
     return view
   }()
   
@@ -45,7 +46,7 @@ public final class ODSPhotoButtonView: UIButton {
   }
   
   private func configureUI() {
-    self.addSubview(roundView)
+    addSubview(roundView)
     roundView.addSubview(stackView)
     
     roundView.snp.makeConstraints {
