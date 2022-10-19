@@ -20,13 +20,13 @@ public final class ODSLineTextField: UITextField {
   
   private let topLineView: UIView = {
     let view = UIView()
-    view.frame.size.height = 1.0
+    view.backgroundColor = .systemGray5
     return view
   }()
   
   private let bottomLineView: UIView = {
     let view = UIView()
-    view.frame.size.height = 1.0
+    view.backgroundColor = .systemGray5
     return view
   }()
   
@@ -45,17 +45,21 @@ public final class ODSLineTextField: UITextField {
       addSubview(topLineView)
       
       topLineView.snp.makeConstraints {
-        $0.top.equalToSuperview()
+        $0.top.equalToSuperview().offset(-8)
+        $0.trailing.leading.equalToSuperview()
         $0.width.equalToSuperview()
+        $0.height.equalTo(1.0)
       }
     }
     
     if lineStyle == .bottom || lineStyle == .all {
       addSubview(bottomLineView)
       
-      topLineView.snp.makeConstraints {
-        $0.bottom.equalToSuperview()
+      bottomLineView.snp.makeConstraints {
+        $0.bottom.equalToSuperview().offset(8)
+        $0.trailing.leading.equalToSuperview()
         $0.width.equalToSuperview()
+        $0.height.equalTo(1.0)
       }
     }
   }
