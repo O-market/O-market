@@ -36,7 +36,9 @@ final class ProductsCoordinator: Coordinator {
   }
   
   func showCreateView() {
-    // CreateViewCoordinator를 생성하고 start호출
-    debugPrint("call showCreateViewController")
+    let createCoordinator = CreateCoordinator(navigationController: navigationController)
+    childCoordinators.append(createCoordinator)
+    createCoordinator.parentCoordinator = self
+    createCoordinator.start()
   }
 }
