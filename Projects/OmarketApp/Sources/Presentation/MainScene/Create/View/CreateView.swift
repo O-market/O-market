@@ -14,14 +14,14 @@ import SnapKit
 final class CreateView: UIView {
   private let scrollView: UIScrollView = {
     let scrollView = UIScrollView()
-    scrollView.bounces = false
     return scrollView
   }()
   
+  private let backgroundView = UIView()
+  
   private let imageScrollView: UIScrollView = {
     let scrollView = UIScrollView()
-    scrollView.bounces = false
-    scrollView.showsVerticalScrollIndicator = false
+    scrollView.showsHorizontalScrollIndicator = false
     return scrollView
   }()
   
@@ -30,6 +30,8 @@ final class CreateView: UIView {
   private lazy var imageStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [photoButton])
     stackView.spacing = 8
+    stackView.axis = .horizontal
+    stackView.distribution = .fillEqually
     return stackView
   }()
   
@@ -60,7 +62,13 @@ final class CreateView: UIView {
     return textField
   }()
   
-  private let textView = UITextView()
+  private let textView: UITextView = {
+    let textView = UITextView()
+    textView.isScrollEnabled = false
+    textView.showsVerticalScrollIndicator = false
+    textView.font = ODS.Font.B_R15
+    return textView
+  }()
   
   private lazy var textFieldStackView: UIStackView = {
     let stackView = UIStackView(
@@ -72,10 +80,11 @@ final class CreateView: UIView {
         textView
       ]
     )
+    stackView.spacing = 16
     stackView.axis = .vertical
     return stackView
   }()
-  
+ 
   init() {
     super.init(frame: .zero)
     configureUI()
@@ -87,29 +96,46 @@ final class CreateView: UIView {
   
   private func configureUI() {
     addSubview(scrollView)
-    scrollView.addSubviews(
+    scrollView.snp.makeConstraints {
+      $0.directionalEdges.equalToSuperview()
+      $0.width.equalToSuperview()
+    }
+    
+    scrollView.addSubview(backgroundView)
+    backgroundView.snp.makeConstraints {
+      $0.directionalEdges.equalToSuperview()
+      $0.width.equalToSuperview()
+    }
+    
+    backgroundView.addSubviews(
       [
         imageScrollView,
         textFieldStackView
       ]
     )
-    imageScrollView.addSubview(imageStackView)
-    
-    scrollView.snp.makeConstraints {
-      $0.directionalEdges.equalToSuperview()
-    }
-    
+
     imageScrollView.snp.makeConstraints {
-      $0.top.trailing.leading.equalToSuperview()
+      $0.trailing.leading.top.equalToSuperview().inset(8)
+      $0.bottom.equalTo(textFieldStackView.snp.top).inset(-32)
+      $0.height.equalTo(self).multipliedBy(0.18)
     }
-    
-    textFieldStackView.snp.makeConstraints {
-      $0.top.equalTo(imageScrollView.snp.bottom)
-      $0.trailing.leading.bottom.equalToSuperview()
-    }
-    
+
+    imageScrollView.addSubview(imageStackView)
     imageStackView.snp.makeConstraints {
       $0.directionalEdges.equalToSuperview()
+      $0.height.equalToSuperview()
+    }
+
+    photoButton.snp.makeConstraints {
+      $0.width.equalTo(photoButton.snp.height)
+      $0.height.equalToSuperview()
+    }
+
+    textFieldStackView.snp.makeConstraints {
+      $0.top.equalTo(imageScrollView.snp.bottom)
+      $0.bottom.equalToSuperview()
+      $0.trailing.leading.equalToSuperview().inset(16)
+      $0.width.equalToSuperview().inset(16)
     }
   }
 }
