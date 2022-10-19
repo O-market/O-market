@@ -14,7 +14,7 @@ public final class ODSPhotoButtonView: UIButton {
   private let roundView: UIView = {
     let view = UIView()
     view.layer.cornerRadius = 10
-    view.layer.borderWidth = 5
+    view.layer.borderWidth = 1
     view.layer.borderColor = UIColor.systemGray5.cgColor
     view.backgroundColor = .clear
     return view
@@ -23,6 +23,7 @@ public final class ODSPhotoButtonView: UIButton {
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [cameraImageView, imageCountLabel])
     stackView.axis = .vertical
+    stackView.alignment = .center
     stackView.spacing = 2
     return stackView
   }()
@@ -33,6 +34,7 @@ public final class ODSPhotoButtonView: UIButton {
     let label = UILabel()
     label.font = .systemFont(ofSize: 11)
     label.text = "0/10"
+    label.textAlignment = .center
     return label
   }()
   
@@ -46,14 +48,19 @@ public final class ODSPhotoButtonView: UIButton {
   }
   
   private func configureUI() {
+    cameraImageView.tintColor = .black
     addSubview(roundView)
     roundView.addSubview(stackView)
     
     roundView.snp.makeConstraints {
-      $0.directionalEdges.equalToSuperview().inset(16)
+      $0.directionalEdges.equalToSuperview().inset(26)
     }
     stackView.snp.makeConstraints {
-      $0.directionalEdges.equalToSuperview()
+      $0.directionalEdges.equalToSuperview().inset(14)
+    }
+    cameraImageView.snp.makeConstraints {
+      $0.height.equalTo(cameraImageView.snp.width)
+      $0.width.equalToSuperview().multipliedBy(0.6)
     }
   }
 }
