@@ -149,6 +149,5 @@ final class CreateView: UIView {
     placeholderLabel.snp.makeConstraints {
       $0.directionalEdges.equalToSuperview().inset(7)
     }
-    
   }
 }
