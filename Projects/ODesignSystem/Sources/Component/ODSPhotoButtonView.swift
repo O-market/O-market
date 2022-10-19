@@ -30,7 +30,7 @@ public final class ODSPhotoButtonView: UIButton {
   
   private let cameraImageView = UIImageView(image: .init(systemName: "camera.fill"))
   
-  private let imageCountLabel: UILabel = {
+  public let imageCountLabel: UILabel = {
     let label = UILabel()
     label.font = .systemFont(ofSize: 11)
     label.text = "0/10"
