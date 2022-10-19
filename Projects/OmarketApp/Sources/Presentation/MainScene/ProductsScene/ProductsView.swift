@@ -59,7 +59,7 @@ final class ProductsView: UIView {
     
     addProductButton.snp.makeConstraints {
       $0.width.height.equalTo(50)
-      $0.trailing.bottom.equalToSuperview().offset(-20.0)
+      $0.trailing.bottom.equalTo(safeAreaLayoutGuide).offset(-20.0)
     }
   }
   
