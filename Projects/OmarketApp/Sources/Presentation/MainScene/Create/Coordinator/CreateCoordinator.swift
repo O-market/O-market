@@ -18,5 +18,9 @@ final class CreateCoordinator: Coordinator {
   }
 
   func start() {
+    let viewController = CreateViewController()
+    
+    viewController.coordinator = self
+    navigationController.pushViewController(viewController, animated: true)
   }
 }
