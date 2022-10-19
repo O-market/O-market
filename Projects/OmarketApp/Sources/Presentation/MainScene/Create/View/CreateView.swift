@@ -62,12 +62,20 @@ final class CreateView: UIView {
     return textField
   }()
   
-  private let textView: UITextView = {
+  let textView: UITextView = {
     let textView = UITextView()
     textView.isScrollEnabled = false
     textView.showsVerticalScrollIndicator = false
     textView.font = ODS.Font.B_R15
     return textView
+  }()
+  
+  let placeholderLabel: UILabel = {
+    let label = UILabel()
+    label.font = ODS.Font.B_R15
+    label.textColor = .systemGray3
+    label.text = "상품에 대한 설명을 입력해주세요."
+    return label
   }()
   
   private lazy var textFieldStackView: UIStackView = {
@@ -137,5 +145,10 @@ final class CreateView: UIView {
       $0.trailing.leading.equalToSuperview().inset(16)
       $0.width.equalToSuperview().inset(16)
     }
+    textView.addSubview(placeholderLabel)
+    placeholderLabel.snp.makeConstraints {
+      $0.directionalEdges.equalToSuperview().inset(7)
+    }
+    
   }
 }
