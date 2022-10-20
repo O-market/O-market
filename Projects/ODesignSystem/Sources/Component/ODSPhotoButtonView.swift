@@ -28,11 +28,11 @@ public final class ODSPhotoButtonView: UIButton {
     return stackView
   }()
   
-  private let cameraImageView = UIImageView(image: .init(systemName: "camera.fill"))
+  private let cameraImageView = UIImageView(image: ODS.Icon.cameraFill)
   
   public let imageCountLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 11)
+    label.font = ODS.Font.B_R11
     label.text = "0/10"
     label.textAlignment = .center
     return label
