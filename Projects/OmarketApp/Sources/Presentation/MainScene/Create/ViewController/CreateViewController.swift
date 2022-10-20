@@ -42,13 +42,10 @@ extension CreateViewController {
 extension CreateViewController {
   private func bind() {
     mainView.textView.rx.text
-      .bind { [weak self] in
-        guard let text = $0 else { return }
-        if !text.isEmpty {
-          self?.mainView.placeholderLabel.isHidden = true
-        } else {
-          self?.mainView.placeholderLabel.isHidden = false
-        }
-      }.disposed(by: disposeBag)
+      .orEmpty
+      .map { !$0.isEmpty }
+      .distinctUntilChanged()
+      .bind(to: mainView.placeholderLabel.rx.isHidden)
+      .disposed(by: disposeBag)
   }
 }
