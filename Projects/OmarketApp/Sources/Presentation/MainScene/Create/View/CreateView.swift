@@ -25,10 +25,16 @@ final class CreateView: UIView {
     return scrollView
   }()
   
-  private let photoButton = ODSPhotoButtonView()
+  let photoButton = ODSPhotoButtonView()
+  
+  private let buttonbackgarundView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .clear
+    return view
+  }()
   
   private lazy var imageStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [photoButton])
+    let stackView = UIStackView(arrangedSubviews: [buttonbackgarundView])
     stackView.spacing = 8
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
@@ -133,10 +139,17 @@ final class CreateView: UIView {
       $0.directionalEdges.equalToSuperview()
       $0.height.equalToSuperview()
     }
-
+    
+    buttonbackgarundView.snp.makeConstraints {
+      $0.width.equalTo(buttonbackgarundView.snp.height)
+      $0.height.equalToSuperview()
+    }
+    
+    buttonbackgarundView.addSubview(photoButton)
     photoButton.snp.makeConstraints {
       $0.width.equalTo(photoButton.snp.height)
-      $0.height.equalToSuperview()
+      $0.height.equalToSuperview().multipliedBy(0.5)
+      $0.center.equalToSuperview()
     }
 
     textFieldStackView.snp.makeConstraints {

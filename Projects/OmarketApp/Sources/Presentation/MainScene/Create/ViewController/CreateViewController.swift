@@ -47,5 +47,9 @@ extension CreateViewController {
       .distinctUntilChanged()
       .bind(to: mainView.placeholderLabel.rx.isHidden)
       .disposed(by: disposeBag)
+    
+    mainView.photoButton.rx.tap
+      .bind {
+      }.disposed(by: disposeBag)
   }
 }
