@@ -1,0 +1,37 @@
+//
+//  ImageManager.swift
+//  OmarketApp
+//
+//  Created by 이시원 on 2022/10/27.
+//  Copyright © 2022 Omarket. All rights reserved.
+//
+
+import Photos
+import UIKit
+
+final class ImageManager {
+  private let asset: PHAsset
+  private let manager: PHCachingImageManager = .init()
+  
+  init(asset: PHAsset) {
+    self.asset = asset
+  }
+  
+  func request(
+    size: CGSize,
+    completion: @escaping (UIImage?) -> Void
+  ) {
+    let options = PHImageRequestOptions()
+    options.deliveryMode = .highQualityFormat
+    manager.requestImage(
+      for: asset,
+      targetSize: size,
+      contentMode: .aspectFill,
+      options: nil
+    ) { image, info in
+      let isDegraded = (info?[PHImageResultIsDegradedKey] as? Bool) ?? false
+      if isDegraded { return }
+      completion(image)
+    }
+  }
+}
