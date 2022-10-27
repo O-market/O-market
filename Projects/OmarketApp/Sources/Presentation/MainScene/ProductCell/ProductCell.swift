@@ -8,8 +8,8 @@
 
 import UIKit
 
-import Magpie
 import ODesignSystem
+import RGMagpie
 import SnapKit
 
 final class ProductCell: UICollectionViewCell {
@@ -101,7 +101,7 @@ final class ProductCell: UICollectionViewCell {
   
   func bind(with viewModel: ProductCellViewModelType) {
     self.viewModel = viewModel
-    
+
     self.productImageView.mp.setImage(with: viewModel.imageURL)
     self.productNameLabel.text = viewModel.productName
     
