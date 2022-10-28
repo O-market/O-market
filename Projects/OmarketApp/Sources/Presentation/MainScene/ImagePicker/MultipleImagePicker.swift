@@ -39,7 +39,7 @@ final class MultipleImagePicker: UIViewController {
     mainView.photoCollectionView.delegate = self
     mainView.addButton.action = #selector(addButtomDidTap)
     mainView.cancelButton.action = #selector(cancelButtomDidTap)
-
+    PHPhotoLibrary.shared().register(self)
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -61,9 +61,6 @@ final class MultipleImagePicker: UIViewController {
           DispatchQueue.main.async {
             self?.mainView.photoCollectionView.reloadData()
           }
-        case .limited:
-          guard let self = self else { return }
-          PHPhotoLibrary.shared().register(self)
         default:
           break
         }
