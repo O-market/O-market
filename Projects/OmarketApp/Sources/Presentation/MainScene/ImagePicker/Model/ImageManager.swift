@@ -22,15 +22,13 @@ final class ImageManager {
     completion: @escaping (UIImage?) -> Void
   ) {
     let options = PHImageRequestOptions()
-    options.deliveryMode = .highQualityFormat
+    options.isSynchronous = true
     manager.requestImage(
       for: asset,
       targetSize: size,
       contentMode: .aspectFill,
-      options: nil
-    ) { image, info in
-      let isDegraded = (info?[PHImageResultIsDegradedKey] as? Bool) ?? false
-      if isDegraded { return }
+      options: options
+    ) { image, _ in
       completion(image)
     }
   }
