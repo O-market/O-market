@@ -1,5 +1,5 @@
 //
-//  ImageManager.swift
+//  MSImageManager.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/27.
@@ -9,7 +9,7 @@
 import Photos
 import UIKit
 
-final class ImageManager {
+final class MSImageManager {
   private let asset: PHAsset
   private let manager: PHCachingImageManager = .init()
   

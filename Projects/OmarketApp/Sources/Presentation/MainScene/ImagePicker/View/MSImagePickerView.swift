@@ -1,5 +1,5 @@
 //
-//  ImagePickerView.swift
+//  MSImagePickerView.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/25.
@@ -10,7 +10,7 @@ import UIKit
 
 import SnapKit
 
-final class ImagePickerView: UIView {
+final class MSImagePickerView: UIView {
   let navigationBar = UINavigationBar()
   let navigationitem = UINavigationItem(title: "사진첩")
   let addButton: UIBarButtonItem = {
@@ -60,8 +60,8 @@ final class ImagePickerView: UIView {
       $0.bottom.trailing.leading.equalTo(self.safeAreaLayoutGuide)
     }
     photoCollectionView.register(
-      ImageCell.self,
-      forCellWithReuseIdentifier: ImageCell.identifier
+      MSImageCell.self,
+      forCellWithReuseIdentifier: MSImageCell.identifier
     )
   }
   

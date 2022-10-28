@@ -75,8 +75,8 @@ extension CreateViewController {
   }
 }
 
-extension CreateViewController: MultipleImagePickerDelegate {
-  func picker(picker: UIViewController, results: [ImageManager]) {
+extension CreateViewController: MSImagePickerDelegate {
+  func picker(picker: UIViewController, results: [MSImageManager]) {
     picker.dismiss(animated: true)
     results.forEach {
       $0.request(

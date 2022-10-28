@@ -1,5 +1,5 @@
 //
-//  MultipleImagePicker.swift
+//  MSImagePicker.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/25.
@@ -11,13 +11,13 @@ import Photos
 
 import SnapKit
 
-final class MultipleImagePicker: UIViewController {
-  weak var delegate: MultipleImagePickerDelegate?
+final class MSImagePicker: UIViewController {
+  weak var delegate: MSImagePickerDelegate?
   private var fetchResult: PHFetchResult<PHAsset>?
   private let imageManager: PHCachingImageManager = .init()
-  private let mainView = ImagePickerView()
-  let settings = PickerSettings()
-  private var selectedItems = [AssetItem]() {
+  private let mainView = MSImagePickerView()
+  let settings = MSPickerSettings()
+  private var selectedItems = [MSAssetItem]() {
     didSet {
       mainView.setSelectionCount(selectedItems.count)
       mainView.addButton.isEnabled = selectedItems.count != 0
@@ -106,7 +106,7 @@ final class MultipleImagePicker: UIViewController {
 
 // MARK: - UI
 
-extension MultipleImagePicker {
+extension MSImagePicker {
   private func configureUI() {
     view.backgroundColor = .systemBackground
     view.addSubview(mainView)
@@ -116,7 +116,7 @@ extension MultipleImagePicker {
   }
 }
 
-extension MultipleImagePicker {
+extension MSImagePicker {
   private func isInselectionPool(indexPath: IndexPath) -> Bool {
     return selectedItems.contains {
       $0.assetIdentifier == fetchResult?.object(at: indexPath.row).localIdentifier
@@ -138,7 +138,7 @@ extension MultipleImagePicker {
   
   private func addToSelection(indexPath: IndexPath) {
     guard let asset = fetchResult?.object(at: indexPath.row) else { return }
-    let newSelectionItem = AssetItem(
+    let newSelectionItem = MSAssetItem(
       index: indexPath.row,
       assetIdentifier: asset.localIdentifier,
       assetManager: .init(asset: asset)
@@ -158,7 +158,7 @@ extension MultipleImagePicker {
 
 // MARK: - Alert
 
-extension MultipleImagePicker {
+extension MSImagePicker {
   private func showAlert() {
     guard let selectionLimit = settings.selectionLimit else { return }
     let alert = UIAlertController(
@@ -175,7 +175,7 @@ extension MultipleImagePicker {
 
 // MARK: - UICollectionViewDataSource & UICollectionViewDelegate
 
-extension MultipleImagePicker: UICollectionViewDataSource {
+extension MSImagePicker: UICollectionViewDataSource {
   func collectionView(
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
@@ -188,9 +188,9 @@ extension MultipleImagePicker: UICollectionViewDataSource {
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
     let cell = mainView.photoCollectionView.dequeueReusableCell(
-      withReuseIdentifier: ImageCell.identifier,
+      withReuseIdentifier: MSImageCell.identifier,
       for: indexPath
-    ) as? ImageCell ?? ImageCell()
+    ) as? MSImageCell ?? MSImageCell()
     
     guard let asset = fetchResult?.object(at: indexPath.row) else { return cell }
     cell.representedAssetIdentifier = asset.localIdentifier
@@ -219,7 +219,7 @@ extension MultipleImagePicker: UICollectionViewDataSource {
   }
 }
 
-extension MultipleImagePicker: UICollectionViewDelegate {
+extension MSImagePicker: UICollectionViewDelegate {
   func collectionView(
     _ collectionView: UICollectionView,
     didSelectItemAt indexPath: IndexPath
@@ -235,7 +235,7 @@ extension MultipleImagePicker: UICollectionViewDelegate {
   }
 }
 
-extension MultipleImagePicker: PHPhotoLibraryChangeObserver {
+extension MSImagePicker: PHPhotoLibraryChangeObserver {
   func photoLibraryDidChange(_ changeInstance: PHChange) {
     self.requestCollection()
     DispatchQueue.main.async {

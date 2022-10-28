@@ -32,9 +32,9 @@ final class CreateCoordinator: Coordinator {
   
   func presentImagePicker(
     limitCount: Int,
-    delegate: MultipleImagePickerDelegate
+    delegate: MSImagePickerDelegate
   ) {
-    let imagePicker = MultipleImagePicker()
+    let imagePicker = MSImagePicker()
     imagePicker.settings.selectionLimit = limitCount
     imagePicker.settings.selectedIndicatorColor = ODS.Color.example
     imagePicker.delegate = delegate

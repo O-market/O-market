@@ -1,5 +1,5 @@
 //
-//  PickerSettings.swift
+//  MSPickerSettings.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/27.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class PickerSettings {
+final class MSPickerSettings {
   var selectionLimit: Int?
   var selectedIndicatorColor: UIColor
   

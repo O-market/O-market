@@ -1,5 +1,5 @@
 //
-//  AssetItem.swift
+//  MSAssetItem.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/26.
@@ -8,15 +8,15 @@
 
 import Foundation
 
-struct AssetItem {
+struct MSAssetItem {
   let index: Int
   let assetIdentifier: String
-  let imageManager: ImageManager
+  let imageManager: MSImageManager
   
   init(
     index: Int,
     assetIdentifier: String,
-    assetManager: ImageManager
+    assetManager: MSImageManager
   ) {
     self.index = index
     self.assetIdentifier = assetIdentifier
