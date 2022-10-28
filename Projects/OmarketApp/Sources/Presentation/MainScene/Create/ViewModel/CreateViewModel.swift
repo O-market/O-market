@@ -24,7 +24,7 @@ protocol CreateViewModelOutput {
 protocol CreateViewModelable: CreateViewModelInput, CreateViewModelOutput {}
 
 final class CreateViewModel: CreateViewModelable {
-  let useCase: ProductFetchUseCase
+  private let useCase: ProductFetchUseCase
   private var imageDatas = BehaviorRelay<[ImageData]>(value: [])
   var imageCountLimit: Int = 10
   

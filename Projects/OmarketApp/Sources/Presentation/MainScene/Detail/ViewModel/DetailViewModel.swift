@@ -21,8 +21,8 @@ protocol DetailViewModelOutput {
 protocol DetailViewModelable: DetailViewModelInput, DetailViewModelOutput {}
 
 final class DetailViewModel: DetailViewModelable {
-  let useCase: ProductFetchUseCase
-  let productId: Int
+  private let useCase: ProductFetchUseCase
+  private let productId: Int
   
   private let productBuffer = ReplaySubject<Product>.create(bufferSize: 1)
   private let disposeBag = DisposeBag()
