@@ -163,4 +163,10 @@ final class CreateView: UIView {
       $0.directionalEdges.equalToSuperview().inset(7)
     }
   }
+  
+  func addImageView(_ views: [UIView]) {
+    views.forEach {
+      imageStackView.addArrangedSubview($0)
+    }
+  }
 }
