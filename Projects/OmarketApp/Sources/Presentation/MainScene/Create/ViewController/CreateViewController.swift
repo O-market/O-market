@@ -13,10 +13,10 @@ import RxSwift
 import SnapKit
 
 class CreateViewController: UIViewController {
-  private let viewModel: CreateViewModelable
-  private let disposeBag = DisposeBag()
   weak var coordinator: CreateCoordinator?
+  private let disposeBag = DisposeBag()
   private let mainView = CreateView()
+  private let viewModel: CreateViewModelable
   
   init(viewModel: CreateViewModelable) {
     self.viewModel = viewModel
