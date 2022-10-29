@@ -77,14 +77,14 @@ final class DetailView: UIView {
   
   private lazy var discountedPriceStackView: UIStackView = {
     let stackView = UIStackView(
-      arrangedSubviews: [discountedPriceLabel,
+      arrangedSubviews: [    bargainPriceLabel,
                          currencyLabel]
     )
     stackView.spacing = 4
     return stackView
   }()
   
-  private let discountedPriceLabel: UILabel = {
+  private let     bargainPriceLabel: UILabel = {
     let label = UILabel()
     label.font = ODS.Font.H_B18
     label.setContentHuggingPriority(
@@ -227,10 +227,15 @@ final class DetailView: UIView {
     informationLabel.text = content.body
     currencyLabel.text = content.currency
     stockLabel.text = content.stock
-    priceLabel.text = content.price
-    addStroke(label: priceLabel)
-    discountedPriceLabel.text = content.discountPrice
-    discountPercentageLabel.text = content.discountPercentage
+    bargainPriceLabel.text = content.bargainPrice
+    if content.discountPercentage == "0%" {
+      priceLabel.isHidden = true
+      discountPercentageLabel.isHidden = true
+    } else {
+      priceLabel.text = content.price
+      addStroke(label: priceLabel)
+      discountPercentageLabel.text = content.discountPercentage
+    }
   }
 }
 
