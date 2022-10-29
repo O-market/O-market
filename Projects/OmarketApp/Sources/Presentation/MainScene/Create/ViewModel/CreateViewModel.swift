@@ -12,8 +12,9 @@ import RxSwift
 import RxRelay
 
 protocol CreateViewModelInput {
-  func selectedImageData(_ datas: [ImageData])
+  func doneButtonDidTap(product: Product) -> Observable<Void>
   func removeImageData(id: UUID)
+  func selectedImageData(_ datas: [ImageData])
 }
 
 protocol CreateViewModelOutput {
@@ -30,6 +31,13 @@ final class CreateViewModel: CreateViewModelable {
   
   init(useCase: ProductFetchUseCase) {
     self.useCase = useCase
+  }
+  
+  @discardableResult
+  func doneButtonDidTap(product: Product) -> Observable<Void> {
+    return useCase.createProduct(
+      product: product,
+      images: imageDatas.value.map { $0.data })
   }
   
   func selectedImageData(_ datas: [ImageData]) {
