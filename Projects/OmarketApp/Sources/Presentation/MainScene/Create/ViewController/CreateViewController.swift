@@ -15,6 +15,12 @@ import SnapKit
 class CreateViewController: UIViewController {
   weak var coordinator: CreateCoordinator?
   private let disposeBag = DisposeBag()
+  private let doneButton = UIBarButtonItem(
+    title: "완료",
+    style: .done,
+    target: nil,
+    action: nil
+  )
   private let mainView = CreateView()
   private let viewModel: CreateViewModelable
   
@@ -39,6 +45,8 @@ class CreateViewController: UIViewController {
 extension CreateViewController {
   private func configureUI() {
     title = "글쓰기"
+    navigationItem.rightBarButtonItem = doneButton
+    doneButton.tintColor = ODS.Color.example
     view.backgroundColor = .systemBackground
     view.addSubview(mainView)
     mainView.snp.makeConstraints {
