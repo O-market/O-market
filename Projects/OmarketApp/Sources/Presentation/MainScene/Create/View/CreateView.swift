@@ -41,27 +41,27 @@ final class CreateView: UIView {
     return stackView
   }()
   
-  private let titleTextField: ODSLineTextField = {
+  let titleTextField: ODSLineTextField = {
     let textField = ODSLineTextField(lineStyle: .all)
     textField.placeholder = "상품명"
     return textField
   }()
   
-  private let priceTextField: ODSLineTextField = {
+  let priceTextField: ODSLineTextField = {
     let textField = ODSLineTextField(lineStyle: .bottom)
     textField.placeholder = "₩ 상품가격"
     textField.keyboardType = .numberPad
     return textField
   }()
   
-  private let discountPriceTextField: ODSLineTextField = {
+  let discountPriceTextField: ODSLineTextField = {
     let textField = ODSLineTextField(lineStyle: .bottom)
     textField.placeholder = "₩ 할인가격 (선택사항)"
     textField.keyboardType = .numberPad
     return textField
   }()
   
-  private let stockTextField: ODSLineTextField = {
+  let stockTextField: ODSLineTextField = {
     let textField = ODSLineTextField(lineStyle: .bottom)
     textField.placeholder = "재고 수량"
     textField.keyboardType = .numberPad
