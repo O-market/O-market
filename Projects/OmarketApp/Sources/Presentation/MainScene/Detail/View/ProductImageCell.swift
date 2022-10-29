@@ -8,7 +8,7 @@
 
 import UIKit
 
-import Magpie
+import RGMagpie
 import SnapKit
 
 final class ProductImageCell: UICollectionViewCell {

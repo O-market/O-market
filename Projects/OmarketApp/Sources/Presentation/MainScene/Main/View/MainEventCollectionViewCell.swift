@@ -8,7 +8,7 @@
 
 import UIKit
 
-import Magpie
+import RGMagpie
 
 final class MainEventCollectionViewCell: UICollectionViewCell {
   private let imageView: UIImageView = {

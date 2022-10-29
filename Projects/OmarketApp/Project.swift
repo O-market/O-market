@@ -14,13 +14,13 @@ let project = Project.app(
     name: "OmarketApp",
     platform: .iOS,
     appDependencies: [
-      .project(target: "Magpie", path: "../Magpie"),
       .project(target: "ODesignSystem", path: "../ODesignSystem"),
       .snapKit,
       .rxSwift,
       .rxCocoa,
       .rxRelay,
-      .rxDataSources
+      .rxDataSources,
+      .rgMagpie
     ],
     testDependencies: [
       .rxSwift,
