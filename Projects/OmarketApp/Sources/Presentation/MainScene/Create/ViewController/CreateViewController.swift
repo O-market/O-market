@@ -83,6 +83,8 @@ extension CreateViewController {
   }
 }
 
+// MARK: - MSImagePickerDelegate
+
 extension CreateViewController: MSImagePickerDelegate {
   func picker(picker: UIViewController, results: [MSImageManager]) {
     picker.dismiss(animated: true)
