@@ -82,7 +82,10 @@ extension CreateViewController {
     
     viewModel.numberOfImagesSelected
       .bind { [weak self] in
-        self?.mainView.photoButton.imageCountLabel.text = "\($0)/10"
+        guard let self = self else { return }
+        self.mainView.photoButton.imageCountLabel.text = "\($0)/\(self.viewModel.imageCountLimit)"
+      }
+      .disposed(by: disposeBag)
       }
       .disposed(by: disposeBag)
   }
