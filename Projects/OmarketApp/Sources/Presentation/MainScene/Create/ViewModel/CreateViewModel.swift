@@ -20,6 +20,7 @@ protocol CreateViewModelInput {
 protocol CreateViewModelOutput {
   var numberOfImagesSelected: Observable<Int> { get }
   var selectionLimit: Int { get }
+  var imageCountLimit: Int { get }
 }
 
 protocol CreateViewModelable: CreateViewModelInput, CreateViewModelOutput {}
@@ -27,13 +28,12 @@ protocol CreateViewModelable: CreateViewModelInput, CreateViewModelOutput {}
 final class CreateViewModel: CreateViewModelable {
   private let useCase: ProductFetchUseCase
   private var imageDatas = BehaviorRelay<[ImageData]>(value: [])
-  private var imageCountLimit: Int = 10
+  let imageCountLimit: Int = 5
   
   init(useCase: ProductFetchUseCase) {
     self.useCase = useCase
   }
   
-  @discardableResult
   func doneButtonDidTap(product: Product) -> Observable<Void> {
     return useCase.createProduct(
       product: product,
