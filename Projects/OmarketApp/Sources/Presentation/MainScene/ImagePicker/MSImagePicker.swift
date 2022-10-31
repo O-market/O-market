@@ -38,7 +38,9 @@ final class MSImagePicker: UIViewController {
     mainView.photoCollectionView.dataSource = self
     mainView.photoCollectionView.delegate = self
     mainView.addButton.action = #selector(addButtomDidTap)
+    mainView.addButton.target = self
     mainView.cancelButton.action = #selector(cancelButtomDidTap)
+    mainView.cancelButton.target = self
     PHPhotoLibrary.shared().register(self)
   }
   
