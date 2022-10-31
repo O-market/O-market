@@ -114,10 +114,10 @@ extension CreateViewController: MSImagePickerDelegate {
 // MARK: - Alert
 
 extension CreateViewController {
-  private func showEmptyTextFieldAlert(_ message: String) {
+  private func showAlert(message: String) {
     let alert = UIAlertController(
       title: nil,
-      message: "\(message)은 필수 입력 항목입니다.",
+      message: message,
       preferredStyle: .alert
     )
     let okAction = UIAlertAction(title: "확인", style: .default)
