@@ -30,6 +30,11 @@ final class CreateCoordinator: Coordinator {
     navigationController.pushViewController(viewController, animated: true)
   }
   
+  func removeCoordinator() {
+    parentCoordinator?.childCoordinators.removeAll { $0 === self }
+    print(parentCoordinator?.childCoordinators)
+  }
+  
   func presentImagePicker(
     limitCount: Int,
     delegate: MSImagePickerDelegate

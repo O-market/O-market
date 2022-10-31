@@ -38,6 +38,11 @@ class CreateViewController: UIViewController {
     configureUI()
     bind()
   }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    coordinator?.removeCoordinator()
+  }
 }
 
 // MARK: - UI
