@@ -19,8 +19,7 @@ struct ProductRequest: Encodable {
   var vendorSecretKey: String?
 
   private enum CodingKeys: String, CodingKey {
-    case name, price, currency, stock
-    case description = "descriptions"
+    case name, price, currency, stock, description
     case thumbnailId = "thumbnail_id"
     case discountedPrice = "discounted_price"
     case vendorSecretKey = "secret"
