@@ -10,9 +10,9 @@ import Foundation
 
 #if DEBUG
 enum UserInformation {
-    static let id = 79
-    static let identifier = "680a5dc5-d1b8-11ec-9676-819f7cbd69a2"
-    static let password = "dxx7xmmtfz"
+    static let id = "safari123"
+    static let identifier = "f29c702b-58ef-11ed-a917-232fe9321977"
+    static let password = "8svnb243vbbnnjap"
 }
 #endif
 
