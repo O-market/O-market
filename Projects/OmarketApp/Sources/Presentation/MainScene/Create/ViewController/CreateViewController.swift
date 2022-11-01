@@ -94,20 +94,7 @@ extension CreateViewController {
           self.showAlert(message: "\(textFields)은 필수 입력 항목입니다.")
         } else {
           self.viewModel.doneButtonDidTap(
-            product: .init(
-              id: 0,
-              vendorId: 0,
-              name: self.mainView.titleTextField.text!,
-              description: self.mainView.textView.text,
-              thumbnail: "",
-              currency: "KRW",
-              price: Double(self.mainView.priceTextField.text!)!,
-              bargainPrice: 0.0,
-              discountedPrice: Double(self.mainView.discountPriceTextField.text!) ?? 0,
-              stock: Int(self.mainView.stockTextField.text!)!,
-              createdAt: "",
-              issuedAt: ""
-            )
+            product: self.makeProduct()
           )
           .observe(on: MainScheduler.instance)
           .subscribe(onNext: {
@@ -118,6 +105,23 @@ extension CreateViewController {
         }
       }
       .disposed(by: disposeBag)
+  }
+  
+  private func makeProduct() -> Product {
+    return Product(
+      id: 0,
+      vendorId: 0,
+      name: self.mainView.titleTextField.text!,
+      description: self.mainView.textView.text,
+      thumbnail: "",
+      currency: "KRW",
+      price: Double(self.mainView.priceTextField.text!)!,
+      bargainPrice: 0.0,
+      discountedPrice: Double(self.mainView.discountPriceTextField.text!) ?? 0,
+      stock: Int(self.mainView.stockTextField.text!)!,
+      createdAt: "",
+      issuedAt: ""
+    )
   }
 }
 

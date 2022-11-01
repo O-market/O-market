@@ -174,7 +174,6 @@ extension MSImagePicker {
   }
 }
 
-
 // MARK: - UICollectionViewDataSource & UICollectionViewDelegate
 
 extension MSImagePicker: UICollectionViewDataSource {

@@ -16,7 +16,7 @@ final class MSImagePickerView: UIView {
   let addButton: UIBarButtonItem = {
     let barButton = UIBarButtonItem(title: "0 add")
     barButton.setTitleTextAttributes(
-      [.font : UIFont.boldSystemFont(ofSize: 18)],
+      [.font: UIFont.boldSystemFont(ofSize: 18)],
       for: .normal
     )
     barButton.isEnabled = false
