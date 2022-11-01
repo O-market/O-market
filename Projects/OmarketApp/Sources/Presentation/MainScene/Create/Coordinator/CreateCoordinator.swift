@@ -32,7 +32,6 @@ final class CreateCoordinator: Coordinator {
   
   func removeCoordinator() {
     parentCoordinator?.childCoordinators.removeAll { $0 === self }
-    print(parentCoordinator?.childCoordinators)
   }
   
   func presentImagePicker(
