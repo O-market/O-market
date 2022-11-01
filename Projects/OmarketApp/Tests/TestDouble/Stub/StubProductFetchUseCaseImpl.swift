@@ -11,7 +11,8 @@ import Foundation
 
 import RxSwift
 final class StubProductFetchUseCaseImpl: ProductFetchUseCase {
-  let products: [Product]
+  var products: [Product]
+  var imageDatas = [Data]()
   
   init(products: [Product]){
     self.products = products
@@ -26,6 +27,8 @@ final class StubProductFetchUseCaseImpl: ProductFetchUseCase {
   }
   
   func createProduct(product: Product, images: [Data]) -> Observable<Void> {
+    products.append(product)
+    imageDatas += images
     return .just(Void())
   }
 }
