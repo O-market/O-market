@@ -91,7 +91,8 @@ extension CreateViewController {
       .bind { [weak self] in
         guard let self = self else { return }
         if let textFields = self.mainView.checkEmptyTextField() {
-          self.showAlert(message: "\(textFields)은 필수 입력 항목입니다.")
+          let alert = UIAlertController.makeAlert(message: "\(textFields)은 필수 입력 항목입니다.")
+          self.present(alert, animated: true)
         } else {
           self.viewModel.doneButtonDidTap(
             product: self.makeProduct()
@@ -100,7 +101,8 @@ extension CreateViewController {
           .subscribe(onNext: {
             self.navigationController?.popViewController(animated: true)
           }, onError: {
-            self.showAlert(message: $0.localizedDescription)
+            let alert = UIAlertController.makeAlert(message: $0.localizedDescription)
+            self.present(alert, animated: true)
           }).disposed(by: self.disposeBag)
         }
       }
@@ -145,20 +147,5 @@ extension CreateViewController: MSImagePickerDelegate {
         self?.viewModel.selectedImageData([imageData])
       }
     }
-  }
-}
-
-// MARK: - Alert
-
-extension CreateViewController {
-  private func showAlert(message: String) {
-    let alert = UIAlertController(
-      title: nil,
-      message: message,
-      preferredStyle: .alert
-    )
-    let okAction = UIAlertAction(title: "확인", style: .default)
-    alert.addAction(okAction)
-    present(alert, animated: true)
   }
 }
