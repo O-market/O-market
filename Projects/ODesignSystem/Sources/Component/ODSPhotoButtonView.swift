@@ -10,6 +10,14 @@ import UIKit
 
 import SnapKit
 
+private class NotHitStackView: UIStackView {
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    let hitView = super.hitTest(point, with: event)
+    if self == hitView { return nil }
+    return hitView
+  }
+}
+
 public final class ODSPhotoButtonView: UIButton {
   private let roundView: UIView = {
     let view = UIView()
@@ -21,7 +29,9 @@ public final class ODSPhotoButtonView: UIButton {
   }()
   
   private lazy var stackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [cameraImageView, imageCountLabel])
+    let stackView = NotHitStackView(
+      arrangedSubviews: [cameraImageView, imageCountLabel]
+    )
     stackView.axis = .vertical
     stackView.alignment = .center
     stackView.spacing = 2
@@ -49,12 +59,12 @@ public final class ODSPhotoButtonView: UIButton {
   
   private func configureUI() {
     cameraImageView.tintColor = .black
-    addSubview(roundView)
-    roundView.addSubview(stackView)
+    layer.cornerRadius = 10
+    layer.borderWidth = 1
+    layer.borderColor = UIColor.systemGray5.cgColor
+    backgroundColor = .clear
     
-    roundView.snp.makeConstraints {
-      $0.directionalEdges.equalToSuperview().inset(26)
-    }
+    addSubview(stackView)
     stackView.snp.makeConstraints {
       $0.directionalEdges.equalToSuperview().inset(14)
     }

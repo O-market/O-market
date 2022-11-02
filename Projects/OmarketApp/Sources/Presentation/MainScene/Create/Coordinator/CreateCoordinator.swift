@@ -8,6 +8,8 @@
 
 import UIKit
 
+import ODesignSystem
+
 final class CreateCoordinator: Coordinator {
   var navigationController: UINavigationController
   weak var parentCoordinator: Coordinator?
@@ -18,9 +20,28 @@ final class CreateCoordinator: Coordinator {
   }
 
   func start() {
-    let viewController = CreateViewController()
-    
+    let network = NetworkServiceImpl()
+    let repository = ProductRepositoryImpl(networkService: network)
+    let useCase = ProductFetchUseCaseImpl(repository: repository)
+    let viewModel = CreateViewModel(useCase: useCase)
+    let viewController = CreateViewController(viewModel: viewModel)
     viewController.coordinator = self
+    
     navigationController.pushViewController(viewController, animated: true)
+  }
+  
+  func removeCoordinator() {
+    parentCoordinator?.removeChildCoordinator(child: self)
+  }
+  
+  func presentImagePicker(
+    limitCount: Int,
+    delegate: MSImagePickerDelegate
+  ) {
+    let imagePicker = MSImagePicker()
+    imagePicker.settings.selectionLimit = limitCount
+    imagePicker.settings.selectedIndicatorColor = ODS.Color.brand010
+    imagePicker.delegate = delegate
+    navigationController.present(imagePicker, animated: true)
   }
 }

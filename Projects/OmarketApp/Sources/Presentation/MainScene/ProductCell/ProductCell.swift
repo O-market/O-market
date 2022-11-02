@@ -58,7 +58,7 @@ final class ProductCell: UICollectionViewCell {
     return label
   }()
   
-  private let discountedPriceLabel: UILabel = {
+  private let bargainPriceLabel: UILabel = {
     let label = UILabel()
     label.font = ODS.Font.B_R15
     
@@ -109,8 +109,8 @@ final class ProductCell: UICollectionViewCell {
     self.priceLabel.text = viewModel.price
     self.priceLabel.strike()
     
-    self.discountedPriceLabel.text = viewModel.discountedPrice
-    self.discountedPriceLabel.boldNumber()
+    self.bargainPriceLabel.text = viewModel.bargainPrice
+    self.bargainPriceLabel.boldNumber()
     
     self.stockTitleLabel.text = viewModel.stockTitle
     self.stockLabel.text = viewModel.stock
@@ -133,7 +133,7 @@ final class ProductCell: UICollectionViewCell {
     stockStackView.addArrangedSubview(stockLabel)
     
     bargainStackView.addArrangedSubview(discountPercentLabel)
-    bargainStackView.addArrangedSubview(discountedPriceLabel)
+    bargainStackView.addArrangedSubview(bargainPriceLabel)
   }
   
   private func setupCell() {

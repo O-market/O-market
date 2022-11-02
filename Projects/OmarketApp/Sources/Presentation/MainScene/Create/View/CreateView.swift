@@ -25,37 +25,43 @@ final class CreateView: UIView {
     return scrollView
   }()
   
-  private let photoButton = ODSPhotoButtonView()
+  let photoButton = ODSPhotoButtonView()
+  
+  private let buttonbackgarundView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .clear
+    return view
+  }()
   
   private lazy var imageStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [photoButton])
+    let stackView = UIStackView(arrangedSubviews: [buttonbackgarundView])
     stackView.spacing = 8
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
     return stackView
   }()
   
-  private let titleTextField: ODSLineTextField = {
+  let titleTextField: ODSLineTextField = {
     let textField = ODSLineTextField(lineStyle: .all)
     textField.placeholder = "상품명"
     return textField
   }()
   
-  private let priceTextField: ODSLineTextField = {
+  let priceTextField: ODSLineTextField = {
     let textField = ODSLineTextField(lineStyle: .bottom)
     textField.placeholder = "₩ 상품가격"
     textField.keyboardType = .numberPad
     return textField
   }()
   
-  private let discountPriceTextField: ODSLineTextField = {
+  let discountPriceTextField: ODSLineTextField = {
     let textField = ODSLineTextField(lineStyle: .bottom)
     textField.placeholder = "₩ 할인가격 (선택사항)"
     textField.keyboardType = .numberPad
     return textField
   }()
   
-  private let stockTextField: ODSLineTextField = {
+  let stockTextField: ODSLineTextField = {
     let textField = ODSLineTextField(lineStyle: .bottom)
     textField.placeholder = "재고 수량"
     textField.keyboardType = .numberPad
@@ -133,10 +139,17 @@ final class CreateView: UIView {
       $0.directionalEdges.equalToSuperview()
       $0.height.equalToSuperview()
     }
-
+    
+    buttonbackgarundView.snp.makeConstraints {
+      $0.width.equalTo(buttonbackgarundView.snp.height)
+      $0.height.equalToSuperview()
+    }
+    
+    buttonbackgarundView.addSubview(photoButton)
     photoButton.snp.makeConstraints {
       $0.width.equalTo(photoButton.snp.height)
-      $0.height.equalToSuperview()
+      $0.height.equalToSuperview().multipliedBy(0.5)
+      $0.center.equalToSuperview()
     }
 
     textFieldStackView.snp.makeConstraints {
@@ -149,5 +162,20 @@ final class CreateView: UIView {
     placeholderLabel.snp.makeConstraints {
       $0.directionalEdges.equalToSuperview().inset(7)
     }
+  }
+  
+  func addImageView(_ views: [UIView]) {
+    views.forEach {
+      imageStackView.addArrangedSubview($0)
+    }
+  }
+  
+  func checkEmptyTextField() -> String? {
+    var textFields = [String]()
+    if titleTextField.text?.isEmpty == true { textFields.append("상품명") }
+    if priceTextField.text?.isEmpty == true { textFields.append("상품가격") }
+    if stockTextField.text?.isEmpty == true { textFields.append("재고 수량") }
+    if textView.text.isEmpty { textFields.append("상품 설명") }
+    return textFields.isEmpty ? nil : textFields.joined(separator: ", ")
   }
 }

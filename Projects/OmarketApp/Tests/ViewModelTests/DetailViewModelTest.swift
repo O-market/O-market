@@ -22,7 +22,6 @@ final class DetailViewModelTest: XCTestCase {
     let productImage = ProductImage(id: 1,
                          url: "TestURL",
                          thumbnailURL: "TestURL",
-                         succeed: true,
                          issuedAt: "2022-01-24T00:00:00.00")
     dummyProduct = Product(
       id: 1,
