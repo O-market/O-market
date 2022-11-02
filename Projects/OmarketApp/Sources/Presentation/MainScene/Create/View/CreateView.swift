@@ -172,9 +172,9 @@ final class CreateView: UIView {
   
   func checkEmptyTextField() -> String? {
     var textFields = [String]()
-    if titleTextField.text!.isEmpty { textFields.append("상품명") }
-    if priceTextField.text!.isEmpty { textFields.append("상품가격") }
-    if stockTextField.text!.isEmpty { textFields.append("재고 수량") }
+    if titleTextField.text?.isEmpty == true { textFields.append("상품명") }
+    if priceTextField.text?.isEmpty == true { textFields.append("상품가격") }
+    if stockTextField.text?.isEmpty == true { textFields.append("재고 수량") }
     if textView.text.isEmpty { textFields.append("상품 설명") }
     return textFields.isEmpty ? nil : textFields.joined(separator: ", ")
   }
