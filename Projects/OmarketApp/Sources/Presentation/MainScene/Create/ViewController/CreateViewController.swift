@@ -111,14 +111,14 @@ extension CreateViewController {
     return Product(
       id: 0,
       vendorId: 0,
-      name: self.mainView.titleTextField.text!,
+      name: self.mainView.titleTextField.text ?? "",
       description: self.mainView.textView.text,
       thumbnail: "",
       currency: "KRW",
-      price: Double(self.mainView.priceTextField.text!)!,
+      price: Double(self.mainView.priceTextField.text ?? "") ?? 0.0,
       bargainPrice: 0.0,
-      discountedPrice: Double(self.mainView.discountPriceTextField.text!) ?? 0,
-      stock: Int(self.mainView.stockTextField.text!)!,
+      discountedPrice: Double(self.mainView.discountPriceTextField.text ?? "") ?? 0.0,
+      stock: Int(self.mainView.stockTextField.text ?? "") ?? 0,
       createdAt: "",
       issuedAt: ""
     )
