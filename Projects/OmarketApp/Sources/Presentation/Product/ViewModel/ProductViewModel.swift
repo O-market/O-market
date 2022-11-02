@@ -1,5 +1,5 @@
 //
-//  ProductsViewModel.swift
+//  ProductViewModel.swift
 //  OmarketApp
 //
 //  Created by 김도연 on 2022/08/28.
@@ -9,23 +9,23 @@
 import RxSwift
 import RxRelay
 
-protocol ProductsViewModelInput {
+protocol ProductViewModelInput {
   func didTapCell(_ product: Product)
   func didTapAddProductButton()
   func requestProducts(pageNumber: Int, itemsPerPage: Int)
   func prefetchIndexPath(_ row: Int)
 }
 
-protocol ProductsViewModelOutput {
+protocol ProductViewModelOutput {
   var title: String { get }
   var products: BehaviorRelay<[Product]> { get }
   var showProductAddScene: PublishRelay<Void> { get }
   var showProductDetailScene: PublishRelay<Product> { get }
 }
 
-protocol ProductsViewModelType: ProductsViewModelInput, ProductsViewModelOutput {}
+protocol ProductViewModelType: ProductViewModelInput, ProductViewModelOutput {}
 
-final class ProductsViewModel: ProductsViewModelType {
+final class ProductViewModel: ProductViewModelType {
   private let productFetchUseCase: ProductFetchUseCase
   private let disposeBag = DisposeBag()
   private var currentPage = 1
@@ -42,7 +42,7 @@ final class ProductsViewModel: ProductsViewModelType {
   let showProductDetailScene = PublishRelay<Product>()
 }
 
-extension ProductsViewModel {
+extension ProductViewModel {
   // MARK: Input
   
   func didTapCell(_ product: Product) {

@@ -1,5 +1,5 @@
 //
-//  ProductsView.swift
+//  ProductView.swift
 //  OmarketApp
 //
 //  Created by 김도연 on 2022/08/28.
@@ -11,7 +11,7 @@ import UIKit
 import ODesignSystem
 import SnapKit
 
-final class ProductsView: UIView {
+final class ProductView: UIView {
   
   let addProductButton: UIButton = {
     let button = UIButton()

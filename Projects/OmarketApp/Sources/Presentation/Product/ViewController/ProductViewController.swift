@@ -1,5 +1,5 @@
 //
-//  ProductsViewController.swift
+//  ProductViewController.swift
 //  OmarketApp
 //
 //  Created by 김도연 on 2022/08/28.
@@ -11,13 +11,13 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class ProductsViewController: UIViewController {
+class ProductViewController: UIViewController {
   
-  private let viewModel: ProductsViewModelType
+  private let viewModel: ProductViewModelType
   private let disposeBag = DisposeBag()
-  weak var coordinator: ProductsCoordinator?
+  weak var coordinator: ProductCoordinator?
   
-  init(_ viewModel: ProductsViewModelType) {
+  init(_ viewModel: ProductViewModelType) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
@@ -28,7 +28,7 @@ class ProductsViewController: UIViewController {
   
   override func loadView() {
     super.loadView()
-    view = ProductsView()
+    view = ProductView()
   }
   
   override func viewDidLoad() {
@@ -49,7 +49,7 @@ class ProductsViewController: UIViewController {
   }
   
   private func bind() {
-    guard let view = view as? ProductsView else { return }
+    guard let view = view as? ProductView else { return }
 
     view.addProductButton.rx.tap
       .bind { [weak self] in
