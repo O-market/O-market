@@ -40,7 +40,7 @@ final class CreateCoordinator: Coordinator {
   ) {
     let imagePicker = MSImagePicker()
     imagePicker.settings.selectionLimit = limitCount
-    imagePicker.settings.selectedIndicatorColor = ODS.Color.example
+    imagePicker.settings.selectedIndicatorColor = ODS.Color.brand010
     imagePicker.delegate = delegate
     navigationController.present(imagePicker, animated: true)
   }
