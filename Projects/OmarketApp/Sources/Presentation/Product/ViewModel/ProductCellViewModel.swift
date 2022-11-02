@@ -23,9 +23,9 @@ protocol ProductCellViewModelOutput {
   var isSale: Bool { get }
 }
 
-protocol ProductCellViewModelType: ProductCellViewModelInput, ProductCellViewModelOutput {}
+protocol ProductCellViewModelable: ProductCellViewModelInput, ProductCellViewModelOutput {}
 
-final class ProductCellViewModel: ProductCellViewModelType {
+final class ProductCellViewModel: ProductCellViewModelable {
   private let product: Product
   private let numberFormatter: NumberFormatter = {
     let formatter = NumberFormatter()

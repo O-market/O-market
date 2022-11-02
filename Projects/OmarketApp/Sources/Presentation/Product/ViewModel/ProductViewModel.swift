@@ -23,9 +23,9 @@ protocol ProductViewModelOutput {
   var showProductDetailScene: PublishRelay<Product> { get }
 }
 
-protocol ProductViewModelType: ProductViewModelInput, ProductViewModelOutput {}
+protocol ProductViewModelable: ProductViewModelInput, ProductViewModelOutput {}
 
-final class ProductViewModel: ProductViewModelType {
+final class ProductViewModel: ProductViewModelable {
   private let productFetchUseCase: ProductFetchUseCase
   private let disposeBag = DisposeBag()
   private var currentPage = 1

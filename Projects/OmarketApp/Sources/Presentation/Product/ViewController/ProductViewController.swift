@@ -13,11 +13,11 @@ import RxSwift
 
 class ProductViewController: UIViewController {
   
-  private let viewModel: ProductViewModelType
+  private let viewModel: ProductViewModelable
   private let disposeBag = DisposeBag()
   weak var coordinator: ProductCoordinator?
   
-  init(_ viewModel: ProductViewModelType) {
+  init(viewModel: ProductViewModelable) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
@@ -33,7 +33,7 @@ class ProductViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    bind()
+    bind(viewModel: viewModel)
     viewModel.requestProducts(pageNumber: 1, itemsPerPage: 20)
   }
 
@@ -48,7 +48,7 @@ class ProductViewController: UIViewController {
     navigationController?.navigationBar.titleTextAttributes = nil
   }
   
-  private func bind() {
+  private func bind(viewModel: ProductViewModelable) {
     guard let view = view as? ProductView else { return }
 
     view.addProductButton.rx.tap

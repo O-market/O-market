@@ -20,9 +20,9 @@ final class ProductCoordinator: Coordinator {
   func start() {
     let networkService = NetworkServiceImpl(urlSession: .shared)
     let repository = ProductRepositoryImpl(networkService: networkService)
-    let usecase = ProductFetchUseCaseImpl(repository: repository)
-    let viewModel = ProductViewModel(useCase: usecase)
-    let viewController = ProductViewController(viewModel)
+    let useCase = ProductFetchUseCaseImpl(repository: repository)
+    let viewModel = ProductViewModel(useCase: useCase)
+    let viewController = ProductViewController(viewModel: viewModel)
     
     viewController.coordinator = self
     navigationController.pushViewController(viewController, animated: true)

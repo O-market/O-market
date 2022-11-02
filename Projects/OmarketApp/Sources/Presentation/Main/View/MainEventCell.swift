@@ -1,5 +1,5 @@
 //
-//  MainEventCollectionViewCell.swift
+//  MainEventCell.swift
 //  OmarketApp
 //
 //  Created by Lingo on 2022/09/02.
@@ -9,15 +9,21 @@
 import UIKit
 
 import RGMagpie
+import SnapKit
 
-final class MainEventCollectionViewCell: UICollectionViewCell {
+final class MainEventCell: UICollectionViewCell {
+  // MARK: Interfaces
+
   private let imageView: UIImageView = {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFill
     imageView.clipsToBounds = true
-
     return imageView
   }()
+
+  // MARK: Properties
+
+  // MARK: Life Cycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -25,19 +31,20 @@ final class MainEventCollectionViewCell: UICollectionViewCell {
   }
 
   required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    super.init(coder: coder)
+    configureUI()
   }
 
-  func bind(with cellItem: ProductSectionItemType) {
-    guard let cellItem = cellItem as? ProductEvent else { return }
+  // MARK: Methods
 
-    imageView.image = UIImage(named: cellItem.name)
+  func bind(viewModel: MainEventCellViewModel) {
+    guard let item = viewModel.item as? ProductEvent else { return }
+
+    imageView.image = UIImage(named: item.name)
   }
-}
 
-// MARK: - UI
+  // MARK: Helpers
 
-extension MainEventCollectionViewCell {
   private func configureUI() {
     contentView.addSubview(imageView)
 

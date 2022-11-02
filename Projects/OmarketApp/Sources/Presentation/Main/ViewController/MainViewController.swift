@@ -17,27 +17,30 @@ import SnapKit
 final class MainViewController: UIViewController {
   private typealias MainDataSource = RxCollectionViewSectionedReloadDataSource<ProductSection>
 
+  // MARK: Interfaces
+
   private lazy var menuSegmentControl = ODSCategoryView(items: viewModel.categories)
   private lazy var collectionView: UICollectionView = {
     let layout = configureCompositionalLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     collectionView.alwaysBounceVertical = false
+
     collectionView.register(
-      MainEventCollectionViewCell.self,
-      forCellWithReuseIdentifier: MainEventCollectionViewCell.identifier
+      MainEventCell.self,
+      forCellWithReuseIdentifier: MainEventCell.identifier
     )
     collectionView.register(
       ProductCell.self,
       forCellWithReuseIdentifier: ProductCell.identifier
     )
     collectionView.register(
-      MainProductCollectionViewHeader.self,
+      MainProductHeader.self,
       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-      withReuseIdentifier: MainProductCollectionViewHeader.identifier
+      withReuseIdentifier: MainProductHeader.identifier
     )
-
     return collectionView
   }()
+
   private let pageControl: UIPageControl = {
     let pageControl = UIPageControl()
     pageControl.currentPage = 0
@@ -45,8 +48,12 @@ final class MainViewController: UIViewController {
     return pageControl
   }()
 
+  // MARK: Properties
+
   private let disposeBag = DisposeBag()
   private let viewModel: MainViewModelable
+
+  // MARK: Life Cycle
 
   init(viewModel: MainViewModelable) {
     self.viewModel = viewModel
@@ -60,7 +67,7 @@ final class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
-    bindUI()
+    bind(viewModel: viewModel)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -68,7 +75,11 @@ final class MainViewController: UIViewController {
     configureNavigationBar()
   }
 
-  private func bindUI() {
+  // MARK: Methods
+
+  // MARK: Helpers
+
+  private func bind(viewModel: MainViewModelable) {
     let dataSource = configureCollectionViewDataSource()
 
     viewModel.sections
@@ -86,11 +97,11 @@ final class MainViewController: UIViewController {
     let dataSource = MainDataSource { _, collectionView, indexPath, item in
       if indexPath.section == .zero {
         guard let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: MainEventCollectionViewCell.identifier,
+          withReuseIdentifier: MainEventCell.identifier,
           for: indexPath
-        ) as? MainEventCollectionViewCell else { return UICollectionViewCell() }
+        ) as? MainEventCell else { return UICollectionViewCell() }
 
-        cell.bind(with: item)
+        cell.bind(viewModel: MainEventCellViewModel(item: item))
         return cell
 
       } else {
@@ -110,11 +121,11 @@ final class MainViewController: UIViewController {
       guard let self = self else { return UICollectionReusableView() }
       guard let header = collectionView.dequeueReusableSupplementaryView(
         ofKind: kind,
-        withReuseIdentifier: MainProductCollectionViewHeader.identifier,
+        withReuseIdentifier: MainProductHeader.identifier,
         for: indexPath
-      ) as? MainProductCollectionViewHeader else { return UICollectionReusableView() }
+      ) as? MainProductHeader else { return UICollectionReusableView() }
 
-      header.bind(with: self.viewModel)
+      header.bind(viewModel: self.viewModel)
       return header
     }
 
@@ -129,6 +140,7 @@ extension MainViewController {
     return UICollectionViewCompositionalLayout { [weak self] section, _ in
       if section == .zero {
         return self?.configureEventSection()
+
       } else {
         return self?.configureProductSection()
       }

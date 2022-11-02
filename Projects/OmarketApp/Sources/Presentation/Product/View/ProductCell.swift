@@ -13,7 +13,7 @@ import RGMagpie
 import SnapKit
 
 final class ProductCell: UICollectionViewCell {
-  private var viewModel: ProductCellViewModelType?
+  private var viewModel: ProductCellViewModelable?
   
   private let productImageView: UIImageView = {
     let imageView = UIImageView()
@@ -99,7 +99,7 @@ final class ProductCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func bind(with viewModel: ProductCellViewModelType) {
+  func bind(with viewModel: ProductCellViewModelable) {
     self.viewModel = viewModel
 
     self.productImageView.mp.setImage(with: viewModel.imageURL)
