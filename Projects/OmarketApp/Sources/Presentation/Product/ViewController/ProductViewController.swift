@@ -12,25 +12,30 @@ import RxCocoa
 import RxSwift
 
 class ProductViewController: UIViewController {
-  
+  // MARK: Interfaces
+
+  // MARK: Properties
+
+  weak var coordinator: ProductCoordinator?
   private let viewModel: ProductViewModelable
   private let disposeBag = DisposeBag()
-  weak var coordinator: ProductCoordinator?
-  
+
+  // MARK: Life Cycle
+
   init(viewModel: ProductViewModelable) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func loadView() {
     super.loadView()
     view = ProductView()
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     bind(viewModel: viewModel)
@@ -41,6 +46,10 @@ class ProductViewController: UIViewController {
     super.viewWillAppear(animated)
     configureNavigationBar()
   }
+
+  // MARK: Methods
+
+  // MARK: Helpers
 
   private func configureNavigationBar() {
     navigationItem.title = viewModel.title
@@ -75,7 +84,7 @@ class ProductViewController: UIViewController {
         cellIdentifier: ProductCell.identifier,
         cellType: ProductCell.self
       )) { _, item, cell in
-        cell.bind(with: ProductCellViewModel(product: item))
+        cell.bind(viewModel: ProductCellViewModel(product: item))
     }
     .disposed(by: disposeBag)
     

@@ -8,9 +8,7 @@
 
 import Foundation
 
-protocol ProductCellViewModelInput {
-  // empty
-}
+protocol ProductCellViewModelInput { }
 
 protocol ProductCellViewModelOutput {
   var imageURL: String { get }
@@ -23,9 +21,11 @@ protocol ProductCellViewModelOutput {
   var isSale: Bool { get }
 }
 
-protocol ProductCellViewModelable: ProductCellViewModelInput, ProductCellViewModelOutput {}
+protocol ProductCellViewModelable: ProductCellViewModelInput, ProductCellViewModelOutput { }
 
 final class ProductCellViewModel: ProductCellViewModelable {
+  // MARK: Properties
+
   private let product: Product
   private let numberFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
@@ -33,17 +33,15 @@ final class ProductCellViewModel: ProductCellViewModelable {
     formatter.maximumFractionDigits = 0
     return formatter
   }()
-  
-  // MARK: - OutPut
-  
+
   var imageURL: String {
     return product.thumbnail
   }
-  
+
   var productName: String {
     return product.name
   }
-  
+
   var price: String {
     return formattedString(product.price)
   }
@@ -51,36 +49,39 @@ final class ProductCellViewModel: ProductCellViewModelable {
   var bargainPrice: String {
     return formattedString(product.bargainPrice)
   }
-  
+
   var dicountPercentage: String {
     if product.discountedPrice == 0 { return "0%" }
     
     let percentage = Int((product.discountedPrice / product.price * 100).rounded())
     return percentage == 0 ? "1%" : "\(percentage)%"
   }
-  
+
   var stockTitle: String {
     return "잔여 수량"
   }
-  
+
   var stock: String {
     return "\(product.stock) 개"
   }
   var isSale: Bool {
     return product.discountedPrice != .zero
   }
-  
+
+  // MARK: Life Cycle
+
   init(product: Product) {
     self.product = product
   }
-  
+
+  // MARK: Methods
+
+  // MARK: Helpers
+
   private func formattedString(_ number: Double) -> String {
-    guard let number = numberFormatter.string(from: number as NSNumber) else {
-      return ""
-    }
-    
+    guard let number = numberFormatter.string(from: number as NSNumber) else { return "" }
+
     let currency = product.currency == "KRW" ? "원" : "달러"
-    
     return number + " " + currency
   }
 }
