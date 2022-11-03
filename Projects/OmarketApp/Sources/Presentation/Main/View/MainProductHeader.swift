@@ -71,6 +71,7 @@ final class MainProductHeader: UICollectionReusableView {
       $0.centerY.equalToSuperview()
       $0.leading.equalToSuperview()
     }
+
     showProductButton.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.trailing.equalToSuperview().offset(-16.0)

@@ -10,7 +10,7 @@ import Foundation
 
 import RxDataSources
 
-protocol ProductSectionItemType {}
+protocol ProductSectionItemType { }
 
 enum ProductSectionType {
   case event
@@ -37,7 +37,7 @@ struct ProductEvent: ProductSectionItemType {
 
 // MARK: - Extension
 
-extension Product: ProductSectionItemType {}
+extension Product: ProductSectionItemType { }
 
 extension ProductEvent {
   static let items = ["event01", "event02", "event03", "event04"].map { ProductEvent(name: $0) }
