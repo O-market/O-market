@@ -24,7 +24,7 @@ enum EndpointAPI {
   case products(ProductRequestQuery)
   case product(Int)
   case productCreation(Data, String)
-  case productUpdate(Data, Int)
+  case productUpdate(Data?, Int)
 
   var asEndpoint: Endpoint {
     switch self {
