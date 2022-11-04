@@ -27,7 +27,7 @@ final class MainCoordinator: Coordinator {
   }
 
   func showProductsScene() {
-    let productsCoordinator = ProductsCoordinator(navigationController: navigationController)
+    let productsCoordinator = ProductCoordinator(navigationController: navigationController)
     childCoordinators.append(productsCoordinator)
     productsCoordinator.parentCoordinator = self
     productsCoordinator.start()

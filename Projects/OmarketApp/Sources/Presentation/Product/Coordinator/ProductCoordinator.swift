@@ -1,5 +1,5 @@
 //
-//  ProductsCoordinator.swift
+//  ProductCoordinator.swift
 //  OmarketApp
 //
 //  Created by 김도연 on 2022/09/02.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ProductsCoordinator: Coordinator {
+final class ProductCoordinator: Coordinator {
   let navigationController: UINavigationController
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
@@ -20,9 +20,9 @@ final class ProductsCoordinator: Coordinator {
   func start() {
     let networkService = NetworkServiceImpl(urlSession: .shared)
     let repository = ProductRepositoryImpl(networkService: networkService)
-    let usecase = ProductFetchUseCaseImpl(repository: repository)
-    let viewModel = ProductsViewModel(useCase: usecase)
-    let viewController = ProductsViewController(viewModel)
+    let useCase = ProductFetchUseCaseImpl(repository: repository)
+    let viewModel = ProductViewModel(useCase: useCase)
+    let viewController = ProductViewController(viewModel: viewModel)
     
     viewController.coordinator = self
     navigationController.pushViewController(viewController, animated: true)

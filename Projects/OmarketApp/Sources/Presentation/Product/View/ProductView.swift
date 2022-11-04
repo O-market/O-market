@@ -1,5 +1,5 @@
 //
-//  ProductsView.swift
+//  ProductView.swift
 //  OmarketApp
 //
 //  Created by 김도연 on 2022/08/28.
@@ -11,42 +11,51 @@ import UIKit
 import ODesignSystem
 import SnapKit
 
-final class ProductsView: UIView {
-  
+final class ProductView: UIView {
+  // MARK: Interfaces
+
   let addProductButton: UIButton = {
     let button = UIButton()
     button.setBackgroundImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
     button.tintColor = ODS.Color.brand010
     button.backgroundColor = .systemBackground
     button.clipsToBounds = true
-    
     return button
   }()
-  
+
   private(set) lazy var productsCollectionView: UICollectionView = {
     let layout = makeCollectionViewLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-
     return collectionView
   }()
-  
+
+  // MARK: Properties
+
+  // MARK: Life Cycle
+
   init() {
     super.init(frame: .zero)
     addViews()
     setupLayout()
     setupView()
   }
-  
+
   required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    super.init(coder: coder)
+    addViews()
+    setupLayout()
+    setupView()
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
-    
-    addProductButton.layer.cornerRadius = addProductButton.frame.width / 2
+    addProductButton.layer.cornerRadius = addProductButton.frame.width * 0.5
   }
-  
+
+  // MARK: Methods
+
+  // MARK: Helpers
+
   private func addViews() {
     self.addSubview(productsCollectionView)
     self.addSubview(addProductButton)
@@ -58,7 +67,7 @@ final class ProductsView: UIView {
     }
     
     addProductButton.snp.makeConstraints {
-      $0.width.height.equalTo(50)
+      $0.width.height.equalTo(50.0)
       $0.trailing.bottom.equalTo(safeAreaLayoutGuide).offset(-20.0)
     }
   }

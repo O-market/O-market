@@ -21,12 +21,14 @@ protocol MainViewModelOutput {
   var sections: Observable<[ProductSection]> { get }
 }
 
-protocol MainViewModelable: MainViewModelInput, MainViewModelOutput {}
+protocol MainViewModelable: MainViewModelInput, MainViewModelOutput { }
 
 final class MainViewModel: MainViewModelable {
-  // Input
+  // MARK: Properties
+
   let title = "오픈마켓"
   let categories = ["오픈마켓", "신상품"]
+
   var sections: Observable<[ProductSection]> {
     return Observable.combineLatest(
       Observable.just(ProductEvent.items),
@@ -45,12 +47,17 @@ final class MainViewModel: MainViewModelable {
   private let disposeBag = DisposeBag()
   private let useCase: ProductFetchUseCase
 
+  // MARK: Life Cycle
+
   init(useCase: ProductFetchUseCase) {
     self.useCase = useCase
   }
 
-  // Output
+  // MARK: Methods
+
   func showProductsButtonDidTapEvent() {
     coordinator?.showProductsScene()
   }
+
+  // MARK: Helpers
 }
