@@ -60,9 +60,10 @@ enum EndpointAPI {
     case .productUpdate(let payloadm, let id):
       return Endpoint(
         base: Base.baseURL,
-        path: "/api/products\(id)",
+        path: "/api/products/\(id)",
         method: .patch,
         headers: [
+          "Content-Type": "application/json",
           "identifier": UserInformation.identifier
         ],
         payload: payloadm
