@@ -24,6 +24,7 @@ enum EndpointAPI {
   case products(ProductRequestQuery)
   case product(Int)
   case productCreation(Data, String)
+  case productUpdate(Data, Int)
 
   var asEndpoint: Endpoint {
     switch self {
@@ -55,6 +56,17 @@ enum EndpointAPI {
           "identifier": UserInformation.identifier
         ],
         payload: payload)
+      
+    case .productUpdate(let payloadm, let id):
+      return Endpoint(
+        base: Base.baseURL,
+        path: "/api/products\(id)",
+        method: .patch,
+        headers: [
+          "identifier": UserInformation.identifier
+        ],
+        payload: payloadm
+      )
     }
   }
 }
