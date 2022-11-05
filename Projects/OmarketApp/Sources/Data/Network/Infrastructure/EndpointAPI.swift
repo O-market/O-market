@@ -57,7 +57,7 @@ enum EndpointAPI {
         ],
         payload: payload)
       
-    case .productUpdate(let payloadm, let id):
+    case .productUpdate(let payload, let id):
       return Endpoint(
         base: Base.baseURL,
         path: "/api/products/\(id)",
@@ -66,7 +66,7 @@ enum EndpointAPI {
           "Content-Type": "application/json",
           "identifier": UserInformation.identifier
         ],
-        payload: payloadm
+        payload: payload
       )
     }
   }
