@@ -36,7 +36,7 @@ final class ProductRepositoryImpl: ProductRepository {
       .map { _ in }
   }
   
-  func updataProduct(endpoint: Endpoint) -> Observable<Void> {
+  func updateProduct(endpoint: Endpoint) -> Observable<Void> {
     return networkService.request(endpoint: endpoint)
       .map { _ in }
   }

@@ -54,8 +54,8 @@ final class ProductFetchUseCaseImpl: ProductFetchUseCase {
   
   func updateProduct(product: Product) -> Observable<Void> {
     let payload = try? JSONEncoder().encode(makeProductRequest(product: product))
-    let endpoin = EndpointAPI.productUpdate(payload, product.id).asEndpoint
-    return repository.updataProduct(endpoint: endpoin)
+    let endpoint = EndpointAPI.productUpdate(payload, product.id).asEndpoint
+    return repository.updateProduct(endpoint: endpoint)
   }
 }
 
