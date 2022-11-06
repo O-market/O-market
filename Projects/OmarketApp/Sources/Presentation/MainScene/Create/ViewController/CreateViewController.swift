@@ -13,7 +13,7 @@ import RxSwift
 import SnapKit
 
 class CreateViewController: UIViewController {
-  weak var coordinator: CreateCoordinator?
+  weak var coordinator: CreationCoordinator?
   private let disposeBag = DisposeBag()
   private let doneButton = UIBarButtonItem(
     title: "완료",

@@ -1,5 +1,5 @@
 //
-//  CreateCoordinator.swift
+//  CreationCoordinator.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/17.
@@ -10,7 +10,7 @@ import UIKit
 
 import ODesignSystem
 
-final class CreateCoordinator: Coordinator {
+final class CreationCoordinator: Coordinator {
   var navigationController: UINavigationController
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []

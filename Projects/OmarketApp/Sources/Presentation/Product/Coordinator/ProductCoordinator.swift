@@ -36,7 +36,7 @@ final class ProductCoordinator: Coordinator {
   }
   
   func showCreateView() {
-    let createCoordinator = CreateCoordinator(navigationController: navigationController)
+    let createCoordinator = CreationCoordinator(navigationController: navigationController)
     childCoordinators.append(createCoordinator)
     createCoordinator.parentCoordinator = self
     createCoordinator.start()
