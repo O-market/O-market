@@ -1,5 +1,5 @@
 //
-//  CreateViewModel.swift
+//  CreationViewModel.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/24.
@@ -11,21 +11,21 @@ import Foundation
 import RxSwift
 import RxRelay
 
-protocol CreateViewModelInput {
+protocol CreationViewModelInput {
   func doneButtonDidTap(product: Product) -> Observable<Void>
   func removeImageData(id: UUID)
   func selectedImageData(_ datas: [ImageData])
 }
 
-protocol CreateViewModelOutput {
+protocol CreationViewModelOutput {
   var numberOfImagesSelected: Observable<Int> { get }
   var selectionLimit: Int { get }
   var imageCountLimit: Int { get }
 }
 
-protocol CreateViewModelable: CreateViewModelInput, CreateViewModelOutput {}
+protocol CreationViewModelable: CreationViewModelInput, CreationViewModelOutput {}
 
-final class CreateViewModel: CreateViewModelable {
+final class CreationViewModel: CreationViewModelable {
   private let useCase: ProductFetchUseCase
   private var imageDatas = BehaviorRelay<[ImageData]>(value: [])
   let imageCountLimit: Int = 5

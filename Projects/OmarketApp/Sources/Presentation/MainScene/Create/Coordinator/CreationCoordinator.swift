@@ -23,7 +23,7 @@ final class CreationCoordinator: Coordinator {
     let network = NetworkServiceImpl()
     let repository = ProductRepositoryImpl(networkService: network)
     let useCase = ProductFetchUseCaseImpl(repository: repository)
-    let viewModel = CreateViewModel(useCase: useCase)
+    let viewModel = CreationViewModel(useCase: useCase)
     let viewController = CreationViewController(viewModel: viewModel)
     viewController.coordinator = self
     

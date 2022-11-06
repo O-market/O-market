@@ -22,9 +22,9 @@ class CreationViewController: UIViewController {
     action: nil
   )
   private let mainView = WritingView()
-  private let viewModel: CreateViewModelable
+  private let viewModel: CreationViewModelable
   
-  init(viewModel: CreateViewModelable) {
+  init(viewModel: CreationViewModelable) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
