@@ -1,5 +1,5 @@
 //
-//  CreateCoordinator.swift
+//  CreationCoordinator.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/17.
@@ -10,7 +10,7 @@ import UIKit
 
 import ODesignSystem
 
-final class CreateCoordinator: Coordinator {
+final class CreationCoordinator: Coordinator {
   var navigationController: UINavigationController
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
@@ -23,8 +23,8 @@ final class CreateCoordinator: Coordinator {
     let network = NetworkServiceImpl()
     let repository = ProductRepositoryImpl(networkService: network)
     let useCase = ProductFetchUseCaseImpl(repository: repository)
-    let viewModel = CreateViewModel(useCase: useCase)
-    let viewController = CreateViewController(viewModel: viewModel)
+    let viewModel = CreationViewModel(useCase: useCase)
+    let viewController = CreationViewController(viewModel: viewModel)
     viewController.coordinator = self
     
     navigationController.pushViewController(viewController, animated: true)

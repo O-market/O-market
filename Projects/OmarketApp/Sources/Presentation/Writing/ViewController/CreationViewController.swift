@@ -1,5 +1,5 @@
 //
-//  CreateViewController.swift
+//  CreationViewController.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/18.
@@ -12,8 +12,8 @@ import ODesignSystem
 import RxSwift
 import SnapKit
 
-class CreateViewController: UIViewController {
-  weak var coordinator: CreateCoordinator?
+class CreationViewController: UIViewController {
+  weak var coordinator: CreationCoordinator?
   private let disposeBag = DisposeBag()
   private let doneButton = UIBarButtonItem(
     title: "완료",
@@ -21,10 +21,10 @@ class CreateViewController: UIViewController {
     target: nil,
     action: nil
   )
-  private let mainView = CreateView()
-  private let viewModel: CreateViewModelable
+  private let mainView = WritingView()
+  private let viewModel: CreationViewModelable
   
-  init(viewModel: CreateViewModelable) {
+  init(viewModel: CreationViewModelable) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
@@ -47,7 +47,7 @@ class CreateViewController: UIViewController {
 
 // MARK: - UI
 
-extension CreateViewController {
+extension CreationViewController {
   private func configureUI() {
     title = "글쓰기"
     navigationItem.rightBarButtonItem = doneButton
@@ -62,7 +62,7 @@ extension CreateViewController {
 
 // MARK: - Extension
 
-extension CreateViewController {
+extension CreationViewController {
   private func bind() {
     mainView.textView.rx.text
       .orEmpty
@@ -129,7 +129,7 @@ extension CreateViewController {
 
 // MARK: - MSImagePickerDelegate
 
-extension CreateViewController: MSImagePickerDelegate {
+extension CreationViewController: MSImagePickerDelegate {
   func picker(picker: UIViewController, results: [MSImageManager]) {
     picker.dismiss(animated: true)
     results.forEach {

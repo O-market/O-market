@@ -12,7 +12,7 @@ import XCTest
 import RxSwift
 
 final class CreateViewModelTest: XCTestCase {
-  private var sut: CreateViewModelable!
+  private var sut: CreationViewModelable!
   private var productFetchuseCase: StubProductFetchUseCaseImpl!
   private var disposeBag: DisposeBag!
   private var dummyImageData: ImageData!
@@ -39,7 +39,7 @@ final class CreateViewModelTest: XCTestCase {
     )
     
     productFetchuseCase = StubProductFetchUseCaseImpl(products: [dummyProduct])
-    sut = CreateViewModel(useCase: productFetchuseCase)
+    sut = CreationViewModel(useCase: productFetchuseCase)
     disposeBag = DisposeBag()
   }
   
