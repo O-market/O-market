@@ -1,5 +1,5 @@
 //
-//  CreateView.swift
+//  WritingView.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/17.
@@ -11,7 +11,7 @@ import UIKit
 import ODesignSystem
 import SnapKit
 
-final class CreateView: UIView {
+final class WritingView: UIView {
   private let scrollView: UIScrollView = {
     let scrollView = UIScrollView()
     return scrollView

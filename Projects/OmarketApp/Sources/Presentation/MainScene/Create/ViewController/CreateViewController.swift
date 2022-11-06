@@ -21,7 +21,7 @@ class CreateViewController: UIViewController {
     target: nil,
     action: nil
   )
-  private let mainView = CreateView()
+  private let mainView = WritingView()
   private let viewModel: CreateViewModelable
   
   init(viewModel: CreateViewModelable) {
