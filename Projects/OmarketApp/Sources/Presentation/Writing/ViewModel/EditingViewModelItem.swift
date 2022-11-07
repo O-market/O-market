@@ -14,6 +14,7 @@ struct EditingViewModelItem {
   let price: String
   let discountPrice: String
   let stock: String
+  let imageURL: [String]
   
   init(product: Product) {
     self.title = product.name
@@ -21,5 +22,6 @@ struct EditingViewModelItem {
     self.price = "\(product.price)"
     self.discountPrice = "\(product.discountedPrice)"
     self.stock = "\(product.stock)"
+    self.imageURL = product.images?.compactMap { $0.url } ?? []
   }
 }
