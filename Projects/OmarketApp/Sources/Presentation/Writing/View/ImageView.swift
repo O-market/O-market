@@ -9,6 +9,7 @@
 import UIKit
 
 import ODesignSystem
+import RGMagpie
 import SnapKit
 
 final class ImageView: UIView {
@@ -19,18 +20,27 @@ final class ImageView: UIView {
     return imageView
   }()
   
-  private let removeButton = ODSXMarkButton()
+  let removeButton = ODSXMarkButton()
   var removeAction: (() -> Void)?
   
-  init(image: UIImage) {
+  init() {
     super.init(frame: .zero)
     configureUI()
-    imageView.image = image
     removeButton.addTarget(
       self,
       action: #selector(removeButtonDidTap),
       for: .touchUpInside
     )
+  }
+  
+  convenience init(image: UIImage) {
+    self.init()
+    imageView.image = image
+  }
+  
+  convenience init(imageURL: String) {
+    self.init()
+    imageView.mp.setImage(with: imageURL)
   }
   
   required init?(coder: NSCoder) {
