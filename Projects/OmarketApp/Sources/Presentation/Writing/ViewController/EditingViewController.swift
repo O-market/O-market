@@ -26,6 +26,7 @@ final class EditingViewController: UIViewController {
   
   // MARK: Properties
   
+  weak var coordinator: EditingCoordinator?
   private let disposeBag = DisposeBag()
   private let viewModel: EditingViewModelable
   
@@ -43,6 +44,11 @@ final class EditingViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    coordinator?.removeCoordinator()
   }
   
   // MARK: Methods
