@@ -21,7 +21,7 @@ protocol EditingViewModelInput {
 }
 
 protocol EditingViewModelOutput {
-  var productTextToEdit: Observable<EditingViewModelItem> { get }
+  var viewItem: Observable<EditingViewModelItem> { get }
 }
 
 protocol EditingViewModelable: EditingViewModelInput, EditingViewModelOutput {}
@@ -59,7 +59,7 @@ final class EditingViewModel: EditingViewModelable {
     return useCase.updateProduct(product: product)
   }
   
-  var productTextToEdit: Observable<EditingViewModelItem> {
+  var viewItem: Observable<EditingViewModelItem> {
     return Observable.just(EditingViewModelItem(product: product))
   }
 }
