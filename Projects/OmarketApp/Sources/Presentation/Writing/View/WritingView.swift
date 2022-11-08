@@ -153,7 +153,6 @@ final class WritingView: UIView {
     }
 
     textFieldStackView.snp.makeConstraints {
-      $0.top.equalTo(imageScrollView.snp.bottom)
       $0.bottom.equalToSuperview()
       $0.trailing.leading.equalToSuperview().inset(16)
       $0.width.equalToSuperview().inset(16)
