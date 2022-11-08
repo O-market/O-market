@@ -44,6 +44,7 @@ final class EditingViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
+    bind(viewModel: viewModel)
   }
   
   override func viewWillDisappear(_ animated: Bool) {
