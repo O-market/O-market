@@ -30,7 +30,7 @@ final class DetailViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    bind()
+    bind(viewModel: viewModel)
     configureUI()
   }
 }
@@ -52,7 +52,7 @@ extension DetailViewController {
 // MARK: - Extension
 
 extension DetailViewController {
-  private func bind() {
+  private func bind(viewModel: DetailViewModelable) {
     editBarButton.rx.tap
       .bind { [weak self] in
         let alert = UIAlertController(
@@ -61,7 +61,8 @@ extension DetailViewController {
           preferredStyle: UIAlertController.Style.actionSheet
         )
         let editAction = UIAlertAction(title: "수정", style: .default) {_ in
-          // action
+          guard let product = viewModel.product else { return }
+          self?.coordinator?.showEditingView(product: product)
         }
         let deleteAction = UIAlertAction(title: "삭제", style: .destructive) {_ in
           // action
