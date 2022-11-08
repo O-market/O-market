@@ -27,4 +27,11 @@ final class DetailCoordinator: Coordinator {
     viewController.coordinator = self
     navigationController.pushViewController(viewController, animated: true)
   }
+  
+  func showEditingView(product: Product) {
+    let editingCoordinator = EditingCoordinator(navigationController: navigationController)
+    childCoordinators.append(editingCoordinator)
+    editingCoordinator.parentCoordinator = self
+    editingCoordinator.start(product: product)
+  }
 }
