@@ -27,7 +27,7 @@ final class WritingView: UIView {
   
   let photoButton = ODSPhotoButtonView()
   
-  private let buttonbackgarundView: UIView = {
+  let buttonbackgarundView: UIView = {
     let view = UIView()
     view.backgroundColor = .clear
     return view
@@ -165,8 +165,12 @@ final class WritingView: UIView {
   }
   
   func addImageView(_ views: [UIView]) {
-    views.forEach {
-      imageStackView.addArrangedSubview($0)
+    views.forEach { view in
+      imageStackView.addArrangedSubview(view)
+      view.snp.makeConstraints {
+        $0.width.equalTo(view.snp.height)
+        $0.height.equalToSuperview()
+      }
     }
   }
   
