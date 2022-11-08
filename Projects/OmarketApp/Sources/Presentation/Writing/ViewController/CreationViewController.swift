@@ -64,7 +64,7 @@ extension CreationViewController {
 
 extension CreationViewController {
   private func bind() {
-    mainView.textView.rx.text
+    mainView.bodyTextView.rx.text
       .orEmpty
       .map { !$0.isEmpty }
       .distinctUntilChanged()
@@ -114,7 +114,7 @@ extension CreationViewController {
       id: 0,
       vendorId: 0,
       name: self.mainView.titleTextField.text ?? "",
-      description: self.mainView.textView.text,
+      description: self.mainView.bodyTextView.text,
       thumbnail: "",
       currency: "KRW",
       price: Double(self.mainView.priceTextField.text ?? "") ?? 0.0,
