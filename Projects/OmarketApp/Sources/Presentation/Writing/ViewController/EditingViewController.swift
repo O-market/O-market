@@ -99,6 +99,13 @@ final class EditingViewController: UIViewController {
         viewModel.inputBody($0)
       }.disposed(by: disposeBag)
     
+    mainView.bodyTextView.rx.text
+      .orEmpty
+      .map { !$0.isEmpty }
+      .distinctUntilChanged()
+      .bind(to: mainView.placeholderLabel.rx.isHidden)
+      .disposed(by: disposeBag)
+    
     mainView.priceTextField.rx.text
       .bind {
         viewModel.inputPirce($0)
