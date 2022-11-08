@@ -80,6 +80,7 @@ final class EditingViewController: UIViewController {
       .bind { [weak self] in
         guard let self = self else { return }
         viewModel.doneButtonDidTap()
+          .observe(on: MainScheduler.instance)
           .subscribe { _ in
             self.navigationController?.popViewController(animated: true)
           } onError: { error in
