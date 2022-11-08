@@ -125,7 +125,7 @@ extension EditingViewController {
     doneButton.tintColor = ODS.Color.brand010
     view.backgroundColor = .systemBackground
     view.addSubview(mainView)
-    mainView.photoButton.isHidden = true
+    mainView.buttonbackgarundView.removeFromSuperview()
     mainView.snp.makeConstraints {
       $0.directionalEdges.equalTo(view.safeAreaLayoutGuide)
     }
