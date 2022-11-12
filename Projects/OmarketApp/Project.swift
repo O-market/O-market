@@ -20,7 +20,8 @@ let project = Project.app(
       .rxCocoa,
       .rxRelay,
       .rxDataSources,
-      .rgMagpie
+      .rgMagpie,
+      .sfImagePicker
     ],
     testDependencies: [
       .rxSwift,

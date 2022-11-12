@@ -15,4 +15,5 @@ public extension TargetDependency {
   static let rxDataSources: TargetDependency = .external(name: "RxDataSources")
   static let snapKit: TargetDependency = .external(name: "SnapKit")
   static let rgMagpie: TargetDependency = .external(name: "RGMagpie")
+  static let sfImagePicker: TargetDependency = .external(name: "SFImagePicker")
 }
