@@ -77,7 +77,7 @@ final class ImageView: UIView {
   }
   
   @objc
-  private func removeButtonDidTap() {
+  func removeButtonDidTap() {
     removeAction?()
     self.removeFromSuperview()
   }
