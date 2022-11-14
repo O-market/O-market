@@ -14,7 +14,7 @@ import RxRelay
 protocol CreationViewModelInput {
   func doneButtonDidTap(product: Product) -> Observable<Void>
   func removeImageData(id: UUID)
-  func selectedImageData(_ datas: [ImageData])
+  func selectedImageData(_ newData: ImageData)
 }
 
 protocol CreationViewModelOutput {
@@ -48,9 +48,15 @@ final class CreationViewModel: CreationViewModelable {
       images: imageDatas.value.map { $0.data })
   }
   
-  func selectedImageData(_ datas: [ImageData]) {
-    let value = imageDatas.value
-    imageDatas.accept(value + datas)
+  func selectedImageData(_ newData: ImageData) {
+    if let dataIndex = imageDatas.value.firstIndex(where: { $0.id == newData.id }) {
+      var value = imageDatas.value
+      value[dataIndex] = newData
+      imageDatas.accept(value)
+    } else {
+      let value = imageDatas.value
+      imageDatas.accept(value + [newData])
+    }
   }
   
   func removeImageData(id: UUID) {
