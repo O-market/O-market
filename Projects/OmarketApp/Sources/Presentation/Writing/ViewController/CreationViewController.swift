@@ -73,17 +73,13 @@ extension CreationViewController {
     
     mainView.photoButton.rx.tap
       .bind { [weak self] in
-        guard let self = self else { return }
-        self.coordinator?.presentImagePicker(
-          limitCount: self.viewModel.selectionLimit,
-          delegate: self
-        )
+        self?.presentImagePicker()
       }.disposed(by: disposeBag)
     
     viewModel.numberOfImagesSelected
       .bind { [weak self] in
         guard let self = self else { return }
-        self.mainView.photoButton.imageCountLabel.text = "\($0)/\(self.viewModel.imageCountLimit)"
+        self.mainView.photoButton.imageCountLabel.text = "\($0)/\(self.viewModel.imageCountMax)"
       }
       .disposed(by: disposeBag)
     
@@ -127,25 +123,43 @@ extension CreationViewController {
   }
 }
 
-// MARK: - MSImagePickerDelegate
+// MARK: - SFImagePicker
 
-extension CreationViewController: MSImagePickerDelegate {
-  func picker(picker: UIViewController, results: [MSImageManager]) {
-    picker.dismiss(animated: true)
-    results.forEach {
-      $0.request(
-        size: CGSize(width: 100, height: 100)
-      ) { [weak self] image in
-        guard let image = image else { return }
-        guard let pngData = image.pngData() else { return }
-        let imageData = ImageData(data: pngData)
-        let imageView = ImageView(image: image)
-        imageView.removeAction = { [weak self] in
-          self?.viewModel.removeImageData(id: imageData.id)
+extension CreationViewController {
+  private func presentImagePicker() {
+    coordinator?.presentImagePicker(
+      selectionMin: viewModel.imageCountMin,
+      selectionMax: viewModel.selectionLimit,
+      onSelection: { imageManager in
+        imageManager.request(
+          size: CGSize(width: 100, height: 100)
+        ) { [weak self] image, _ in
+          guard let pngData = image?.pngData() else { return }
+          let imageData = ImageData(id: imageManager.assetID, data: pngData)
+          self?.viewModel.selectedImageData(imageData)
+          if let imageView = self?.mainView.searchImageView(
+            id: imageManager.assetID.uuidString
+          ) {
+            imageView.image = image
+          } else {
+            self?.addImage(image, id: imageManager.assetID)
+          }
         }
-        self?.mainView.addImageView([imageView])
-        self?.viewModel.selectedImageData([imageData])
+      },
+      onDeSelction: { imageManager in
+        let imageView = self.mainView.searchImageView(id: imageManager.assetID.uuidString)
+        imageView?.removeButtonDidTap()
       }
+    )
+  }
+  
+  private func addImage(_ image: UIImage?, id: UUID) {
+    guard let image = image else { return }
+    let imageView = ImageView(image: image)
+    imageView.identifier = id.uuidString
+    imageView.removeAction = { [weak self] in
+      self?.viewModel.removeImageData(id: id)
     }
+    mainView.addImageView(imageView)
   }
 }
