@@ -20,7 +20,8 @@ protocol CreationViewModelInput {
 protocol CreationViewModelOutput {
   var numberOfImagesSelected: Observable<Int> { get }
   var selectionLimit: Int { get }
-  var imageCountLimit: Int { get }
+  var imageCountMax: Int { get }
+  var imageCountMin: Int { get }
 }
 
 protocol CreationViewModelable: CreationViewModelInput, CreationViewModelOutput {}
@@ -28,10 +29,17 @@ protocol CreationViewModelable: CreationViewModelInput, CreationViewModelOutput 
 final class CreationViewModel: CreationViewModelable {
   private let useCase: ProductFetchUseCase
   private var imageDatas = BehaviorRelay<[ImageData]>(value: [])
-  let imageCountLimit: Int = 5
+  let imageCountMax: Int
+  let imageCountMin: Int
   
-  init(useCase: ProductFetchUseCase) {
+  init(
+    useCase: ProductFetchUseCase,
+    imageCountMax: Int,
+    imageCountMin: Int
+  ) {
     self.useCase = useCase
+    self.imageCountMax = imageCountMax
+    self.imageCountMin = imageCountMin
   }
   
   func doneButtonDidTap(product: Product) -> Observable<Void> {
@@ -58,6 +66,6 @@ final class CreationViewModel: CreationViewModelable {
   }
   
   var selectionLimit: Int {
-    imageCountLimit - imageDatas.value.count
+    imageCountMax - imageDatas.value.count
   }
 }
