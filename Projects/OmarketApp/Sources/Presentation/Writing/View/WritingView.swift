@@ -179,4 +179,10 @@ final class WritingView: UIView {
     if bodyTextView.text.isEmpty { textFields.append("상품 설명") }
     return textFields.isEmpty ? nil : textFields.joined(separator: ", ")
   }
+  
+  func searchImageView(id: String) -> ImageView? {
+    return imageStackView.subviews
+      .compactMap { $0 as? ImageView }
+      .first(where: { $0.identifier == id })
+  }
 }
