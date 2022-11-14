@@ -13,6 +13,17 @@ import RGMagpie
 import SnapKit
 
 final class ImageView: UIView {
+  var identifier: String?
+  
+  var image: UIImage? {
+    get {
+      return imageView.image
+    }
+    set {
+      imageView.image = newValue
+    }
+  }
+  
   private let imageView: UIImageView = {
     let imageView = UIImageView()
     imageView.layer.cornerRadius = 10
