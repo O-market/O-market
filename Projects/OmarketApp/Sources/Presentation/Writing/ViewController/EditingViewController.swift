@@ -31,7 +31,7 @@ final class EditingViewController: UIViewController {
   private let viewModel: EditingViewModelable
   
   // MARK: Life Cycle
-
+  
   init(viewModel: EditingViewModelable) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
@@ -54,20 +54,6 @@ final class EditingViewController: UIViewController {
   
   // MARK: Methods
   
-  private func setViewItem(_ item: EditingViewModelItem) {
-    mainView.titleTextField.text = item.title
-    mainView.bodyTextView.text = item.body
-    mainView.priceTextField.text = item.price
-    mainView.discountPriceTextField.text = item.discountPrice
-    mainView.stockTextField.text = item.stock
-    
-    item.imageURL.forEach {
-      let imageView = ImageView(imageURL: $0)
-      imageView.removeButton.isHidden = true
-      mainView.addImageView([imageView])
-    }
-  }
-  
   // MARK: Helpers
   
   private func bind(viewModel: EditingViewModelable) {
@@ -76,36 +62,16 @@ final class EditingViewController: UIViewController {
         self?.setViewItem($0)
       }.disposed(by: disposeBag)
     
-    doneButton.rx.tap
-      .bind { [weak self] in
-        guard let self = self else { return }
-        viewModel.doneButtonDidTap()
-          .observe(on: MainScheduler.instance)
-          .subscribe { _ in
-            self.navigationController?.popViewController(animated: true)
-          } onError: { error in
-            let alert = UIAlertController
-              .makeAlert(message: error.localizedDescription)
-            self.present(alert, animated: true)
-          }.disposed(by: self.disposeBag)
-      }.disposed(by: disposeBag)
-    
+    buttonBind(viewModel: viewModel)
+    textFieldBind(viewModel: viewModel)
+    textViewBind(viewModel: viewModel)
+  }
+  
+  private func textFieldBind(viewModel: EditingViewModelable) {
     mainView.titleTextField.rx.text
       .bind {
         viewModel.inputTitle($0)
       }.disposed(by: disposeBag)
-    
-    mainView.bodyTextView.rx.text
-      .bind {
-        viewModel.inputBody($0)
-      }.disposed(by: disposeBag)
-    
-    mainView.bodyTextView.rx.text
-      .orEmpty
-      .map { !$0.isEmpty }
-      .distinctUntilChanged()
-      .bind(to: mainView.placeholderLabel.rx.isHidden)
-      .disposed(by: disposeBag)
     
     mainView.priceTextField.rx.text
       .bind {
@@ -121,6 +87,50 @@ final class EditingViewController: UIViewController {
       .bind {
         viewModel.inputStock($0)
       }.disposed(by: disposeBag)
+  }
+  
+  private func textViewBind(viewModel: EditingViewModelable) {
+    mainView.bodyTextView.rx.text
+      .bind {
+        viewModel.inputBody($0)
+      }.disposed(by: disposeBag)
+    
+    mainView.bodyTextView.rx.text
+      .orEmpty
+      .map { !$0.isEmpty }
+      .distinctUntilChanged()
+      .bind(to: mainView.placeholderLabel.rx.isHidden)
+      .disposed(by: disposeBag)
+  }
+  
+  private func buttonBind(viewModel: EditingViewModelable) {
+    doneButton.rx.tap
+      .bind { [weak self] in
+        guard let self = self else { return }
+        viewModel.doneButtonDidTap()
+          .observe(on: MainScheduler.instance)
+          .subscribe { _ in
+            self.navigationController?.popViewController(animated: true)
+          } onError: { error in
+            let alert = UIAlertController
+              .makeAlert(message: error.localizedDescription)
+            self.present(alert, animated: true)
+          }.disposed(by: self.disposeBag)
+      }.disposed(by: disposeBag)
+  }
+  
+  private func setViewItem(_ item: EditingViewModelItem) {
+    mainView.titleTextField.text = item.title
+    mainView.bodyTextView.text = item.body
+    mainView.priceTextField.text = item.price
+    mainView.discountPriceTextField.text = item.discountPrice
+    mainView.stockTextField.text = item.stock
+    
+    item.imageURL.forEach {
+      let imageView = ImageView(imageURL: $0)
+      imageView.removeButton.isHidden = true
+      mainView.addImageView([imageView])
+    }
   }
 }
 
