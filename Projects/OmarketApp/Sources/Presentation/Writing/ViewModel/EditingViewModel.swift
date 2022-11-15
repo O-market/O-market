@@ -63,4 +63,3 @@ final class EditingViewModel: EditingViewModelable {
     return Observable.just(EditingViewModelItem(product: product))
   }
 }
-
