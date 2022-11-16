@@ -129,7 +129,7 @@ final class EditingViewController: UIViewController {
     item.imageURL.forEach {
       let imageView = ImageView(imageURL: $0)
       imageView.removeButton.isHidden = true
-      mainView.addImageView([imageView])
+      mainView.addImageView(imageView)
     }
   }
 }
