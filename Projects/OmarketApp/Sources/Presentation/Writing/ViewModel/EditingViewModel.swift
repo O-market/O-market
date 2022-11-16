@@ -14,7 +14,7 @@ import RxRelay
 protocol EditingViewModelInput {
   func inputTitle(_ title: String?)
   func inputBody(_ body: String?)
-  func inputPirce(_ price: String?)
+  func inputPrice(_ price: String?)
   func inputDiscountPrice(_ price: String?)
   func inputStock(_ stock: String?)
   func doneButtonDidTap() -> Observable<Void>
@@ -43,7 +43,7 @@ final class EditingViewModel: EditingViewModelable {
     product.description = body ?? ""
   }
   
-  func inputPirce(_ price: String?) {
+  func inputPrice(_ price: String?) {
     product.price = Double(price ?? "") ?? 0.0
   }
   

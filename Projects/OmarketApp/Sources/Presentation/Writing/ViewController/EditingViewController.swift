@@ -75,7 +75,7 @@ final class EditingViewController: UIViewController {
     
     mainView.priceTextField.rx.text
       .bind {
-        viewModel.inputPirce($0)
+        viewModel.inputPrice($0)
       }.disposed(by: disposeBag)
     
     mainView.discountPriceTextField.rx.text
