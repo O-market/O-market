@@ -39,7 +39,8 @@ final class CreationCoordinator: Coordinator {
     selectionMin: Int,
     selectionMax: Int,
     onSelection: @escaping ((SFImageManager) -> Void),
-    onDeSelction: @escaping ((SFImageManager) -> Void)
+    onDeSelction: @escaping ((SFImageManager) -> Void),
+    onCancel: @escaping (([SFImageManager]) -> Void)
   ) {
     let imagePicker = SFImagePicker()
     imagePicker.settings.selection.max = selectionMax
@@ -49,7 +50,8 @@ final class CreationCoordinator: Coordinator {
       imagePicker,
       animated: true,
       onSelection: onSelection,
-      onDeSelction: onDeSelction
+      onDeSelction: onDeSelction,
+      onCancel: onCancel
     )
   }
 }

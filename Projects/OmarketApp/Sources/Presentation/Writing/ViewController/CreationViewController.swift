@@ -146,9 +146,15 @@ extension CreationViewController {
           }
         }
       },
-      onDeSelction: { imageManager in
-        let imageView = self.mainView.searchImageView(id: imageManager.assetID.uuidString)
+      onDeSelction: { [weak self] imageManager in
+        let imageView = self?.mainView.searchImageView(id: imageManager.assetID.uuidString)
         imageView?.removeButtonDidTap()
+      },
+      onCancel: { [weak self] imageManagers in
+        imageManagers.forEach { imageManager in
+          let imageView = self?.mainView.searchImageView(id: imageManager.assetID.uuidString)
+          imageView?.removeButtonDidTap()
+        }
       }
     )
   }
