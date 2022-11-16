@@ -31,4 +31,9 @@ final class StubProductFetchUseCaseImpl: ProductFetchUseCase {
     imageDatas += images
     return .just(Void())
   }
+  
+  func updateProduct(product: Product) -> Observable<Void> {
+    products.append(product)
+    return .just(Void())
+  }
 }
