@@ -9,7 +9,7 @@
 import UIKit
 
 final class EditingCoordinator: Coordinator {
-  var navigationController: UINavigationController
+  let navigationController: UINavigationController
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   
