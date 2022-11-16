@@ -73,4 +73,13 @@ final class ProductFetchUseCaseTests: XCTestCase {
     // then
     XCTAssertEqual(output, 1)
   }
+  
+  func test_updateProduct가_호출되었을때_Repository의_updateProduct_메서드가_호출되어야한다() {
+    // given when
+    _ = sut.updateProduct(product: dummyProduct)
+    let output = repository.updateProductCallCount
+    
+    // then
+    XCTAssertEqual(output, 1)
+  }
 }

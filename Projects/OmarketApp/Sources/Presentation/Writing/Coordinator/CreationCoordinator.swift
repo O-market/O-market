@@ -11,7 +11,7 @@ import UIKit
 import ODesignSystem
 
 final class CreationCoordinator: Coordinator {
-  var navigationController: UINavigationController
+  let navigationController: UINavigationController
   weak var parentCoordinator: Coordinator?
   var childCoordinators: [Coordinator] = []
   

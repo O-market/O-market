@@ -27,7 +27,7 @@ final class WritingView: UIView {
   
   let photoButton = ODSPhotoButtonView()
   
-  private let buttonbackgarundView: UIView = {
+  let buttonbackgarundView: UIView = {
     let view = UIView()
     view.backgroundColor = .clear
     return view
@@ -68,7 +68,7 @@ final class WritingView: UIView {
     return textField
   }()
   
-  let textView: UITextView = {
+  let bodyTextView: UITextView = {
     let textView = UITextView()
     textView.isScrollEnabled = false
     textView.showsVerticalScrollIndicator = false
@@ -91,7 +91,7 @@ final class WritingView: UIView {
         priceTextField,
         discountPriceTextField,
         stockTextField,
-        textView
+        bodyTextView
       ]
     )
     stackView.spacing = 16
@@ -153,20 +153,23 @@ final class WritingView: UIView {
     }
 
     textFieldStackView.snp.makeConstraints {
-      $0.top.equalTo(imageScrollView.snp.bottom)
       $0.bottom.equalToSuperview()
       $0.trailing.leading.equalToSuperview().inset(16)
       $0.width.equalToSuperview().inset(16)
     }
-    textView.addSubview(placeholderLabel)
+    bodyTextView.addSubview(placeholderLabel)
     placeholderLabel.snp.makeConstraints {
       $0.directionalEdges.equalToSuperview().inset(7)
     }
   }
   
   func addImageView(_ views: [UIView]) {
-    views.forEach {
-      imageStackView.addArrangedSubview($0)
+    views.forEach { view in
+      imageStackView.addArrangedSubview(view)
+      view.snp.makeConstraints {
+        $0.width.equalTo(view.snp.height)
+        $0.height.equalToSuperview()
+      }
     }
   }
   
@@ -175,7 +178,7 @@ final class WritingView: UIView {
     if titleTextField.text?.isEmpty == true { textFields.append("상품명") }
     if priceTextField.text?.isEmpty == true { textFields.append("상품가격") }
     if stockTextField.text?.isEmpty == true { textFields.append("재고 수량") }
-    if textView.text.isEmpty { textFields.append("상품 설명") }
+    if bodyTextView.text.isEmpty { textFields.append("상품 설명") }
     return textFields.isEmpty ? nil : textFields.joined(separator: ", ")
   }
 }

@@ -15,6 +15,7 @@ final class MockProductRepositoryImpl: ProductRepository {
   var fetchAllProductCallCount: Int = 0
   var fetchProductCallCount: Int = 0
   var createProductCallCount: Int = 0
+  var updateProductCallCount: Int = 0
 
   func fetchAllProduct(endpoint: Endpoint) -> Observable<[Product]> {
     fetchAllProductCallCount += 1
@@ -28,6 +29,11 @@ final class MockProductRepositoryImpl: ProductRepository {
   
   func createProduct(endpoint: Endpoint) -> Observable<Void> {
     createProductCallCount += 1
+    return .empty()
+  }
+  
+  func updateProduct(endpoint: Endpoint) -> Observable<Void> {
+    updateProductCallCount += 1
     return .empty()
   }
 }
