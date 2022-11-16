@@ -164,11 +164,11 @@ final class WritingView: UIView {
   }
   
   func addImageView(_ view: UIView) {
-      imageStackView.addArrangedSubview(view)
-      view.snp.makeConstraints {
-        $0.width.equalTo(view.snp.height)
-        $0.height.equalToSuperview()
-      }
+    imageStackView.addArrangedSubview(view)
+    view.snp.makeConstraints {
+      $0.width.equalTo(view.snp.height)
+      $0.height.equalToSuperview()
+    }
   }
   
   func checkEmptyTextField() -> String? {
