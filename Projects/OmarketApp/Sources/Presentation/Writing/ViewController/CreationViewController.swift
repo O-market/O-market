@@ -130,7 +130,7 @@ extension CreationViewController {
     coordinator?.presentImagePicker(
       selectionMin: viewModel.imageCountMin,
       selectionMax: viewModel.selectionLimit,
-      onSelection: { imageManager in
+      onSelected: { imageManager in
         imageManager.request(
           size: CGSize(width: 100, height: 100)
         ) { [weak self] image, _ in
@@ -146,11 +146,11 @@ extension CreationViewController {
           }
         }
       },
-      onDeSelction: { [weak self] imageManager in
+      onDeSelcted: { [weak self] imageManager in
         let imageView = self?.mainView.searchImageView(id: imageManager.assetID.uuidString)
         imageView?.removeButtonDidTap()
       },
-      onCancel: { [weak self] imageManagers in
+      onCanceled: { [weak self] imageManagers in
         imageManagers.forEach { imageManager in
           let imageView = self?.mainView.searchImageView(id: imageManager.assetID.uuidString)
           imageView?.removeButtonDidTap()

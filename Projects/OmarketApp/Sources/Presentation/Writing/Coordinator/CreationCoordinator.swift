@@ -38,9 +38,9 @@ final class CreationCoordinator: Coordinator {
   func presentImagePicker(
     selectionMin: Int,
     selectionMax: Int,
-    onSelection: @escaping ((SFImageManager) -> Void),
-    onDeSelction: @escaping ((SFImageManager) -> Void),
-    onCancel: @escaping (([SFImageManager]) -> Void)
+    onSelected: @escaping ((SFImageManager) -> Void),
+    onDeSelcted: @escaping ((SFImageManager) -> Void),
+    onCanceled: @escaping (([SFImageManager]) -> Void)
   ) {
     let imagePicker = SFImagePicker()
     imagePicker.settings.selection.max = selectionMax
@@ -49,9 +49,9 @@ final class CreationCoordinator: Coordinator {
     navigationController.presentImagePicker(
       imagePicker,
       animated: true,
-      onSelection: onSelection,
-      onDeSelction: onDeSelction,
-      onCancel: onCancel
+      onSelection: onSelected,
+      onDeSelction: onDeSelcted,
+      onCancel: onCanceled
     )
   }
 }
