@@ -161,7 +161,7 @@ extension CreationViewController {
   
   private func addImage(_ image: UIImage?, id: UUID) {
     guard let image = image else { return }
-    let imageView = ImageView(image: image)
+    let imageView = ProductImageView(image: image)
     imageView.identifier = id.uuidString
     imageView.removeAction = { [weak self] in
       self?.viewModel.removeImageData(id: id)

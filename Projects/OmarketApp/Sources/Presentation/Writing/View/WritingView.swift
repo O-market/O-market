@@ -180,9 +180,9 @@ final class WritingView: UIView {
     return textFields.isEmpty ? nil : textFields.joined(separator: ", ")
   }
   
-  func searchImageView(id: String) -> ImageView? {
+  func searchImageView(id: String) -> ProductImageView? {
     return imageStackView.subviews
-      .compactMap { $0 as? ImageView }
+      .compactMap { $0 as? ProductImageView }
       .first(where: { $0.identifier == id })
   }
 }
