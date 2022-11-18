@@ -163,13 +163,11 @@ final class WritingView: UIView {
     }
   }
   
-  func addImageView(_ views: [UIView]) {
-    views.forEach { view in
-      imageStackView.addArrangedSubview(view)
-      view.snp.makeConstraints {
-        $0.width.equalTo(view.snp.height)
-        $0.height.equalToSuperview()
-      }
+  func addImageView(_ view: UIView) {
+    imageStackView.addArrangedSubview(view)
+    view.snp.makeConstraints {
+      $0.width.equalTo(view.snp.height)
+      $0.height.equalToSuperview()
     }
   }
   
@@ -180,5 +178,11 @@ final class WritingView: UIView {
     if stockTextField.text?.isEmpty == true { textFields.append("재고 수량") }
     if bodyTextView.text.isEmpty { textFields.append("상품 설명") }
     return textFields.isEmpty ? nil : textFields.joined(separator: ", ")
+  }
+  
+  func searchImageView(id: String) -> ProductImageView? {
+    return imageStackView.subviews
+      .compactMap { $0 as? ProductImageView }
+      .first(where: { $0.identifier == id })
   }
 }

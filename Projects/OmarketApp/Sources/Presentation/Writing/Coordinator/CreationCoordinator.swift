@@ -9,6 +9,7 @@
 import UIKit
 
 import ODesignSystem
+import SFImagePicker
 
 final class CreationCoordinator: Coordinator {
   let navigationController: UINavigationController
@@ -23,7 +24,7 @@ final class CreationCoordinator: Coordinator {
     let network = NetworkServiceImpl()
     let repository = ProductRepositoryImpl(networkService: network)
     let useCase = ProductFetchUseCaseImpl(repository: repository)
-    let viewModel = CreationViewModel(useCase: useCase)
+    let viewModel = CreationViewModel(useCase: useCase, imageCountMax: 5, imageCountMin: 1)
     let viewController = CreationViewController(viewModel: viewModel)
     viewController.coordinator = self
     
@@ -35,13 +36,22 @@ final class CreationCoordinator: Coordinator {
   }
   
   func presentImagePicker(
-    limitCount: Int,
-    delegate: MSImagePickerDelegate
+    selectionMin: Int,
+    selectionMax: Int,
+    onSelected: @escaping ((SFImageManager) -> Void),
+    onDeSelcted: @escaping ((SFImageManager) -> Void),
+    onCanceled: @escaping (([SFImageManager]) -> Void)
   ) {
-    let imagePicker = MSImagePicker()
-    imagePicker.settings.selectionLimit = limitCount
-    imagePicker.settings.selectedIndicatorColor = ODS.Color.brand010
-    imagePicker.delegate = delegate
-    navigationController.present(imagePicker, animated: true)
+    let imagePicker = SFImagePicker()
+    imagePicker.settings.selection.max = selectionMax
+    imagePicker.settings.selection.min = selectionMin
+    imagePicker.settings.ui.selectedIndicatorColor = ODS.Color.brand010
+    navigationController.presentImagePicker(
+      imagePicker,
+      animated: true,
+      onSelection: onSelected,
+      onDeSelction: onDeSelcted,
+      onCancel: onCanceled
+    )
   }
 }

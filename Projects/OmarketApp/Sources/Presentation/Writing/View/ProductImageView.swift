@@ -1,5 +1,5 @@
 //
-//  ImageView.swift
+//  ProductImageView.swift
 //  OmarketApp
 //
 //  Created by 이시원 on 2022/10/24.
@@ -12,7 +12,18 @@ import ODesignSystem
 import RGMagpie
 import SnapKit
 
-final class ImageView: UIView {
+final class ProductImageView: UIView {
+  var identifier: String?
+  
+  var image: UIImage? {
+    get {
+      return imageView.image
+    }
+    set {
+      imageView.image = newValue
+    }
+  }
+  
   private let imageView: UIImageView = {
     let imageView = UIImageView()
     imageView.layer.cornerRadius = 10
@@ -66,7 +77,7 @@ final class ImageView: UIView {
   }
   
   @objc
-  private func removeButtonDidTap() {
+  func removeButtonDidTap() {
     removeAction?()
     self.removeFromSuperview()
   }

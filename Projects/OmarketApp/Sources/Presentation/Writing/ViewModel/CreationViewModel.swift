@@ -14,13 +14,14 @@ import RxRelay
 protocol CreationViewModelInput {
   func doneButtonDidTap(product: Product) -> Observable<Void>
   func removeImageData(id: UUID)
-  func selectedImageData(_ datas: [ImageData])
+  func selectedImageData(_ imageData: ImageData)
 }
 
 protocol CreationViewModelOutput {
   var numberOfImagesSelected: Observable<Int> { get }
   var selectionLimit: Int { get }
-  var imageCountLimit: Int { get }
+  var imageCountMax: Int { get }
+  var imageCountMin: Int { get }
 }
 
 protocol CreationViewModelable: CreationViewModelInput, CreationViewModelOutput {}
@@ -28,10 +29,17 @@ protocol CreationViewModelable: CreationViewModelInput, CreationViewModelOutput 
 final class CreationViewModel: CreationViewModelable {
   private let useCase: ProductFetchUseCase
   private var imageDatas = BehaviorRelay<[ImageData]>(value: [])
-  let imageCountLimit: Int = 5
+  let imageCountMax: Int
+  let imageCountMin: Int
   
-  init(useCase: ProductFetchUseCase) {
+  init(
+    useCase: ProductFetchUseCase,
+    imageCountMax: Int,
+    imageCountMin: Int
+  ) {
     self.useCase = useCase
+    self.imageCountMax = imageCountMax
+    self.imageCountMin = imageCountMin
   }
   
   func doneButtonDidTap(product: Product) -> Observable<Void> {
@@ -40,9 +48,15 @@ final class CreationViewModel: CreationViewModelable {
       images: imageDatas.value.map { $0.data })
   }
   
-  func selectedImageData(_ datas: [ImageData]) {
-    let value = imageDatas.value
-    imageDatas.accept(value + datas)
+  func selectedImageData(_ imageData: ImageData) {
+    if let dataIndex = imageDatas.value.firstIndex(where: { $0.id == imageData.id }) {
+      var value = imageDatas.value
+      value[dataIndex] = imageData
+      imageDatas.accept(value)
+    } else {
+      let value = imageDatas.value
+      imageDatas.accept(value + [imageData])
+    }
   }
   
   func removeImageData(id: UUID) {
@@ -58,6 +72,6 @@ final class CreationViewModel: CreationViewModelable {
   }
   
   var selectionLimit: Int {
-    imageCountLimit - imageDatas.value.count
+    imageCountMax - imageDatas.value.count
   }
 }

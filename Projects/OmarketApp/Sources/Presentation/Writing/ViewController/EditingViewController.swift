@@ -127,9 +127,9 @@ final class EditingViewController: UIViewController {
     mainView.stockTextField.text = item.stock
     
     item.imageURL.forEach {
-      let imageView = ImageView(imageURL: $0)
+      let imageView = ProductImageView(imageURL: $0)
       imageView.removeButton.isHidden = true
-      mainView.addImageView([imageView])
+      mainView.addImageView(imageView)
     }
   }
 }
