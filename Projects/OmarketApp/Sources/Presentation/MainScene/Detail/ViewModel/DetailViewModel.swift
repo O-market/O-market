@@ -13,6 +13,7 @@ import RxSwift
 protocol DetailViewModelInput {}
 
 protocol DetailViewModelOutput {
+  var isMyProduct: Observable<Bool> { get }
   var productInfomation: Observable<DetailViewModelItem> { get }
   var productImageURL: Observable<[String]> { get }
   var productImageCount: Observable<Int> { get }
@@ -49,6 +50,13 @@ final class DetailViewModel: DetailViewModelable {
         self?.productBuffer.onError($0)
       })
       .disposed(by: disposeBag)
+  }
+  
+  var isMyProduct: Observable<Bool> {
+    return productBuffer
+      .map {
+        $0.vendor?.name == UserInformation.id
+      }
   }
   
   var productInfomation: Observable<DetailViewModelItem> {

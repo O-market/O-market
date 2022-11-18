@@ -54,7 +54,7 @@ extension DetailViewController {
     title = "상품상세"
     view.backgroundColor = .systemBackground
     view.addSubview(mainView)
-    navigationItem.rightBarButtonItem = editBarButton
+    
     mainView.snp.makeConstraints {
       $0.edges.equalTo(self.view.safeAreaLayoutGuide)
     }
@@ -88,6 +88,14 @@ extension DetailViewController {
         }
         self?.present(alert, animated: true)
       }.disposed(by: disposeBag)
+    
+    viewModel.isMyProduct
+      .filter { $0 }
+      .observe(on: MainScheduler.instance)
+      .bind { [weak self] _ in
+        self?.navigationItem.rightBarButtonItem = self?.editBarButton
+      }
+      .disposed(by: disposeBag)
     
     viewModel
       .productImageURL
