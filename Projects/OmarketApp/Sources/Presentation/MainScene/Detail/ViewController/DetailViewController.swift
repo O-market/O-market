@@ -13,11 +13,18 @@ import SnapKit
 
 final class DetailViewController: UIViewController {
   
+  // MARK: Interfaces
+  
+  private let mainView = DetailView(frame: .zero)
+  private let editBarButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"))
+  
+  // MARK: Properties
+  
   private let viewModel: DetailViewModelable
   private let disposeBag = DisposeBag()
   weak var coordinator: DetailCoordinator?
-  private let mainView = DetailView(frame: .zero)
-  private let editBarButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"))
+  
+  // MARK: Life Cycle
   
   init(viewModel: DetailViewModelable) {
     self.viewModel = viewModel
@@ -54,7 +61,9 @@ extension DetailViewController {
   }
 }
 
-// MARK: - Extension
+// MARK: Methods
+
+// MARK: Helpers
 
 extension DetailViewController {
   private func bind(viewModel: DetailViewModelable) {
