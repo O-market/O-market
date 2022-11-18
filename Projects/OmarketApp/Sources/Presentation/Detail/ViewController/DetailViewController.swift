@@ -71,6 +71,11 @@ extension DetailViewController {
 
 extension DetailViewController {
   private func bind(viewModel: DetailViewModelable) {
+    buttonBind(viewModel: viewModel)
+    uiBind(viewModel: viewModel)
+  }
+  
+  private func buttonBind(viewModel: DetailViewModelable) {
     editBarButton.rx.tap
       .bind { [weak self] in
         let alert = UIAlertController(
@@ -92,7 +97,9 @@ extension DetailViewController {
         }
         self?.present(alert, animated: true)
       }.disposed(by: disposeBag)
-    
+  }
+  
+  private func uiBind(viewModel: DetailViewModelable) {
     viewModel.isMyProduct
       .filter { $0 }
       .observe(on: MainScheduler.instance)
