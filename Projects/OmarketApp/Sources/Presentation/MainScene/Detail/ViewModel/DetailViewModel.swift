@@ -10,7 +10,9 @@ import Foundation
 
 import RxSwift
 
-protocol DetailViewModelInput {}
+protocol DetailViewModelInput {
+  func fatchProductDetail()
+}
 
 protocol DetailViewModelOutput {
   var isMyProduct: Observable<Bool> { get }
@@ -40,7 +42,9 @@ final class DetailViewModel: DetailViewModelable {
   init(useCase: ProductFetchUseCase, productId: Int) {
     self.useCase = useCase
     self.productId = productId
-    
+  }
+  
+  func fatchProductDetail() {
     self.useCase
       .fetchOne(id: productId)
       .subscribe(onNext: { [weak self] in
