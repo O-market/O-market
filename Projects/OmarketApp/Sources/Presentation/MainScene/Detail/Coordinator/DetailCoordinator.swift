@@ -34,4 +34,8 @@ final class DetailCoordinator: Coordinator {
     editingCoordinator.parentCoordinator = self
     editingCoordinator.start(product: product)
   }
+  
+  func removeCoordinator() {
+    parentCoordinator?.removeChildCoordinator(child: self)
+  }
 }
