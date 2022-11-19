@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ProductCellViewModelable {}
+protocol CellViewModelable {}
 
 class ProductCell: UICollectionViewCell {
   // MARK: Interfaces
@@ -34,7 +34,7 @@ class ProductCell: UICollectionViewCell {
 
   // MARK: Methods
 
-  func bind(viewModel: ProductCellViewModelable) {
+  func bind(viewModel: CellViewModelable) {
     // Bind ViewModel
   }
 

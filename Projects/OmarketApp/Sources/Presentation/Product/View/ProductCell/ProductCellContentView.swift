@@ -23,6 +23,6 @@ class ProductCellContentView: UIView {
 
   // MARK: Methods
 
-  func bind(viewModel: ProductCellViewModelable) {}
+  func bind(viewModel: CellViewModelable) {}
   func configureUI() {}
 }

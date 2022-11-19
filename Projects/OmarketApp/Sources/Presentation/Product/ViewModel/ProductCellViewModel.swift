@@ -1,5 +1,5 @@
 //
-//  StockProductCellViewModel.swift
+//  ProductCellViewModel.swift
 //  OmarketApp
 //
 //  Created by 김도연 on 2022/08/26.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-protocol StockProductCellViewModelInput { }
+protocol ProductCellViewModelInput { }
 
-protocol StockProductCellViewModelOutput {
+protocol ProductCellViewModelOutput {
   var imageURL: String { get }
   var productName: String { get }
   var price: String { get }
@@ -22,9 +22,9 @@ protocol StockProductCellViewModelOutput {
   var isSale: Bool { get }
 }
 
-protocol StockProductCellViewModelable: StockProductCellViewModelInput, StockProductCellViewModelOutput { }
+protocol ProductCellViewModelable: ProductCellViewModelInput, ProductCellViewModelOutput { }
 
-final class StockProductCellViewModel: StockProductCellViewModelable, ProductCellViewModelable {
+final class ProductCellViewModel: ProductCellViewModelable, CellViewModelable {
   // MARK: Properties
 
   private let product: Product

@@ -13,7 +13,7 @@ final class BadgeProductCell: ProductCell {
     return BadgeProductCellContentView.self
   }
 
-  override func bind(viewModel: ProductCellViewModelable) {
+  override func bind(viewModel: CellViewModelable) {
     super.bind(viewModel: viewModel)
     cellContentView.bind(viewModel: viewModel)
   }

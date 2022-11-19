@@ -112,7 +112,7 @@ final class MainViewController: UIViewController {
 
         guard let product = item as? Product else { return UICollectionViewCell() }
 
-        cell.bind(viewModel: StockProductCellViewModel(product: product))
+        cell.bind(viewModel: ProductCellViewModel(product: product))
         return cell
       }
     }

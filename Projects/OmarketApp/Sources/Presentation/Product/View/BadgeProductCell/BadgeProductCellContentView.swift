@@ -80,9 +80,9 @@ final class BadgeProductCellContentView: ProductCellContentView {
 
   // MARK: Methods
 
-  override func bind(viewModel: ProductCellViewModelable) {
+  override func bind(viewModel: CellViewModelable) {
     super.bind(viewModel: viewModel)
-    guard let viewModel = viewModel as? StockProductCellViewModel else { return }
+    guard let viewModel = viewModel as? ProductCellViewModelable else { return }
 
     productImageView.mp.setImage(with: viewModel.imageURL)
     productNameLabel.text = viewModel.productName
