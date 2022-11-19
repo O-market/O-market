@@ -75,8 +75,8 @@ final class ProductView: UIView {
   private func setupView() {
     self.backgroundColor = .systemBackground
     productsCollectionView.register(
-      StockProductCell.self,
-      forCellWithReuseIdentifier: StockProductCell.identifier
+      BadgeProductCell.self,
+      forCellWithReuseIdentifier: BadgeProductCell.identifier
     )
   }
 

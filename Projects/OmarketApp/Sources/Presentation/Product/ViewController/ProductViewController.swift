@@ -81,8 +81,8 @@ class ProductViewController: UIViewController {
     
     viewModel.products
       .bind(to: view.productsCollectionView.rx.items(
-        cellIdentifier: StockProductCell.identifier,
-        cellType: StockProductCell.self
+        cellIdentifier: BadgeProductCell.identifier,
+        cellType: BadgeProductCell.self
       )) { _, item, cell in
         cell.bind(viewModel: ProductCellViewModel(product: item))
     }
