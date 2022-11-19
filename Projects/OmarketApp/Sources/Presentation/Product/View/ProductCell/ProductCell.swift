@@ -42,6 +42,7 @@ class ProductCell: UICollectionViewCell {
 
   private func configureContentView() {
     contentView.addSubview(cellContentView)
+    cellContentView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       cellContentView.topAnchor.constraint(equalTo: contentView.topAnchor),
       cellContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
