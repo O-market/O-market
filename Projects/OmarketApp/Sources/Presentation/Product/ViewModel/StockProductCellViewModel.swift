@@ -24,7 +24,7 @@ protocol StockProductCellViewModelOutput {
 
 protocol StockProductCellViewModelable: StockProductCellViewModelInput, StockProductCellViewModelOutput { }
 
-final class StockProductCellViewModel: StockProductCellViewModelable {
+final class StockProductCellViewModel: StockProductCellViewModelable, ProductCellViewModelable {
   // MARK: Properties
 
   private let product: Product
