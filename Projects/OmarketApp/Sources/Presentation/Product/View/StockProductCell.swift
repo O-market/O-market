@@ -1,5 +1,5 @@
 //
-//  ProductCell.swift
+//  StockProductCell.swift
 //  OmarketApp
 //
 //  Created by 김도연 on 2022/08/26.
@@ -12,7 +12,7 @@ import ODesignSystem
 import RGMagpie
 import SnapKit
 
-final class ProductCell: UICollectionViewCell {
+final class StockProductCell: UICollectionViewCell {
   // MARK: Interfaces
 
   private let productImageView: UIImageView = {
@@ -81,7 +81,7 @@ final class ProductCell: UICollectionViewCell {
 
   // MARK: Properties
 
-  private var viewModel: ProductCellViewModelable?
+  private var viewModel: StockProductCellViewModelable?
 
   // MARK: Life Cycle
 
@@ -101,13 +101,13 @@ final class ProductCell: UICollectionViewCell {
 
   // MARK: Methods
 
-  func bind(viewModel: ProductCellViewModelable) {
+  func bind(viewModel: StockProductCellViewModelable) {
     self.viewModel = viewModel
 
     self.productImageView.mp.setImage(with: viewModel.imageURL)
     self.productNameLabel.text = viewModel.productName
 
-    self.discountPercentLabel.text = viewModel.dicountPercentage
+    self.discountPercentLabel.text = viewModel.discountPercentage
     self.priceLabel.text = viewModel.price
     self.priceLabel.strike()
     

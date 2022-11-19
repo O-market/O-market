@@ -81,10 +81,10 @@ class ProductViewController: UIViewController {
     
     viewModel.products
       .bind(to: view.productsCollectionView.rx.items(
-        cellIdentifier: ProductCell.identifier,
-        cellType: ProductCell.self
+        cellIdentifier: StockProductCell.identifier,
+        cellType: StockProductCell.self
       )) { _, item, cell in
-        cell.bind(viewModel: ProductCellViewModel(product: item))
+        cell.bind(viewModel: StockProductCellViewModel(product: item))
     }
     .disposed(by: disposeBag)
     

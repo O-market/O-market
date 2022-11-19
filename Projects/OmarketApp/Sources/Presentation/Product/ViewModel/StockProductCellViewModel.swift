@@ -1,5 +1,5 @@
 //
-//  ProductCellViewModel.swift
+//  StockProductCellViewModel.swift
 //  OmarketApp
 //
 //  Created by 김도연 on 2022/08/26.
@@ -8,22 +8,23 @@
 
 import Foundation
 
-protocol ProductCellViewModelInput { }
+protocol StockProductCellViewModelInput { }
 
-protocol ProductCellViewModelOutput {
+protocol StockProductCellViewModelOutput {
   var imageURL: String { get }
   var productName: String { get }
   var price: String { get }
   var bargainPrice: String { get }
-  var dicountPercentage: String { get }
+  var discountPercentage: String { get }
   var stockTitle: String { get }
   var stock: String { get }
+  var isSoldout: Bool { get }
   var isSale: Bool { get }
 }
 
-protocol ProductCellViewModelable: ProductCellViewModelInput, ProductCellViewModelOutput { }
+protocol StockProductCellViewModelable: StockProductCellViewModelInput, StockProductCellViewModelOutput { }
 
-final class ProductCellViewModel: ProductCellViewModelable {
+final class StockProductCellViewModel: StockProductCellViewModelable {
   // MARK: Properties
 
   private let product: Product
@@ -50,7 +51,7 @@ final class ProductCellViewModel: ProductCellViewModelable {
     return formattedString(product.bargainPrice)
   }
 
-  var dicountPercentage: String {
+  var discountPercentage: String {
     if product.discountedPrice == 0 { return "0%" }
     
     let percentage = Int((product.discountedPrice / product.price * 100).rounded())
@@ -64,6 +65,11 @@ final class ProductCellViewModel: ProductCellViewModelable {
   var stock: String {
     return "\(product.stock) 개"
   }
+
+  var isSoldout: Bool {
+    return product.stock == .zero
+  }
+
   var isSale: Bool {
     return product.discountedPrice != .zero
   }
@@ -82,6 +88,6 @@ final class ProductCellViewModel: ProductCellViewModelable {
     guard let number = numberFormatter.string(from: number as NSNumber) else { return "" }
 
     let currency = product.currency == "KRW" ? "원" : "달러"
-    return number + " " + currency
+    return number + "" + currency
   }
 }

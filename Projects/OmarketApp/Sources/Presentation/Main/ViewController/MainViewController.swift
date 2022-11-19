@@ -30,8 +30,8 @@ final class MainViewController: UIViewController {
       forCellWithReuseIdentifier: MainEventCell.identifier
     )
     collectionView.register(
-      ProductCell.self,
-      forCellWithReuseIdentifier: ProductCell.identifier
+      StockProductCell.self,
+      forCellWithReuseIdentifier: StockProductCell.identifier
     )
     collectionView.register(
       MainProductHeader.self,
@@ -106,13 +106,13 @@ final class MainViewController: UIViewController {
 
       } else {
         guard let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: ProductCell.identifier,
+          withReuseIdentifier: StockProductCell.identifier,
           for: indexPath
-        ) as? ProductCell else { return UICollectionViewCell() }
+        ) as? StockProductCell else { return UICollectionViewCell() }
 
         guard let product = item as? Product else { return UICollectionViewCell() }
 
-        cell.bind(viewModel: ProductCellViewModel(product: product))
+        cell.bind(viewModel: StockProductCellViewModel(product: product))
         return cell
       }
     }
