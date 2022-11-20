@@ -95,6 +95,7 @@ extension CreationViewController {
           )
           .observe(on: MainScheduler.instance)
           .subscribe(onNext: {
+            NotificationCenter.default.post(name: .productsDidRenew, object: nil)
             self.navigationController?.popViewController(animated: true)
           }, onError: {
             let alert = UIAlertController.makeAlert(message: $0.localizedDescription)

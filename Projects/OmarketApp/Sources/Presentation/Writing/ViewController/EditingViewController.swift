@@ -110,6 +110,7 @@ final class EditingViewController: UIViewController {
         viewModel.doneButtonDidTap()
           .observe(on: MainScheduler.instance)
           .subscribe { _ in
+            NotificationCenter.default.post(name: .productsDidRenew, object: nil)
             self.navigationController?.popViewController(animated: true)
           } onError: { error in
             let alert = UIAlertController

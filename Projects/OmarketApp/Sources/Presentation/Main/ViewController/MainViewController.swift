@@ -83,13 +83,17 @@ final class MainViewController: UIViewController {
     let dataSource = configureCollectionViewDataSource()
 
     viewModel.sections
-      .bind(to: collectionView.rx.items(dataSource: dataSource))
+      .drive(collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
 
     viewModel.sections
       .compactMap { $0.first }
       .map { $0.items.count }
-      .bind(to: pageControl.rx.numberOfPages)
+      .drive(pageControl.rx.numberOfPages)
+      .disposed(by: disposeBag)
+
+    Observable.just(())
+      .bind(onNext: viewModel.viewDidLoadEvent)
       .disposed(by: disposeBag)
   }
 

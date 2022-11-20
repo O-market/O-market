@@ -40,7 +40,7 @@ final class MainProductHeader: UICollectionReusableView {
 
   // MARK: Properties
 
-  private let disposeBag = DisposeBag()
+  private var disposeBag = DisposeBag()
 
   // MARK: Life Cycle
 
@@ -57,6 +57,8 @@ final class MainProductHeader: UICollectionReusableView {
   // MARK: Methods
 
   func bind(viewModel: MainViewModelable) {
+    disposeBag = DisposeBag()
+
     showProductButton.rx.tap
       .bind(onNext: viewModel.showProductsButtonDidTapEvent)
       .disposed(by: disposeBag)

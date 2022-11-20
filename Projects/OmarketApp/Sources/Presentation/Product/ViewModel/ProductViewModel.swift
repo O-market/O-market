@@ -55,6 +55,13 @@ final class ProductViewModel: ProductViewModelable {
 
   init(useCase: ProductFetchUseCase) {
     self.productFetchUseCase = useCase
+
+    NotificationCenter.default.rx.notification(.productsDidRenew)
+      .withUnretained(self)
+      .bind(onNext: { owner, _ in
+        owner.refreshProductsEvent()
+      })
+      .disposed(by: disposeBag)
   }
 
   // MARK: Methods
