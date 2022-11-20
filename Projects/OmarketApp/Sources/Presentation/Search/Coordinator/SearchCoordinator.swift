@@ -17,5 +17,19 @@ final class SearchCoordinator: Coordinator {
     self.navigationController = navigationController
   }
 
-  func start() {}
+  func start() {
+    let repository = ProductRepositoryImpl(networkService: NetworkServiceImpl(urlSession: .shared))
+    let useCase = ProductFetchUseCaseImpl(repository: repository)
+    let searchViewModel = SearchViewModel(useCase: useCase)
+    searchViewModel.coordinator = self
+    let searchViewController = SearchViewController(viewModel: searchViewModel)
+    navigationController.pushViewController(searchViewController, animated: true)
+  }
+
+  func showDetailView(_ id: Int) {
+    let detailCoordinator = DetailCoordinator(navigationController: navigationController)
+    childCoordinators.append(detailCoordinator)
+    detailCoordinator.parentCoordinator = self
+    detailCoordinator.start(productId: id)
+  }
 }
