@@ -9,72 +9,111 @@
 import UIKit
 
 import ODesignSystem
+import RxCocoa
+import RxSwift
 import SnapKit
 
 final class ProductView: UIView {
   // MARK: Interfaces
 
-  let addProductButton: UIButton = {
+  private let refreshControl = UIRefreshControl()
+
+  private lazy var collectionView: UICollectionView = {
+    let layout = makeCollectionViewLayout()
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    collectionView.refreshControl = refreshControl
+    return collectionView
+  }()
+
+  private lazy var addProductButton: UIButton = {
     let button = UIButton()
-    button.setBackgroundImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+    button.setBackgroundImage(ODS.Icon.plusCircleFill, for: .normal)
     button.tintColor = ODS.Color.brand010
     button.backgroundColor = .systemBackground
     button.clipsToBounds = true
     return button
   }()
 
-  private(set) lazy var productsCollectionView: UICollectionView = {
-    let layout = makeCollectionViewLayout()
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    return collectionView
-  }()
-
   // MARK: Properties
+
+  private let disposeBag = DisposeBag()
 
   // MARK: Life Cycle
 
-  init() {
+  override init(frame: CGRect) {
     super.init(frame: .zero)
-    addViews()
-    setupLayout()
-    setupView()
+    configureCollectionView()
+    configureUI()
   }
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-    addViews()
-    setupLayout()
-    setupView()
+    configureCollectionView()
+    configureUI()
   }
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    addProductButton.layer.cornerRadius = addProductButton.frame.width * 0.5
+    addProductButton.layer.cornerRadius = addProductButton.bounds.width * 0.5
   }
 
   // MARK: Methods
 
+  func bind(viewModel: ProductViewModelable) {
+    Observable.just(())
+      .bind(onNext: viewModel.viewDidLoadEvent)
+      .disposed(by: disposeBag)
+
+    addProductButton.rx.tap
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .bind(onNext: viewModel.addProductButtonDidTapEvent)
+      .disposed(by: disposeBag)
+
+    collectionView.rx.modelSelected(Product.self)
+      .bind(onNext: viewModel.productDidTapEvent)
+      .disposed(by: disposeBag)
+
+    collectionView.rx.prefetchItems
+      .compactMap { $0.first?.row }
+      .bind(onNext: viewModel.prefetchIndexPathEvent)
+      .disposed(by: disposeBag)
+
+    refreshControl.rx.controlEvent(.valueChanged)
+      .bind(onNext: viewModel.refreshProductsEvent)
+      .disposed(by: disposeBag)
+
+    viewModel.products
+      .drive(collectionView.rx.items(
+        cellIdentifier: BadgeProductCell.identifier,
+        cellType: BadgeProductCell.self
+      )) { _, product, cell in
+        cell.bind(viewModel: ProductCellViewModel(product: product))
+      }
+      .disposed(by: disposeBag)
+
+    viewModel.onRefreshed
+      .drive(refreshControl.rx.isRefreshing)
+      .disposed(by: disposeBag)
+  }
+
   // MARK: Helpers
 
-  private func addViews() {
-    self.addSubview(productsCollectionView)
-    self.addSubview(addProductButton)
-  }
-  
-  private func setupLayout() {
-    productsCollectionView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+  private func configureUI() {
+    self.backgroundColor = .systemBackground
+    [collectionView, addProductButton].forEach { addSubview($0) }
+
+    collectionView.snp.makeConstraints {
+      $0.directionalEdges.equalToSuperview()
     }
     
     addProductButton.snp.makeConstraints {
-      $0.width.height.equalTo(50.0)
+      $0.size.equalTo(50.0)
       $0.trailing.bottom.equalTo(safeAreaLayoutGuide).offset(-20.0)
     }
   }
-  
-  private func setupView() {
-    self.backgroundColor = .systemBackground
-    productsCollectionView.register(
+
+  private func configureCollectionView() {
+    collectionView.register(
       BadgeProductCell.self,
       forCellWithReuseIdentifier: BadgeProductCell.identifier
     )

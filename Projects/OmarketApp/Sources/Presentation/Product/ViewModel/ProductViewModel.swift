@@ -6,36 +6,50 @@
 //  Copyright © 2022 Omarket. All rights reserved.
 //
 
+import Foundation
+
+import RxCocoa
 import RxSwift
-import RxRelay
 
 protocol ProductViewModelInput {
-  func didTapCell(_ product: Product)
-  func didTapAddProductButton()
-  func requestProducts(pageNumber: Int, itemsPerPage: Int)
-  func prefetchIndexPath(_ row: Int)
+  func productDidTapEvent(_ product: Product)
+  func addProductButtonDidTapEvent()
+  func prefetchIndexPathEvent(_ row: Int)
+  func viewDidLoadEvent()
+  func refreshProductsEvent()
 }
 
 protocol ProductViewModelOutput {
   var title: String { get }
-  var products: BehaviorRelay<[Product]> { get }
-  var showProductAddScene: PublishRelay<Void> { get }
-  var showProductDetailScene: PublishRelay<Product> { get }
+  var products: Driver<[Product]> { get }
+  var onRefreshed: Driver<Bool> { get }
 }
 
 protocol ProductViewModelable: ProductViewModelInput, ProductViewModelOutput { }
 
 final class ProductViewModel: ProductViewModelable {
+  private enum Constant {
+    static let title = "전체보기"
+  }
+
   // MARK: Properties
 
+  weak var coordinator: ProductCoordinator?
   private let productFetchUseCase: ProductFetchUseCase
   private let disposeBag = DisposeBag()
   private var currentPage = 1
 
-  let title = "전체 보기"
-  let products = BehaviorRelay<[Product]>(value: [])
-  let showProductAddScene = PublishRelay<Void>()
-  let showProductDetailScene = PublishRelay<Product>()
+  let title = Constant.title
+
+  private let _products = BehaviorRelay<[Product]>(value: [])
+  var products: Driver<[Product]> {
+    return _products.asDriver(onErrorJustReturn: [])
+  }
+
+  private let _onRefreshed = PublishRelay<Bool>()
+  var onRefreshed: Driver<Bool> {
+    return _onRefreshed.asDriver(onErrorJustReturn: false)
+  }
 
   // MARK: Life Cycle
 
@@ -45,32 +59,48 @@ final class ProductViewModel: ProductViewModelable {
 
   // MARK: Methods
 
-  func didTapCell(_ product: Product) {
-    showProductDetailScene.accept(product)
+  func viewDidLoadEvent() {
+    refreshProductsEvent()
   }
 
-  func didTapAddProductButton() {
-    showProductAddScene.accept(())
-  }
-
-  func requestProducts(pageNumber: Int, itemsPerPage: Int) {
+  func refreshProductsEvent() {
     productFetchUseCase.fetchAll(
-      query: ProductRequestQuery(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+      query: ProductRequestQuery(pageNumber: 1, itemsPerPage: 20)
     )
-    .subscribe(onNext: { [weak self] item in
-      guard let self = self else { return }
-
-      self.products.accept(self.products.value + item)
+    .withUnretained(self)
+    .bind(onNext: { owner, products in
+      owner.currentPage = 1
+      owner._products.accept(products)
+      owner._onRefreshed.accept(false)
     })
     .disposed(by: disposeBag)
   }
 
-  func prefetchIndexPath(_ row: Int) {
-    if row / 20 + 1 == self.currentPage {
-      self.currentPage += 1
-      requestProducts(pageNumber: self.currentPage, itemsPerPage: 20)
+  func productDidTapEvent(_ product: Product) {
+    coordinator?.showDetailView(product.id)
+  }
+
+  func addProductButtonDidTapEvent() {
+    coordinator?.showCreateView()
+  }
+
+  func prefetchIndexPathEvent(_ row: Int) {
+    if row / 20 + 1 == currentPage {
+      currentPage += 1
+      appendProducts(pageNumber: currentPage, itemsPerPage: 20)
     }
   }
 
   // MARK: Helpers
+
+  private func appendProducts(pageNumber: Int, itemsPerPage: Int) {
+    productFetchUseCase.fetchAll(
+      query: ProductRequestQuery(pageNumber: pageNumber, itemsPerPage: itemsPerPage)
+    )
+    .withUnretained(self)
+    .subscribe(onNext: { owner, products in
+      owner._products.accept(owner._products.value + products)
+    })
+    .disposed(by: disposeBag)
+  }
 }
