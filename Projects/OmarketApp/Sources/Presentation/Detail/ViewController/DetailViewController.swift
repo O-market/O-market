@@ -45,8 +45,7 @@ final class DetailViewController: UIViewController {
     viewModel.fatchProductDetail()
   }
   
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
+  deinit {
     coordinator?.removeCoordinator()
   }
 }
