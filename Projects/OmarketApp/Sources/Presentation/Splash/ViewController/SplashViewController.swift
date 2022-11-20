@@ -34,7 +34,7 @@ final class SplashViewController: UIViewController {
 
 extension SplashViewController {
   private func configureUI() {
-    view.backgroundColor = .systemBackground
+    view.backgroundColor = ODS.Color.brand050
     view.addSubview(logoImageView)
 
     logoImageView.snp.makeConstraints {
