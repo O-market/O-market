@@ -70,11 +70,11 @@ extension DetailViewController {
 
 extension DetailViewController {
   private func bind(viewModel: DetailViewModelable) {
-    buttonBind(viewModel: viewModel)
-    uiBind(viewModel: viewModel)
+    bindButton(viewModel: viewModel)
+    bindUI(viewModel: viewModel)
   }
   
-  private func buttonBind(viewModel: DetailViewModelable) {
+  private func bindButton(viewModel: DetailViewModelable) {
     editBarButton.rx.tap
       .bind { [weak self] in
         let alert = UIAlertController(
@@ -98,12 +98,14 @@ extension DetailViewController {
       }.disposed(by: disposeBag)
   }
   
-  private func uiBind(viewModel: DetailViewModelable) {
+  private func bindUI(viewModel: DetailViewModelable) {
     viewModel.isMyProduct
       .filter { $0 }
       .observe(on: MainScheduler.instance)
       .bind { [weak self] _ in
-        self?.navigationItem.rightBarButtonItem = self?.editBarButton
+        if self?.navigationItem.rightBarButtonItem == nil {
+          self?.navigationItem.setRightBarButton(self?.editBarButton, animated: true)
+        }
       }
       .disposed(by: disposeBag)
     
