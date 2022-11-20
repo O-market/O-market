@@ -51,7 +51,7 @@ extension CreationViewController {
   private func configureUI() {
     title = "글쓰기"
     navigationItem.rightBarButtonItem = doneButton
-    doneButton.tintColor = ODS.Color.example
+    doneButton.tintColor = ODS.Color.brand010
     view.backgroundColor = .systemBackground
     view.addSubview(mainView)
     mainView.snp.makeConstraints {

@@ -38,7 +38,6 @@ private extension UIColor {
 }
 
 extension ODS.Color {
-  public static let example = UIColor.systemIndigo
   public static let gray000 = UIColor(light: "#FEFEFE", dark: "#171B1C")
   public static let gray010 = UIColor(light: "#FDFDFD", dark: "#1E2427")
   public static let gray020 = UIColor(light: "#F7F8F9", dark: "#2E363A")
@@ -59,4 +58,5 @@ extension ODS.Color {
   public static let brand020 = UIColor(hex: "#895DCB")
   public static let brand030 = UIColor(hex: "#B57EC1")
   public static let brand040 = UIColor(hex: "#E1A0B8")
+  public static let brand050 = UIColor(hex: "#201E2B")
 }
