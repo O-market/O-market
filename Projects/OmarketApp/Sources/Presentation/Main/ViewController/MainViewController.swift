@@ -30,8 +30,8 @@ final class MainViewController: UIViewController {
       forCellWithReuseIdentifier: MainEventCell.identifier
     )
     collectionView.register(
-      ProductCell.self,
-      forCellWithReuseIdentifier: ProductCell.identifier
+      BadgeProductCell.self,
+      forCellWithReuseIdentifier: BadgeProductCell.identifier
     )
     collectionView.register(
       MainProductHeader.self,
@@ -83,13 +83,17 @@ final class MainViewController: UIViewController {
     let dataSource = configureCollectionViewDataSource()
 
     viewModel.sections
-      .bind(to: collectionView.rx.items(dataSource: dataSource))
+      .drive(collectionView.rx.items(dataSource: dataSource))
       .disposed(by: disposeBag)
 
     viewModel.sections
       .compactMap { $0.first }
       .map { $0.items.count }
-      .bind(to: pageControl.rx.numberOfPages)
+      .drive(pageControl.rx.numberOfPages)
+      .disposed(by: disposeBag)
+
+    Observable.just(())
+      .bind(onNext: viewModel.viewDidLoadEvent)
       .disposed(by: disposeBag)
   }
 
@@ -106,9 +110,9 @@ final class MainViewController: UIViewController {
 
       } else {
         guard let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: ProductCell.identifier,
+          withReuseIdentifier: BadgeProductCell.identifier,
           for: indexPath
-        ) as? ProductCell else { return UICollectionViewCell() }
+        ) as? BadgeProductCell else { return UICollectionViewCell() }
 
         guard let product = item as? Product else { return UICollectionViewCell() }
 
