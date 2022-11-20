@@ -11,7 +11,7 @@ import Foundation
 import RxSwift
 
 protocol DetailViewModelInput {
-  func fatchProductDetail()
+  func fetchProductDetail()
 }
 
 protocol DetailViewModelOutput {
@@ -44,7 +44,7 @@ final class DetailViewModel: DetailViewModelable {
     self.productId = productId
   }
   
-  func fatchProductDetail() {
+  func fetchProductDetail() {
     self.useCase
       .fetchOne(id: productId)
       .subscribe(onNext: { [weak self] in

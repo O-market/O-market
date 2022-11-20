@@ -42,7 +42,7 @@ final class DetailViewController: UIViewController {
   }
   
   override func viewWillAppear(_ animated: Bool) {
-    viewModel.fatchProductDetail()
+    viewModel.fetchProductDetail()
   }
   
   deinit {
