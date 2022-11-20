@@ -13,7 +13,7 @@ import SnapKit
 class ProductViewController: UIViewController {
   // MARK: Interfaces
 
-  private lazy var productView = ProductView()
+  private let productView = ProductView()
 
   // MARK: Properties
 
