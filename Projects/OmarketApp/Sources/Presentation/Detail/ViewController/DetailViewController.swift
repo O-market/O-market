@@ -13,11 +13,18 @@ import SnapKit
 
 final class DetailViewController: UIViewController {
   
+  // MARK: Interfaces
+  
+  private let mainView = DetailView(frame: .zero)
+  private let editBarButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"))
+  
+  // MARK: Properties
+  
   private let viewModel: DetailViewModelable
   private let disposeBag = DisposeBag()
   weak var coordinator: DetailCoordinator?
-  private let mainView = DetailView(frame: .zero)
-  private let editBarButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"))
+  
+  // MARK: Life Cycle
   
   init(viewModel: DetailViewModelable) {
     self.viewModel = viewModel
@@ -33,6 +40,14 @@ final class DetailViewController: UIViewController {
     bind(viewModel: viewModel)
     configureUI()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    viewModel.fetchProductDetail()
+  }
+  
+  deinit {
+    coordinator?.removeCoordinator()
+  }
 }
 
 // MARK: - UI
@@ -42,17 +57,24 @@ extension DetailViewController {
     title = "상품상세"
     view.backgroundColor = .systemBackground
     view.addSubview(mainView)
-    navigationItem.rightBarButtonItem = editBarButton
+    
     mainView.snp.makeConstraints {
       $0.edges.equalTo(self.view.safeAreaLayoutGuide)
     }
   }
 }
 
-// MARK: - Extension
+// MARK: Methods
+
+// MARK: Helpers
 
 extension DetailViewController {
   private func bind(viewModel: DetailViewModelable) {
+    bindButton(viewModel: viewModel)
+    bindUI(viewModel: viewModel)
+  }
+  
+  private func bindButton(viewModel: DetailViewModelable) {
     editBarButton.rx.tap
       .bind { [weak self] in
         let alert = UIAlertController(
@@ -74,6 +96,18 @@ extension DetailViewController {
         }
         self?.present(alert, animated: true)
       }.disposed(by: disposeBag)
+  }
+  
+  private func bindUI(viewModel: DetailViewModelable) {
+    viewModel.isMyProduct
+      .filter { $0 }
+      .observe(on: MainScheduler.instance)
+      .bind { [weak self] _ in
+        if self?.navigationItem.rightBarButtonItem == nil {
+          self?.navigationItem.setRightBarButton(self?.editBarButton, animated: true)
+        }
+      }
+      .disposed(by: disposeBag)
     
     viewModel
       .productImageURL
