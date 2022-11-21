@@ -26,6 +26,7 @@ enum EndpointAPI {
   case productCreation(Data, String)
   case productUpdate(Data?, Int)
   case searchProducts(String)
+  case productURL(Data? ,Int)
 
   var asEndpoint: Endpoint {
     switch self {
@@ -77,6 +78,19 @@ enum EndpointAPI {
         method: .get,
         queries: ["search_value": searchValue]
       )
+      
+    case .productURL(let payload, let id):
+      return Endpoint(
+        base: Base.baseURL,
+        path: "/api/products/\(id)/archived",
+        method: .post,
+        headers: [
+          "Content-Type": "application/json",
+          "identifier": UserInformation.identifier
+        ],
+        payload: payload
+      )
+      
     }
   }
 }
