@@ -40,4 +40,14 @@ final class ProductRepositoryImpl: ProductRepository {
     return networkService.request(endpoint: endpoint)
       .map { _ in }
   }
+  
+  func productURL(endpoint: Endpoint) -> Observable<String> {
+    return networkService.request(endpoint: endpoint)
+      .map { String(decoding: $0, as: UTF8.self) }
+  }
+  
+  func deleteProduct(endpoint: Endpoint) -> Observable<Void> {
+    return networkService.request(endpoint: endpoint)
+      .map { _ in }
+  }
 }
