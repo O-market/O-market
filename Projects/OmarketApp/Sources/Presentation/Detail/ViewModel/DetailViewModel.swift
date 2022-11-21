@@ -51,16 +51,15 @@ final class DetailViewModel: DetailViewModelable {
   ) {
     useCase.productURL(id: productId, password: UserInformation.password)
       .withUnretained(self)
-      .subscribe { owner, url in
-        owner.useCase.deleteProduct(url: url)
-          .subscribe { _ in
-            completion()
-          } onError: { error in
-            errorHandler(error)
-          }.disposed(by: owner.disposeBag)
-      } onError: { error in
-        errorHandler(error)
-      }.disposed(by: disposeBag)
+      .subscribe (
+        onNext: { owner, url in
+          owner.useCase.deleteProduct(url: url)
+            .subscribe(
+              onNext: completion,
+              onError: errorHandler
+            ).disposed(by: owner.disposeBag)
+        }, onError: errorHandler
+      ).disposed(by: disposeBag)
   }
   
   func fetchProductDetail() {
