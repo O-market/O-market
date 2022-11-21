@@ -145,17 +145,19 @@ extension DetailViewController {
       preferredStyle: .alert
     )
     let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
-      viewModel.deleteButtonDidTap {
-        DispatchQueue.main.async {
-          NotificationCenter.default.post(name: .productsDidRenew, object: nil)
-          self?.navigationController?.popViewController(animated: true)
-        }
-      } errorHandler: { error in
-        DispatchQueue.main.async {
-          let alert = UIAlertController.makeAlert(message: error.localizedDescription)
-          self?.present(alert, animated: true)
-        }
-      }
+      guard let self = self else { return }
+      viewModel.deleteButtonDidTap()
+        .subscribe { _ in
+          DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .productsDidRenew, object: nil)
+            self.navigationController?.popViewController(animated: true)
+          }
+        } onError: { error in
+          DispatchQueue.main.async {
+            let alert = UIAlertController.makeAlert(message: error.localizedDescription)
+            self.present(alert, animated: true)
+          }
+        }.disposed(by: self.disposeBag)
     }
     
     let cancelAction = UIAlertAction(title: "취소", style: .cancel)

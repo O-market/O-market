@@ -12,7 +12,7 @@ import RxSwift
 
 protocol DetailViewModelInput {
   func fetchProductDetail()
-  func deleteButtonDidTap(completion: @escaping (() -> Void), errorHandler: @escaping ((Error) -> Void))
+  func deleteButtonDidTap() -> Observable<Void>
 }
 
 protocol DetailViewModelOutput {
@@ -45,21 +45,10 @@ final class DetailViewModel: DetailViewModelable {
     self.productId = productId
   }
   
-  func deleteButtonDidTap(
-    completion: @escaping (() -> Void),
-    errorHandler: @escaping ((Error) -> Void)
-  ) {
-    useCase.productURL(id: productId, password: UserInformation.password)
+  func deleteButtonDidTap() -> Observable<Void> {
+    return useCase.productURL(id: productId, password: UserInformation.password)
       .withUnretained(self)
-      .subscribe(
-        onNext: { owner, url in
-          owner.useCase.deleteProduct(url: url)
-            .subscribe(
-              onNext: completion,
-              onError: errorHandler
-            ).disposed(by: owner.disposeBag)
-        }, onError: errorHandler
-      ).disposed(by: disposeBag)
+      .flatMap { owner, url in owner.useCase.deleteProduct(url: url) }
   }
   
   func fetchProductDetail() {
