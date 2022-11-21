@@ -26,7 +26,7 @@ enum EndpointAPI {
   case productCreation(Data, String)
   case productUpdate(Data?, Int)
   case searchProducts(String)
-  case productURL(Data? ,Int)
+  case productURL(Data?, Int)
   case deleteProduct(String)
 
   var asEndpoint: Endpoint {
