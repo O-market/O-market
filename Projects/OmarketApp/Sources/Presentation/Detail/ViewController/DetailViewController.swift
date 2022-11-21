@@ -87,7 +87,7 @@ extension DetailViewController {
           self?.coordinator?.showEditingView(product: product)
         }
         let deleteAction = UIAlertAction(title: "삭제", style: .destructive) {_ in
-          // action
+          self?.showDeleteAlert(viewModel: viewModel)
         }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         
@@ -134,5 +134,35 @@ extension DetailViewController {
         self?.mainView.pageControl.numberOfPages = $0
       }
       .disposed(by: disposeBag)
+  }
+}
+
+extension DetailViewController {
+  private func showDeleteAlert(viewModel: DetailViewModelable) {
+    let alert = UIAlertController(
+      title: nil,
+      message: "게시글을 정말 삭제하시겠어요?",
+      preferredStyle: .alert
+    )
+    let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+      viewModel.deleteButtonDidTap {
+        DispatchQueue.main.async {
+          NotificationCenter.default.post(name: .productsDidRenew, object: nil)
+          self?.navigationController?.popViewController(animated: true)
+        }
+      } errorHandler: { error in
+        DispatchQueue.main.async {
+          let alert = UIAlertController.makeAlert(message: error.localizedDescription)
+          self?.present(alert, animated: true)
+        }
+      }
+    }
+    
+    let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+    
+    [deleteAction, cancelAction].forEach { action in
+      alert.addAction(action)
+    }
+    present(alert, animated: true)
   }
 }
