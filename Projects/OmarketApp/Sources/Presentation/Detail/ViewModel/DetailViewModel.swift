@@ -45,7 +45,7 @@ final class DetailViewModel: DetailViewModelable {
   }
   
   func fetchProductDetail() {
-    self.useCase
+    useCase
       .fetchOne(id: productId)
       .subscribe(onNext: { [weak self] in
         self?.product = $0
