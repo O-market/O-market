@@ -51,7 +51,7 @@ final class DetailViewModel: DetailViewModelable {
   ) {
     useCase.productURL(id: productId, password: UserInformation.password)
       .withUnretained(self)
-      .subscribe (
+      .subscribe(
         onNext: { owner, url in
           owner.useCase.deleteProduct(url: url)
             .subscribe(
