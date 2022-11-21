@@ -28,3 +28,7 @@ tuist build # 빌드
 tuist clean 
 ```
 
+## 실행화면
+|전반적인 앱 구동|
+|:---:|
+|<img width="250px" src="https://i.imgur.com/e04dPKH.gif"/>|

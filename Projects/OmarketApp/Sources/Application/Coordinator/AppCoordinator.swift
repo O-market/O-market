@@ -32,17 +32,25 @@ final class AppCoordinator: Coordinator {
     tabBarController.tabBar.tintColor = .label
 
     let mainNavigationController = UINavigationController()
-    let mainCoordinator = MainCoordinator(navigationController: mainNavigationController)
-    mainCoordinator.parentCoordinator = self
-
-    mainNavigationController.tabBarItem = UITabBarItem(title: nil, image: ODS.Icon.home, tag: 0)
+    mainNavigationController.tabBarItem = UITabBarItem(title: "홈", image: ODS.Icon.home, tag: 0)
     mainNavigationController.navigationBar.tintColor = .label
 
-    tabBarController.viewControllers = [mainNavigationController]
+    let searchNavigationController = UINavigationController()
+    searchNavigationController.tabBarItem = UITabBarItem(title: "검색", image: ODS.Icon.search, tag: 1)
+    searchNavigationController.navigationBar.tintColor = .label
+
+    tabBarController.viewControllers = [mainNavigationController, searchNavigationController]
     navigationController.viewControllers = [tabBarController]
     navigationController.setNavigationBarHidden(true, animated: false)
 
+    let mainCoordinator = MainCoordinator(navigationController: mainNavigationController)
+    let searchCoordinator = SearchCoordinator(navigationController: searchNavigationController)
+    mainCoordinator.parentCoordinator = self
+    searchCoordinator.parentCoordinator = self
+
     childCoordinators.append(mainCoordinator)
+    childCoordinators.append(searchCoordinator)
     mainCoordinator.start()
+    searchCoordinator.start()
   }
 }

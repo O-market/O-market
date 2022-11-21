@@ -20,6 +20,7 @@ protocol ProductFetchUseCase {
   func fetchOne(id: Int) -> Observable<Product>
   func createProduct(product: Product, images: [Data]) -> Observable<Void>
   func updateProduct(product: Product) -> Observable<Void>
+  func searchProducts(searchValue: String) -> Observable<[Product]>
 }
 
 final class ProductFetchUseCaseImpl: ProductFetchUseCase {
@@ -56,6 +57,11 @@ final class ProductFetchUseCaseImpl: ProductFetchUseCase {
     let payload = try? JSONEncoder().encode(makeProductRequest(product: product))
     let endpoint = EndpointAPI.productUpdate(payload, product.id).asEndpoint
     return repository.updateProduct(endpoint: endpoint)
+  }
+
+  func searchProducts(searchValue: String) -> Observable<[Product]> {
+    let endpoint = EndpointAPI.searchProducts(searchValue).asEndpoint
+    return repository.fetchAllProduct(endpoint: endpoint)
   }
 }
 
