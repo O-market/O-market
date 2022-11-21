@@ -21,6 +21,8 @@ protocol ProductFetchUseCase {
   func createProduct(product: Product, images: [Data]) -> Observable<Void>
   func updateProduct(product: Product) -> Observable<Void>
   func searchProducts(searchValue: String) -> Observable<[Product]>
+  func productURL(id: Int, password: String) -> Observable<String>
+  func deleteProduct(url: String) -> Observable<Void>
 }
 
 final class ProductFetchUseCaseImpl: ProductFetchUseCase {
@@ -62,6 +64,17 @@ final class ProductFetchUseCaseImpl: ProductFetchUseCase {
   func searchProducts(searchValue: String) -> Observable<[Product]> {
     let endpoint = EndpointAPI.searchProducts(searchValue).asEndpoint
     return repository.fetchAllProduct(endpoint: endpoint)
+  }
+  
+  func productURL(id: Int, password: String) -> Observable<String> {
+    let payload = "{\"secret\": \"\(password)\"}".data(using: .utf8)
+    let endpoint = EndpointAPI.productURL(payload, id).asEndpoint
+    return repository.productURL(endpoint: endpoint)
+  }
+  
+  func deleteProduct(url: String) -> Observable<Void> {
+    let endpoint = EndpointAPI.deleteProduct(url).asEndpoint
+    return repository.deleteProduct(endpoint: endpoint)
   }
 }
 
