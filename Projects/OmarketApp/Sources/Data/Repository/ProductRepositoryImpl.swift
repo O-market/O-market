@@ -43,7 +43,7 @@ final class ProductRepositoryImpl: ProductRepository {
   
   func productURL(endpoint: Endpoint) -> Observable<String> {
     return networkService.request(endpoint: endpoint)
-      .map { String(decoding: $0, as: UTF8.self) }
+      .map { String(data: $0, encoding: .utf8) ?? "" }
   }
   
   func deleteProduct(endpoint: Endpoint) -> Observable<Void> {
