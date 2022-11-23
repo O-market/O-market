@@ -82,4 +82,20 @@ final class ProductFetchUseCaseTests: XCTestCase {
     // then
     XCTAssertEqual(output, 1)
   }
+  
+  func test_productURL호출되었을때_Repository의_productURL_메서드가_호출되어야한다() {
+    // given when
+    _ = sut.productURL(id: 1, password: "password")
+
+    // then
+    XCTAssertEqual(repository.productURLCallCount, 1)
+  }
+  
+  func test_deleteProduct호출되었을때_Repository의_deleteProduct_메서드가_호출되어야한다() {
+    // given when
+    _ = sut.deleteProduct(url: "url")
+
+    // then
+    XCTAssertEqual(repository.deleteProductCallCount, 1)
+  }
 }

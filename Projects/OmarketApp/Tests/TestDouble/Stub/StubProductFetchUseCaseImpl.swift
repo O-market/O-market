@@ -36,4 +36,16 @@ final class StubProductFetchUseCaseImpl: ProductFetchUseCase {
     products.append(product)
     return .just(Void())
   }
+  
+  func searchProducts(searchValue: String) -> Observable<[Product]> {
+    return .just(products)
+  }
+  
+  func productURL(id: Int, password: String) -> Observable<String> {
+    return .just("url")
+  }
+  
+  func deleteProduct(url: String) -> Observable<Void> {
+    return .just(Void())
+  }
 }

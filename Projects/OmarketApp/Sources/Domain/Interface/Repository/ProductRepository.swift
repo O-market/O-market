@@ -15,4 +15,6 @@ protocol ProductRepository {
   func fetchProduct(endpoint: Endpoint) -> Observable<Product>
   func createProduct(endpoint: Endpoint) -> Observable<Void>
   func updateProduct(endpoint: Endpoint) -> Observable<Void>
+  func productURL(endpoint: Endpoint) -> Observable<String>
+  func deleteProduct(endpoint: Endpoint) -> Observable<Void>
 }

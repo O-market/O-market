@@ -16,6 +16,8 @@ final class MockProductRepositoryImpl: ProductRepository {
   var fetchProductCallCount: Int = 0
   var createProductCallCount: Int = 0
   var updateProductCallCount: Int = 0
+  var productURLCallCount: Int = 0
+  var deleteProductCallCount: Int = 0
 
   func fetchAllProduct(endpoint: Endpoint) -> Observable<[Product]> {
     fetchAllProductCallCount += 1
@@ -34,6 +36,16 @@ final class MockProductRepositoryImpl: ProductRepository {
   
   func updateProduct(endpoint: Endpoint) -> Observable<Void> {
     updateProductCallCount += 1
+    return .empty()
+  }
+  
+  func productURL(endpoint: OmarketApp.Endpoint) -> Observable<String> {
+    productURLCallCount += 1
+    return .empty()
+  }
+  
+  func deleteProduct(endpoint: OmarketApp.Endpoint) -> Observable<Void> {
+    deleteProductCallCount += 1
     return .empty()
   }
 }

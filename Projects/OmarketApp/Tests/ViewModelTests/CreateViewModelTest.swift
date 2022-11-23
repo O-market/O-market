@@ -39,7 +39,7 @@ final class CreateViewModelTest: XCTestCase {
     )
     
     productFetchuseCase = StubProductFetchUseCaseImpl(products: [dummyProduct])
-    sut = CreationViewModel(useCase: productFetchuseCase)
+    sut = CreationViewModel(useCase: productFetchuseCase, imageCountMax: 5, imageCountMin: 1)
     disposeBag = DisposeBag()
   }
   
@@ -55,7 +55,7 @@ final class CreateViewModelTest: XCTestCase {
     // given
     let imageDatas = [dummyImageData!]
     // when
-    sut.selectedImageData(imageDatas)
+    sut.selectedImageData(imageDatas.first!)
     sut.numberOfImagesSelected
       .subscribe {
         // then
@@ -67,16 +67,16 @@ final class CreateViewModelTest: XCTestCase {
     // given
     let imageDatas = [dummyImageData!]
     // when
-    sut.selectedImageData(imageDatas)
+    sut.selectedImageData(imageDatas.first!)
     // then
-    XCTAssertEqual(sut.selectionLimit, sut.imageCountLimit - imageDatas.count)
+    XCTAssertEqual(sut.selectionLimit, sut.imageCountMax - imageDatas.count)
   }
   
   func test_removeImageData를_통해_imageData를_삭제했을_때_numberOfImagesSelected의_값이_하나_감소해야한다() {
     // given
     let imageDatas = [dummyImageData!]
     // when
-    sut.selectedImageData(imageDatas)
+    sut.selectedImageData(imageDatas.first!)
     sut.removeImageData(id: dummyImageData.id)
     sut.numberOfImagesSelected
       .subscribe {
@@ -89,7 +89,7 @@ final class CreateViewModelTest: XCTestCase {
     // given
     let imageDatas = [dummyImageData!]
     // when
-    sut.selectedImageData(imageDatas)
+    sut.selectedImageData(imageDatas.first!)
     sut.doneButtonDidTap(product: dummyProduct)
       .subscribe {
         // then

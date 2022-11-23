@@ -229,4 +229,82 @@ final class ProductRepositoryTests: XCTestCase {
       .disposed(by: disposeBag)
     wait(for: [expectation], timeout: 5.0)
   }
+  
+  func test_productURL을_호출했을때_성공한_경우_에러가_방출되지_않아야한다() {
+    // given
+    let expectation = XCTestExpectation()
+    let endpoint = EndpointAPI.productURL(nil, 1).asEndpoint
+    networkService = StubNetworkServiceImpl(data: try! JSONEncoder().encode("url"), isSuccess: true)
+    sut = ProductRepositoryImpl(networkService: networkService)
+    
+    // when
+    sut.productURL(endpoint: endpoint)
+      .subscribe(onNext: {
+        // then
+        XCTAssertEqual($0, "\"url\"")
+        expectation.fulfill()
+      }, onError: { error in
+        XCTFail()
+      })
+      .disposed(by: disposeBag)
+    wait(for: [expectation], timeout: 5.0)
+  }
+  
+  func test_productURL을_호출했을때_실패한_경우_BadRequest가_나와야한다() {
+    // given
+    let expectation = XCTestExpectation()
+    let endpoint = EndpointAPI.productURL(nil, 1).asEndpoint
+    networkService = StubNetworkServiceImpl(data: Data(), isSuccess: false)
+    sut = ProductRepositoryImpl(networkService: networkService)
+    
+    // when
+    sut.productURL(endpoint: endpoint)
+      .subscribe(onNext: { _ in
+        XCTFail()
+      }, onError: { error in
+        // then
+        XCTAssertEqual(error as! NetworkServiceError, NetworkServiceError.badRequest)
+        expectation.fulfill()
+      })
+      .disposed(by: disposeBag)
+    wait(for: [expectation], timeout: 5.0)
+  }
+  
+  func test_deleteProduct을_호출했을때_성공한_경우_에러가_방출되지_않아야한다() {
+    // given
+    let expectation = XCTestExpectation()
+    let endpoint = EndpointAPI.deleteProduct("url").asEndpoint
+    sut = ProductRepositoryImpl(networkService: networkService)
+    
+    // when
+    sut.deleteProduct(endpoint: endpoint)
+      .subscribe(onNext: {
+        // then
+        expectation.fulfill()
+      }, onError: { error in
+        XCTFail()
+      })
+      .disposed(by: disposeBag)
+    wait(for: [expectation], timeout: 5.0)
+  }
+  
+  func test_deleteProduct을_호출했을때_실패한_경우_BadRequest가_나와야한다() {
+    // given
+    let expectation = XCTestExpectation()
+    let endpoint = EndpointAPI.deleteProduct("url").asEndpoint
+    networkService = StubNetworkServiceImpl(data: Data(), isSuccess: false)
+    sut = ProductRepositoryImpl(networkService: networkService)
+    
+    // when
+    sut.deleteProduct(endpoint: endpoint)
+      .subscribe(onNext: {
+        XCTFail()
+      }, onError: { error in
+        // then
+        XCTAssertEqual(error as! NetworkServiceError, NetworkServiceError.badRequest)
+        expectation.fulfill()
+      })
+      .disposed(by: disposeBag)
+    wait(for: [expectation], timeout: 5.0)
+  }
 }

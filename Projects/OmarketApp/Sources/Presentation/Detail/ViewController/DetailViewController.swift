@@ -76,26 +76,27 @@ extension DetailViewController {
   
   private func bindButton(viewModel: DetailViewModelable) {
     editBarButton.rx.tap
-      .bind { [weak self] in
-        let alert = UIAlertController(
-          title: nil,
-          message: nil,
-          preferredStyle: UIAlertController.Style.actionSheet
-        )
-        let editAction = UIAlertAction(title: "수정", style: .default) {_ in
-          guard let product = viewModel.product else { return }
-          self?.coordinator?.showEditingView(product: product)
-        }
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) {_ in
-          // action
-        }
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-        
-        [editAction, deleteAction, cancelAction].forEach {
-          alert.addAction($0)
-        }
-        self?.present(alert, animated: true)
-      }.disposed(by: disposeBag)
+      .withUnretained(self)
+      .flatMap { owner, _ in owner.showEditingAlert() }
+      .bind(onNext: viewModel.selectEditAlertAction)
+      .disposed(by: disposeBag)
+    
+    viewModel.editAction
+      .bind(onNext: showEditingView)
+      .disposed(by: disposeBag)
+    
+    viewModel.deleteAction
+      .withUnretained(self)
+      .flatMap { owner, _ in owner.showDeletionAlert() }
+      .bind(onNext: viewModel.selectDeleteAlertAction)
+      .disposed(by: disposeBag)
+    
+    viewModel.deleteButtonDidTap()
+      .observe(on: MainScheduler.instance)
+      .subscribe(
+        onNext: finishDeletion,
+        onError: showErrorAlert
+      ).disposed(by: disposeBag)
   }
   
   private func bindUI(viewModel: DetailViewModelable) {
@@ -134,5 +135,71 @@ extension DetailViewController {
         self?.mainView.pageControl.numberOfPages = $0
       }
       .disposed(by: disposeBag)
+  }
+}
+
+extension DetailViewController {
+  private func showEditingAlert() -> Observable<String> {
+    return Single.create { [weak self] single in
+      let alert = UIAlertController(
+        title: nil,
+        message: nil,
+        preferredStyle: .actionSheet
+      )
+      let editAction = UIAlertAction(title: "수정", style: .default) { _ in
+        single(.success("수정"))
+      }
+      let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+        single(.success("삭제"))
+      }
+      let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+        single(.success("취소"))
+      }
+      [editAction, deleteAction, cancelAction].forEach { action in
+        alert.addAction(action)
+      }
+      self?.present(alert, animated: true)
+      return Disposables.create {
+        alert.dismiss(animated: true)
+      }
+    }.asObservable()
+  }
+  
+  private func showDeletionAlert() -> Observable<String> {
+    return Single.create { [weak self] single in
+      let alert = UIAlertController(
+        title: nil,
+        message: "게시글을 정말 삭제하시겠어요?",
+        preferredStyle: .alert
+      )
+      let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+        single(.success("삭제"))
+      }
+      let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+        single(.success("취소"))
+      }
+      [deleteAction, cancelAction].forEach { action in
+        alert.addAction(action)
+      }
+      self?.present(alert, animated: true)
+      return Disposables.create {
+        alert.dismiss(animated: true)
+      }
+    }.asObservable()
+  }
+  
+  private func showEditingView() {
+    guard let product = viewModel.product else { return }
+    self.coordinator?.showEditingView(product: product)
+  }
+  
+  private func finishDeletion() {
+    NotificationCenter.default.post(name: .productsDidRenew, object: nil)
+    self.navigationController?.popViewController(animated: true)
+  }
+  
+  private func showErrorAlert(error: Error) {
+    let alert = UIAlertController.makeAlert(message: error.localizedDescription)
+    self.present(alert, animated: true)
   }
 }
