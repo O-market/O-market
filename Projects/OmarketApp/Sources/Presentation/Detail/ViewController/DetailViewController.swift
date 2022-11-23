@@ -172,13 +172,13 @@ extension DetailViewController {
         message: "게시글을 정말 삭제하시겠어요?",
         preferredStyle: .alert
       )
-      ["삭제", "취소"].forEach { title in
-        let action = UIAlertAction(
-          title: title,
-          style: title == "삭제" ? .destructive : .cancel
-        ) { _ in
-          single(.success(title))
-        }
+      let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+        single(.success("삭제"))
+      }
+      let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+        single(.success("취소"))
+      }
+      [deleteAction, cancelAction].forEach { action in
         alert.addAction(action)
       }
       self?.present(alert, animated: true)
