@@ -24,8 +24,8 @@ protocol DetailViewModelOutput {
   var productImageURL: Observable<[String]> { get }
   var productImageCount: Observable<Int> { get }
   var product: Product? { get }
-  var editAction: PublishRelay<Void> { get }
-  var deleteAction: PublishRelay<Void> { get }
+  var editAction: Observable<Void> { get }
+  var deleteAction: Observable<Void> { get }
 }
 
 protocol DetailViewModelable: DetailViewModelInput, DetailViewModelOutput {}
@@ -36,8 +36,8 @@ final class DetailViewModel: DetailViewModelable {
   private(set) var product: Product?
   
   private let productBuffer = ReplaySubject<Product>.create(bufferSize: 1)
-  let editAction = PublishRelay<Void>()
-  let deleteAction = PublishRelay<Void>()
+  private let editActionObserver = PublishRelay<Void>()
+  private let deleteActionObserver = PublishRelay<Void>()
   private let deletionObserver = PublishRelay<Void>()
   private let disposeBag = DisposeBag()
   
@@ -76,9 +76,9 @@ final class DetailViewModel: DetailViewModelable {
   func selectEditAlertAction(_ actionTitle: String) {
     switch actionTitle {
     case "수정":
-      editAction.accept(())
+      editActionObserver.accept(())
     case "삭제":
-      deleteAction.accept(())
+      deleteActionObserver.accept(())
     default:
       break
     }
@@ -117,5 +117,13 @@ final class DetailViewModel: DetailViewModelable {
   var productImageCount: Observable<Int> {
     return productImageURL
       .map { $0.count }
+  }
+  
+  var editAction: Observable<Void> {
+    return editActionObserver.asObservable()
+  }
+  
+  var deleteAction: Observable<Void> {
+    return deleteActionObserver.asObservable()
   }
 }
