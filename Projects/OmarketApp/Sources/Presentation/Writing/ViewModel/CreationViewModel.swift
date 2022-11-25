@@ -30,12 +30,17 @@ protocol CreationViewModelOutput {
 protocol CreationViewModelable: CreationViewModelInput, CreationViewModelOutput {}
 
 final class CreationViewModel: CreationViewModelable {
+  
+  // MARK: Properties
+  
   private let useCase: ProductFetchUseCase
   private let imageDatas = BehaviorRelay<[ImageData]>(value: [])
   private let errorMessage = PublishRelay<String>()
   private let creationObservar = PublishRelay<Void>()
   let imageCountMax: Int
   let imageCountMin: Int
+  
+  // MARK: Life Cycle
   
   init(
     useCase: ProductFetchUseCase,
@@ -46,6 +51,8 @@ final class CreationViewModel: CreationViewModelable {
     self.imageCountMax = imageCountMax
     self.imageCountMin = imageCountMin
   }
+  
+  // MARK: Methods
   
   func doneButtonDidTap(product: Product) -> Observable<Void> {
     return creationObservar
@@ -103,4 +110,6 @@ final class CreationViewModel: CreationViewModelable {
   var printErrorMessage: Observable<String> {
     return errorMessage.asObservable()
   }
+  
+  // MARK: Helpers
 }

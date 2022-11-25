@@ -13,8 +13,9 @@ import RxSwift
 import SnapKit
 
 class CreationViewController: UIViewController {
-  weak var coordinator: CreationCoordinator?
-  private let disposeBag = DisposeBag()
+  
+  // MARK: Interfaces
+  
   private let doneButton = UIBarButtonItem(
     title: "완료",
     style: .done,
@@ -22,7 +23,14 @@ class CreationViewController: UIViewController {
     action: nil
   )
   private let mainView = WritingView()
+  
+  // MARK: Properties
+  
+  weak var coordinator: CreationCoordinator?
+  private let disposeBag = DisposeBag()
   private let viewModel: CreationViewModelable
+  
+  // MARK: Life Cycle
   
   init(viewModel: CreationViewModelable) {
     self.viewModel = viewModel
@@ -33,15 +41,14 @@ class CreationViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  deinit {
+    coordinator?.removeCoordinator()
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
     bind(viewModel: viewModel)
-  }
-  
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    coordinator?.removeCoordinator()
   }
 }
 
@@ -60,7 +67,9 @@ extension CreationViewController {
   }
 }
 
-// MARK: - Extension
+// MARK: Methods
+
+// MARK: Helpers
 
 extension CreationViewController {
   private func bind(viewModel: CreationViewModelable) {
