@@ -36,7 +36,7 @@ class CreationViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
-    bind()
+    bind(viewModel: viewModel)
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -63,7 +63,7 @@ extension CreationViewController {
 // MARK: - Extension
 
 extension CreationViewController {
-  private func bind() {
+  private func bind(viewModel: CreationViewModelable) {
     mainView.bodyTextView.rx.text
       .orEmpty
       .map { !$0.isEmpty }
@@ -72,38 +72,29 @@ extension CreationViewController {
       .disposed(by: disposeBag)
     
     mainView.photoButton.rx.tap
-      .bind { [weak self] in
-        self?.presentImagePicker()
-      }.disposed(by: disposeBag)
+      .bind(onNext: presentImagePicker)
+      .disposed(by: disposeBag)
     
     viewModel.numberOfImagesSelected
-      .bind { [weak self] in
-        guard let self = self else { return }
-        self.mainView.photoButton.imageCountLabel.text = "\($0)/\(self.viewModel.imageCountMax)"
-      }
+      .bind(to: mainView.photoButton.imageCountLabel.rx.text)
       .disposed(by: disposeBag)
     
     doneButton.rx.tap
-      .bind { [weak self] in
-        guard let self = self else { return }
-        if let textFields = self.mainView.checkEmptyTextField() {
-          let alert = UIAlertController.makeAlert(message: "\(textFields)은 필수 입력 항목입니다.")
-          self.present(alert, animated: true)
-        } else {
-          self.viewModel.doneButtonDidTap(
-            product: self.makeProduct()
-          )
-          .observe(on: MainScheduler.instance)
-          .subscribe(onNext: {
-            NotificationCenter.default.post(name: .productsDidRenew, object: nil)
-            self.navigationController?.popViewController(animated: true)
-          }, onError: {
-            let alert = UIAlertController.makeAlert(message: $0.localizedDescription)
-            self.present(alert, animated: true)
-          }).disposed(by: self.disposeBag)
-        }
-      }
+      .withUnretained(mainView)
+      .flatMap { owner, _ in owner.printEmptyTextField() }
+      .bind(onNext: viewModel.checkEmptyTextFields)
       .disposed(by: disposeBag)
+    
+    viewModel.printErrorMessage
+      .bind(onNext: showErrorAlert)
+      .disposed(by: disposeBag)
+    
+    viewModel.doneButtonDidTap(product: makeProduct())
+      .observe(on: MainScheduler.instance)
+      .subscribe(
+        onNext: finishCreation,
+        onError: viewModel.postErrorMessage
+      ).disposed(by: disposeBag)
   }
   
   private func makeProduct() -> Product {
@@ -121,6 +112,16 @@ extension CreationViewController {
       createdAt: "",
       issuedAt: ""
     )
+  }
+  
+  private func showErrorAlert(message: String) {
+    let alert = UIAlertController.makeAlert(message: message)
+    self.present(alert, animated: true)
+  }
+  
+  private func finishCreation() {
+    NotificationCenter.default.post(name: .productsDidRenew, object: nil)
+    self.navigationController?.popViewController(animated: true)
   }
 }
 

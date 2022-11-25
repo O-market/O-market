@@ -9,6 +9,7 @@
 import UIKit
 
 import ODesignSystem
+import RxSwift
 import SnapKit
 
 final class WritingView: UIView {
@@ -171,13 +172,13 @@ final class WritingView: UIView {
     }
   }
   
-  func checkEmptyTextField() -> String? {
+  func printEmptyTextField() -> Observable<String?> {
     var textFields = [String]()
     if titleTextField.text?.isEmpty == true { textFields.append("상품명") }
     if priceTextField.text?.isEmpty == true { textFields.append("상품가격") }
     if stockTextField.text?.isEmpty == true { textFields.append("재고 수량") }
     if bodyTextView.text.isEmpty { textFields.append("상품 설명") }
-    return textFields.isEmpty ? nil : textFields.joined(separator: ", ")
+    return .just(textFields.isEmpty ? nil : textFields.joined(separator: ", "))
   }
   
   func searchImageView(id: String) -> ProductImageView? {
