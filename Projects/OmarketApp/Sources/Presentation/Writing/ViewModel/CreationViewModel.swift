@@ -15,22 +15,32 @@ protocol CreationViewModelInput {
   func doneButtonDidTap(product: Product) -> Observable<Void>
   func removeImageData(id: UUID)
   func selectedImageData(_ imageData: ImageData)
+  func checkEmptyTextFields(_ textFields: String?)
+  func postErrorMessage(_ error: Error)
 }
 
 protocol CreationViewModelOutput {
-  var numberOfImagesSelected: Observable<Int> { get }
+  var numberOfImagesSelected: Observable<String> { get }
   var selectionLimit: Int { get }
   var imageCountMax: Int { get }
   var imageCountMin: Int { get }
+  var printErrorMessage: Observable<String> { get }
 }
 
 protocol CreationViewModelable: CreationViewModelInput, CreationViewModelOutput {}
 
 final class CreationViewModel: CreationViewModelable {
+  
+  // MARK: Properties
+  
   private let useCase: ProductFetchUseCase
-  private var imageDatas = BehaviorRelay<[ImageData]>(value: [])
+  private let imageDatas = BehaviorRelay<[ImageData]>(value: [])
+  private let errorMessage = PublishRelay<String>()
+  private let creationObservar = PublishRelay<Void>()
   let imageCountMax: Int
   let imageCountMin: Int
+  
+  // MARK: Life Cycle
   
   init(
     useCase: ProductFetchUseCase,
@@ -42,10 +52,17 @@ final class CreationViewModel: CreationViewModelable {
     self.imageCountMin = imageCountMin
   }
   
+  // MARK: Methods
+  
   func doneButtonDidTap(product: Product) -> Observable<Void> {
-    return useCase.createProduct(
-      product: product,
-      images: imageDatas.value.map { $0.data })
+    return creationObservar
+      .withUnretained(self)
+      .flatMap { owner, _ in
+        owner.useCase.createProduct(
+          product: product,
+          images: owner.imageDatas.value.map { $0.data }
+        )
+      }
   }
   
   func selectedImageData(_ imageData: ImageData) {
@@ -66,12 +83,33 @@ final class CreationViewModel: CreationViewModelable {
     imageDatas.accept(value)
   }
   
-  var numberOfImagesSelected: Observable<Int> {
+  func checkEmptyTextFields(_ textFields: String?) {
+    if let textFields = textFields {
+      errorMessage.accept(textFields + "은 필수 입력 항목입니다.")
+    } else {
+      creationObservar.accept(())
+    }
+  }
+  
+  func postErrorMessage(_ error: Error) {
+    errorMessage.accept(error.localizedDescription)
+  }
+  
+  var numberOfImagesSelected: Observable<String> {
     imageDatas
-      .map { $0.count }
+      .withUnretained(self)
+      .map { owner, imageDatas in
+        "\(imageDatas.count)/\(owner.imageCountMax)"
+      }
   }
   
   var selectionLimit: Int {
     imageCountMax - imageDatas.value.count
   }
+  
+  var printErrorMessage: Observable<String> {
+    return errorMessage.asObservable()
+  }
+  
+  // MARK: Helpers
 }
