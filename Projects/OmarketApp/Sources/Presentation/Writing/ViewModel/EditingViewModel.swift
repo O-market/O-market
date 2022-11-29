@@ -28,14 +28,21 @@ protocol EditingViewModelOutput {
 protocol EditingViewModelable: EditingViewModelInput, EditingViewModelOutput {}
 
 final class EditingViewModel: EditingViewModelable {
-  private let useCase: ProductFetchUseCase
-  private var product: Product
+  
+  // MARK: Properties
+  
   private let doneButtonObservar = PublishRelay<Void>()
+  private var product: Product
+  private let useCase: ProductFetchUseCase
+  
+  // MARK: Life Cycle
   
   init(useCase: ProductFetchUseCase, product: Product) {
     self.useCase = useCase
     self.product = product
   }
+  
+  // MARK: Methods
   
   func inputTitle(_ title: String?) {
     product.name = title ?? ""
@@ -70,4 +77,6 @@ final class EditingViewModel: EditingViewModelable {
   var viewItem: Observable<EditingViewModelItem> {
     return Observable.just(EditingViewModelItem(product: product))
   }
+  
+  // MARK: Helpers
 }
