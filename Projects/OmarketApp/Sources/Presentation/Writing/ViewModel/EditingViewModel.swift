@@ -17,11 +17,12 @@ protocol EditingViewModelInput {
   func inputPrice(_ price: String?)
   func inputDiscountPrice(_ price: String?)
   func inputStock(_ stock: String?)
-  func doneButtonDidTap() -> Observable<Void>
+  func doneButtonDidTap()
 }
 
 protocol EditingViewModelOutput {
   var viewItem: Observable<EditingViewModelItem> { get }
+  var doneButtonAction: Observable<Void> { get }
 }
 
 protocol EditingViewModelable: EditingViewModelInput, EditingViewModelOutput {}
@@ -29,6 +30,7 @@ protocol EditingViewModelable: EditingViewModelInput, EditingViewModelOutput {}
 final class EditingViewModel: EditingViewModelable {
   private let useCase: ProductFetchUseCase
   private var product: Product
+  private let doneButtonObservar = PublishRelay<Void>()
   
   init(useCase: ProductFetchUseCase, product: Product) {
     self.useCase = useCase
@@ -55,8 +57,14 @@ final class EditingViewModel: EditingViewModelable {
     product.stock = Int(stock ?? "") ?? 0
   }
   
-  func doneButtonDidTap() -> Observable<Void> {
-    return useCase.updateProduct(product: product)
+  func doneButtonDidTap() {
+    doneButtonObservar.accept(())
+  }
+  
+  var doneButtonAction: Observable<Void> {
+    return doneButtonObservar
+      .withUnretained(self)
+      .flatMap { owner, _ in owner.useCase.updateProduct(product: owner.product) }
   }
   
   var viewItem: Observable<EditingViewModelItem> {

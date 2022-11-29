@@ -58,9 +58,8 @@ final class EditingViewController: UIViewController {
   
   private func bind(viewModel: EditingViewModelable) {
     viewModel.viewItem
-      .bind { [weak self] in
-        self?.setViewItem($0)
-      }.disposed(by: disposeBag)
+      .bind(onNext: setViewItem)
+      .disposed(by: disposeBag)
     
     buttonBind(viewModel: viewModel)
     textFieldBind(viewModel: viewModel)
@@ -69,31 +68,26 @@ final class EditingViewController: UIViewController {
   
   private func textFieldBind(viewModel: EditingViewModelable) {
     mainView.titleTextField.rx.text
-      .bind {
-        viewModel.inputTitle($0)
-      }.disposed(by: disposeBag)
+      .bind(onNext: viewModel.inputTitle)
+      .disposed(by: disposeBag)
     
     mainView.priceTextField.rx.text
-      .bind {
-        viewModel.inputPrice($0)
-      }.disposed(by: disposeBag)
+      .bind(onNext: viewModel.inputPrice)
+      .disposed(by: disposeBag)
     
     mainView.discountPriceTextField.rx.text
-      .bind {
-        viewModel.inputDiscountPrice($0)
-      }.disposed(by: disposeBag)
+      .bind(onNext: viewModel.inputDiscountPrice)
+      .disposed(by: disposeBag)
     
     mainView.stockTextField.rx.text
-      .bind {
-        viewModel.inputStock($0)
-      }.disposed(by: disposeBag)
+      .bind(onNext: viewModel.inputStock)
+      .disposed(by: disposeBag)
   }
   
   private func textViewBind(viewModel: EditingViewModelable) {
     mainView.bodyTextView.rx.text
-      .bind {
-        viewModel.inputBody($0)
-      }.disposed(by: disposeBag)
+      .bind(onNext: viewModel.inputBody)
+      .disposed(by: disposeBag)
     
     mainView.bodyTextView.rx.text
       .orEmpty
@@ -105,19 +99,26 @@ final class EditingViewController: UIViewController {
   
   private func buttonBind(viewModel: EditingViewModelable) {
     doneButton.rx.tap
-      .bind { [weak self] in
-        guard let self = self else { return }
-        viewModel.doneButtonDidTap()
-          .observe(on: MainScheduler.instance)
-          .subscribe { _ in
-            NotificationCenter.default.post(name: .productsDidRenew, object: nil)
-            self.navigationController?.popViewController(animated: true)
-          } onError: { error in
-            let alert = UIAlertController
-              .makeAlert(message: error.localizedDescription)
-            self.present(alert, animated: true)
-          }.disposed(by: self.disposeBag)
-      }.disposed(by: disposeBag)
+      .bind(onNext: viewModel.doneButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    viewModel.doneButtonAction
+      .observe(on: MainScheduler.instance)
+      .subscribe(
+        onNext: finishEditing,
+        onError: showErrorAlert
+      )
+      .disposed(by: disposeBag)
+  }
+  
+  private func finishEditing() {
+    NotificationCenter.default.post(name: .productsDidRenew, object: nil)
+    self.navigationController?.popViewController(animated: true)
+  }
+  
+  private func showErrorAlert(_ error: Error) {
+    let alert = UIAlertController.makeAlert(message: error.localizedDescription)
+    self.present(alert, animated: true)
   }
   
   private func setViewItem(_ item: EditingViewModelItem) {
