@@ -137,7 +137,7 @@ final class EditingViewModelTest: XCTestCase {
   
   func test_doneButtonDidTap를_통해_상품을_수정했을_때_useCase에_product가_전달되야_한다() {
     // given when
-    sut.doneButtonAction
+    sut.requestEditing
       .subscribe {
         // then
         XCTAssertTrue(self.productFetchUseCase.products.contains(self.dummyProduct))

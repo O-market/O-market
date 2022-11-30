@@ -102,7 +102,7 @@ final class EditingViewController: UIViewController {
       .bind(onNext: viewModel.doneButtonDidTap)
       .disposed(by: disposeBag)
     
-    viewModel.doneButtonAction
+    viewModel.requestEditing
       .observe(on: MainScheduler.instance)
       .subscribe(
         onNext: finishEditing,

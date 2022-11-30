@@ -22,7 +22,7 @@ protocol EditingViewModelInput {
 
 protocol EditingViewModelOutput {
   var viewItem: Observable<EditingViewModelItem> { get }
-  var doneButtonAction: Observable<Void> { get }
+  var requestEditing: Observable<Void> { get }
 }
 
 protocol EditingViewModelable: EditingViewModelInput, EditingViewModelOutput {}
@@ -31,7 +31,7 @@ final class EditingViewModel: EditingViewModelable {
   
   // MARK: Properties
   
-  private let doneButtonObservar = PublishRelay<Void>()
+  private let doneButtonObserver = PublishRelay<Void>()
   private var product: Product
   private let useCase: ProductFetchUseCase
   
@@ -65,11 +65,11 @@ final class EditingViewModel: EditingViewModelable {
   }
   
   func doneButtonDidTap() {
-    doneButtonObservar.accept(())
+    doneButtonObserver.accept(())
   }
   
-  var doneButtonAction: Observable<Void> {
-    return doneButtonObservar
+  var requestEditing: Observable<Void> {
+    return doneButtonObserver
       .withUnretained(self)
       .flatMap { owner, _ in owner.useCase.updateProduct(product: owner.product) }
   }
