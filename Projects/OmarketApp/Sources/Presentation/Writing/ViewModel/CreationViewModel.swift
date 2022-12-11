@@ -12,10 +12,9 @@ import RxSwift
 import RxRelay
 
 protocol CreationViewModelInput {
-  func doneButtonDidTap(product: Product) -> Observable<Void>
   func removeImageData(id: UUID)
   func selectedImageData(_ imageData: ImageData)
-  func checkEmptyTextFields(_ textFields: String?)
+  func doneButtonDidTap(errorMesaage: String?, product: Product?)
   func postErrorMessage(_ error: Error)
 }
 
@@ -25,18 +24,18 @@ protocol CreationViewModelOutput {
   var imageCountMax: Int { get }
   var imageCountMin: Int { get }
   var printErrorMessage: Observable<String> { get }
+  var requestCreation: Observable<Void> { get }
 }
 
 protocol CreationViewModelable: CreationViewModelInput, CreationViewModelOutput {}
 
 final class CreationViewModel: CreationViewModelable {
-  
   // MARK: Properties
   
   private let useCase: ProductFetchUseCase
   private let imageDatas = BehaviorRelay<[ImageData]>(value: [])
   private let errorMessage = PublishRelay<String>()
-  private let creationObservar = PublishRelay<Void>()
+  private let creationObservar = PublishRelay<Product>()
   let imageCountMax: Int
   let imageCountMin: Int
   
@@ -54,10 +53,10 @@ final class CreationViewModel: CreationViewModelable {
   
   // MARK: Methods
   
-  func doneButtonDidTap(product: Product) -> Observable<Void> {
+  var requestCreation: Observable<Void> {
     return creationObservar
       .withUnretained(self)
-      .flatMap { owner, _ in
+      .flatMap { owner, product in
         owner.useCase.createProduct(
           product: product,
           images: owner.imageDatas.value.map { $0.data }
@@ -83,11 +82,11 @@ final class CreationViewModel: CreationViewModelable {
     imageDatas.accept(value)
   }
   
-  func checkEmptyTextFields(_ textFields: String?) {
-    if let textFields = textFields {
+  func doneButtonDidTap(errorMesaage: String?, product: Product?) {
+    if let textFields = errorMesaage {
       errorMessage.accept(textFields + "은 필수 입력 항목입니다.")
-    } else {
-      creationObservar.accept(())
+    } else if let product = product {
+      creationObservar.accept(product)
     }
   }
   

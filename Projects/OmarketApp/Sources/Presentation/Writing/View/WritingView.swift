@@ -172,18 +172,37 @@ final class WritingView: UIView {
     }
   }
   
-  func printEmptyTextField() -> Observable<String?> {
+  func printEmptyTextField() -> Observable<(String?, Product?)> {
     var textFields = [String]()
     if titleTextField.text?.isEmpty == true { textFields.append("상품명") }
     if priceTextField.text?.isEmpty == true { textFields.append("상품가격") }
     if stockTextField.text?.isEmpty == true { textFields.append("재고 수량") }
     if bodyTextView.text.isEmpty { textFields.append("상품 설명") }
-    return .just(textFields.isEmpty ? nil : textFields.joined(separator: ", "))
+    return .just(
+      textFields.isEmpty ? (nil, makeProduct()) : (textFields.joined(separator: ", "), nil)
+    )
   }
   
   func searchImageView(id: String) -> ProductImageView? {
     return imageStackView.subviews
       .compactMap { $0 as? ProductImageView }
       .first(where: { $0.identifier == id })
+  }
+  
+  private func makeProduct() -> Product {
+    return Product(
+      id: 0,
+      vendorId: 0,
+      name: titleTextField.text ?? "",
+      description: bodyTextView.text,
+      thumbnail: "",
+      currency: "KRW",
+      price: Double(priceTextField.text ?? "") ?? 0.0,
+      bargainPrice: 0.0,
+      discountedPrice: Double(discountPriceTextField.text ?? "") ?? 0.0,
+      stock: Int(stockTextField.text ?? "") ?? 0,
+      createdAt: "",
+      issuedAt: ""
+    )
   }
 }

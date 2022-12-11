@@ -91,36 +91,19 @@ extension CreationViewController {
     doneButton.rx.tap
       .withUnretained(mainView)
       .flatMap { owner, _ in owner.printEmptyTextField() }
-      .bind(onNext: viewModel.checkEmptyTextFields)
+      .bind(onNext: viewModel.doneButtonDidTap)
       .disposed(by: disposeBag)
     
     viewModel.printErrorMessage
       .bind(onNext: showErrorAlert)
       .disposed(by: disposeBag)
     
-    viewModel.doneButtonDidTap(product: makeProduct())
+    viewModel.requestCreation
       .observe(on: MainScheduler.instance)
       .subscribe(
         onNext: finishCreation,
         onError: viewModel.postErrorMessage
       ).disposed(by: disposeBag)
-  }
-  
-  private func makeProduct() -> Product {
-    return Product(
-      id: 0,
-      vendorId: 0,
-      name: self.mainView.titleTextField.text ?? "",
-      description: self.mainView.bodyTextView.text,
-      thumbnail: "",
-      currency: "KRW",
-      price: Double(self.mainView.priceTextField.text ?? "") ?? 0.0,
-      bargainPrice: 0.0,
-      discountedPrice: Double(self.mainView.discountPriceTextField.text ?? "") ?? 0.0,
-      stock: Int(self.mainView.stockTextField.text ?? "") ?? 0,
-      createdAt: "",
-      issuedAt: ""
-    )
   }
   
   private func showErrorAlert(message: String) {

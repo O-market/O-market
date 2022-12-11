@@ -86,7 +86,7 @@ final class CreateViewModelTest: XCTestCase {
         XCTAssertEqual($0, "1/\(self.sut.imageCountMax)")
       }.disposed(by: disposeBag)
     
-    sut.doneButtonDidTap(product: dummyProduct)
+    sut.requestCreation
       .subscribe { _ in
         // then
         XCTAssertEqual(self.productFetchuseCase.imageDatas, [newImageData.data])
@@ -94,7 +94,7 @@ final class CreateViewModelTest: XCTestCase {
         // then
         XCTFail()
       }.disposed(by: disposeBag)
-    sut.checkEmptyTextFields(nil)
+    sut.doneButtonDidTap(errorMesaage: nil, product: dummyProduct)
   }
   
   func test_removeImageData를_통해_imageData를_삭제했을_때_numberOfImagesSelected의_값이_하나_감소해야한다() {
@@ -115,7 +115,7 @@ final class CreateViewModelTest: XCTestCase {
     let imageDatas = [dummyImageData!]
     // when
     sut.selectedImageData(imageDatas.first!)
-    sut.doneButtonDidTap(product: dummyProduct)
+    sut.requestCreation
       .subscribe {
         // then
         XCTAssertEqual(self.productFetchuseCase.imageDatas, imageDatas.map { $0.data })
@@ -123,7 +123,7 @@ final class CreateViewModelTest: XCTestCase {
       } onError: { _ in
         XCTFail()
       }.disposed(by: disposeBag)
-    sut.checkEmptyTextFields(nil)
+    sut.doneButtonDidTap(errorMesaage: nil, product: dummyProduct)
   }
   
   func test_doneButton을_클릭했을_때_빈TextField가_있다면_errorMessage가_출력된다() {
@@ -135,7 +135,7 @@ final class CreateViewModelTest: XCTestCase {
         // then
         XCTAssertEqual($0, emptyTextField + "은 필수 입력 항목입니다.")
       }.disposed(by: disposeBag)
-    sut.checkEmptyTextFields(emptyTextField)
+    sut.doneButtonDidTap(errorMesaage: emptyTextField, product: nil)
   }
   
   func test_postErrorMessage를_호출해_Error를_보내면_errorMessage가_출력된다() {
