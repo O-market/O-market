@@ -52,7 +52,7 @@ final class ProductCellViewModel: ProductCellViewModelable, CellViewModelable {
   }
 
   var discountPercentage: String {
-    if product.discountedPrice == 0 { return "0%" }
+    if product.price == 0 { return "0%" }
     
     let percentage = Int((product.discountedPrice / product.price * 100).rounded())
     return percentage == 0 ? "1%" : "\(percentage)%"
