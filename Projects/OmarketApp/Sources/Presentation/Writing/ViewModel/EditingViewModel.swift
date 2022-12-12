@@ -23,6 +23,7 @@ protocol EditingViewModelInput {
 protocol EditingViewModelOutput {
   var viewItem: Observable<EditingViewModelItem> { get }
   var requestEditing: Observable<Void> { get }
+  var printErrorMessage: Observable<String> { get }
 }
 
 protocol EditingViewModelable: EditingViewModelInput, EditingViewModelOutput {}
@@ -32,6 +33,7 @@ final class EditingViewModel: EditingViewModelable {
   // MARK: Properties
   
   private let doneButtonObserver = PublishRelay<Void>()
+  private let errorMessage = PublishRelay<String>()
   private var product: Product
   private let useCase: ProductFetchUseCase
   
@@ -72,10 +74,18 @@ final class EditingViewModel: EditingViewModelable {
     return doneButtonObserver
       .withUnretained(self)
       .flatMap { owner, _ in owner.useCase.updateProduct(product: owner.product) }
+      .catch {
+        self.errorMessage.accept($0.localizedDescription)
+        return .empty()
+      }
   }
   
   var viewItem: Observable<EditingViewModelItem> {
     return Observable.just(EditingViewModelItem(product: product))
+  }
+  
+  var printErrorMessage: Observable<String> {
+    return errorMessage.asObservable()
   }
   
   // MARK: Helpers

@@ -41,15 +41,15 @@ final class EditingViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  deinit {
+    coordinator?.removeCoordinator()
+    print("ss")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
     bind(viewModel: viewModel)
-  }
-  
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    coordinator?.removeCoordinator()
   }
   
   // MARK: Methods
@@ -58,7 +58,7 @@ final class EditingViewController: UIViewController {
   
   private func bind(viewModel: EditingViewModelable) {
     viewModel.viewItem
-      .bind(onNext: setViewItem)
+      .bind(to: setViewItem)
       .disposed(by: disposeBag)
     
     buttonBind(viewModel: viewModel)
@@ -104,34 +104,41 @@ final class EditingViewController: UIViewController {
     
     viewModel.requestEditing
       .observe(on: MainScheduler.instance)
-      .subscribe(
-        onNext: finishEditing,
-        onError: showErrorAlert
-      )
+      .bind(to: finishEditing)
+      .disposed(by: disposeBag)
+    
+    viewModel.printErrorMessage
+      .bind(to: showErrorAlert)
       .disposed(by: disposeBag)
   }
   
-  private func finishEditing() {
-    NotificationCenter.default.post(name: .productsDidRenew, object: nil)
-    self.navigationController?.popViewController(animated: true)
+  private var finishEditing: Binder<Void> {
+    return Binder(self) { owner, _ in
+      NotificationCenter.default.post(name: .productsDidRenew, object: nil)
+      owner.navigationController?.popViewController(animated: true)
+    }
   }
   
-  private func showErrorAlert(_ error: Error) {
-    let alert = UIAlertController.makeAlert(message: error.localizedDescription)
-    self.present(alert, animated: true)
+  private var showErrorAlert: Binder<String> {
+    return Binder(self) { owner, message in
+      let alert = UIAlertController.makeAlert(message: message)
+      owner.present(alert, animated: true)
+    }
   }
   
-  private func setViewItem(_ item: EditingViewModelItem) {
-    mainView.titleTextField.text = item.title
-    mainView.bodyTextView.text = item.body
-    mainView.priceTextField.text = item.price
-    mainView.discountPriceTextField.text = item.discountPrice
-    mainView.stockTextField.text = item.stock
-    
-    item.imageURL.forEach {
-      let imageView = ProductImageView(imageURL: $0)
-      imageView.removeButton.isHidden = true
-      mainView.addImageView(imageView)
+  private var setViewItem: Binder<EditingViewModelItem> {
+    return Binder(self.mainView) { view, item in
+      view.titleTextField.text = item.title
+      view.bodyTextView.text = item.body
+      view.priceTextField.text = item.price
+      view.discountPriceTextField.text = item.discountPrice
+      view.stockTextField.text = item.stock
+      
+      item.imageURL.forEach {
+        let imageView = ProductImageView(imageURL: $0)
+        imageView.removeButton.isHidden = true
+        view.addImageView(imageView)
+      }
     }
   }
 }
