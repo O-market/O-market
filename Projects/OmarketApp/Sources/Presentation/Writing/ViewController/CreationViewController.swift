@@ -81,7 +81,7 @@ extension CreationViewController {
       .disposed(by: disposeBag)
     
     mainView.photoButton.rx.tap
-      .bind(onNext: presentImagePicker)
+      .bind(to: presentImagePicker)
       .disposed(by: disposeBag)
     
     viewModel.numberOfImagesSelected
@@ -95,62 +95,66 @@ extension CreationViewController {
       .disposed(by: disposeBag)
     
     viewModel.printErrorMessage
-      .bind(onNext: showErrorAlert)
+      .bind(to: showErrorAlert)
       .disposed(by: disposeBag)
     
     viewModel.requestCreation
       .observe(on: MainScheduler.instance)
-      .subscribe(
-        onNext: finishCreation,
-        onError: viewModel.postErrorMessage
-      ).disposed(by: disposeBag)
+      .bind(to: finishCreation)
+      .disposed(by: disposeBag)
   }
   
-  private func showErrorAlert(message: String) {
-    let alert = UIAlertController.makeAlert(message: message)
-    self.present(alert, animated: true)
+  private var showErrorAlert: Binder<String> {
+    return Binder(self) { owner, message in
+      let alert = UIAlertController.makeAlert(message: message)
+      owner.present(alert, animated: true)
+    }
   }
   
-  private func finishCreation() {
-    NotificationCenter.default.post(name: .productsDidRenew, object: nil)
-    self.navigationController?.popViewController(animated: true)
+  private var finishCreation: Binder<Void> {
+    return Binder(self) { owner, _ in
+      NotificationCenter.default.post(name: .productsDidRenew, object: nil)
+      owner.navigationController?.popViewController(animated: true)
+    }
   }
 }
 
 // MARK: - SFImagePicker
 
 extension CreationViewController {
-  private func presentImagePicker() {
-    coordinator?.presentImagePicker(
-      selectionMin: viewModel.imageCountMin,
-      selectionMax: viewModel.selectionLimit,
-      onSelected: { imageManager in
-        imageManager.request(
-          size: CGSize(width: 100, height: 100)
-        ) { [weak self] image, _ in
-          guard let pngData = image?.pngData() else { return }
-          let imageData = ImageData(id: imageManager.assetID, data: pngData)
-          self?.viewModel.selectedImageData(imageData)
-          if let imageView = self?.mainView.searchImageView(
-            id: imageManager.assetID.uuidString
-          ) {
-            imageView.image = image
-          } else {
-            self?.addImage(image, id: imageManager.assetID)
+  private var presentImagePicker: Binder<Void> {
+    return Binder(self) { owner, _ in
+      owner.coordinator?.presentImagePicker(
+        selectionMin: owner.viewModel.imageCountMin,
+        selectionMax: owner.viewModel.selectionLimit,
+        onSelected: { imageManager in
+          imageManager.request(
+            size: CGSize(width: 100, height: 100)
+          ) { image, _ in
+            guard let pngData = image?.pngData() else { return }
+            let imageData = ImageData(id: imageManager.assetID, data: pngData)
+            owner.viewModel.selectedImageData(imageData)
+            if let imageView = owner.mainView.searchImageView(
+              id: imageManager.assetID.uuidString
+            ) {
+              imageView.image = image
+            } else {
+              owner.addImage(image, id: imageManager.assetID)
+            }
+          }
+        },
+        onDeSelcted: { imageManager in
+          let imageView = owner.mainView.searchImageView(id: imageManager.assetID.uuidString)
+          imageView?.removeButtonDidTap()
+        },
+        onCanceled: { imageManagers in
+          imageManagers.forEach { imageManager in
+            let imageView = owner.mainView.searchImageView(id: imageManager.assetID.uuidString)
+            imageView?.removeButtonDidTap()
           }
         }
-      },
-      onDeSelcted: { [weak self] imageManager in
-        let imageView = self?.mainView.searchImageView(id: imageManager.assetID.uuidString)
-        imageView?.removeButtonDidTap()
-      },
-      onCanceled: { [weak self] imageManagers in
-        imageManagers.forEach { imageManager in
-          let imageView = self?.mainView.searchImageView(id: imageManager.assetID.uuidString)
-          imageView?.removeButtonDidTap()
-        }
-      }
-    )
+      )
+    }
   }
   
   private func addImage(_ image: UIImage?, id: UUID) {

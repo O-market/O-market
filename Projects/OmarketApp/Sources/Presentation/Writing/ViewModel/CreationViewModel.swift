@@ -15,7 +15,6 @@ protocol CreationViewModelInput {
   func removeImageData(id: UUID)
   func selectedImageData(_ imageData: ImageData)
   func doneButtonDidTap(errorMesaage: String?, product: Product?)
-  func postErrorMessage(_ error: Error)
 }
 
 protocol CreationViewModelOutput {
@@ -61,6 +60,9 @@ final class CreationViewModel: CreationViewModelable {
           product: product,
           images: owner.imageDatas.value.map { $0.data }
         )
+      }.catch { error in
+        self.errorMessage.accept(error.localizedDescription)
+        return .empty()
       }
   }
   
@@ -88,10 +90,6 @@ final class CreationViewModel: CreationViewModelable {
     } else if let product = product {
       creationObservar.accept(product)
     }
-  }
-  
-  func postErrorMessage(_ error: Error) {
-    errorMessage.accept(error.localizedDescription)
   }
   
   var numberOfImagesSelected: Observable<String> {
