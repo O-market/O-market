@@ -42,7 +42,7 @@ final class DetailViewController: UIViewController {
   }
   
   override func viewWillAppear(_ animated: Bool) {
-    viewModel.fetchProductDetail()
+    bindProduct(viewModel: viewModel)
   }
   
   deinit {
@@ -82,7 +82,7 @@ extension DetailViewController {
       .disposed(by: disposeBag)
     
     viewModel.editAction
-      .bind(onNext: showEditingView)
+      .bind(to: showEditingView)
       .disposed(by: disposeBag)
     
     viewModel.deleteAction
@@ -93,10 +93,8 @@ extension DetailViewController {
     
     viewModel.deleteButtonDidTap()
       .observe(on: MainScheduler.instance)
-      .subscribe(
-        onNext: finishDeletion,
-        onError: showErrorAlert
-      ).disposed(by: disposeBag)
+      .bind(to: finishDeletion)
+      .disposed(by: disposeBag)
   }
   
   private func bindUI(viewModel: DetailViewModelable) {
@@ -121,19 +119,21 @@ extension DetailViewController {
         .disposed(by: disposeBag)
     
     viewModel
-      .productInfomation
-      .observe(on: MainScheduler.instance)
-      .subscribe { [weak self] in
-        self?.mainView.setContent(content: $0)
-      }
-      .disposed(by: disposeBag)
-    
-    viewModel
       .productImageCount
       .observe(on: MainScheduler.instance)
-      .subscribe { [weak self] in
-        self?.mainView.pageControl.numberOfPages = $0
-      }
+      .bind(to: mainView.pageControl.rx.numberOfPages)
+      .disposed(by: disposeBag)
+    
+    viewModel.printErrorMessage
+      .bind(to: showErrorAlert)
+      .disposed(by: disposeBag)
+  }
+  
+  private func bindProduct(viewModel: DetailViewModelable) {
+    viewModel
+      .requestProductDetail
+      .observe(on: MainScheduler.instance)
+      .bind(to: mainView.setContent)
       .disposed(by: disposeBag)
   }
 }
@@ -188,18 +188,24 @@ extension DetailViewController {
     }.asObservable()
   }
   
-  private func showEditingView() {
-    guard let product = viewModel.product else { return }
-    self.coordinator?.showEditingView(product: product)
+  private var showEditingView: Binder<Void> {
+    return Binder(self) { owner, _ in
+      guard let product = owner.viewModel.product else { return }
+      owner.coordinator?.showEditingView(product: product)
+    }
   }
   
-  private func finishDeletion() {
-    NotificationCenter.default.post(name: .productsDidRenew, object: nil)
-    self.navigationController?.popViewController(animated: true)
+  private var finishDeletion: Binder<Void> {
+    return Binder(self) { owenr, _ in
+      NotificationCenter.default.post(name: .productsDidRenew, object: nil)
+      owenr.navigationController?.popViewController(animated: true)
+    }
   }
   
-  private func showErrorAlert(error: Error) {
-    let alert = UIAlertController.makeAlert(message: error.localizedDescription)
-    self.present(alert, animated: true)
+  private var showErrorAlert: Binder<String> {
+    return Binder(self) { owner, message in
+      let alert = UIAlertController.makeAlert(message: message)
+      owner.present(alert, animated: true)
+    }
   }
 }

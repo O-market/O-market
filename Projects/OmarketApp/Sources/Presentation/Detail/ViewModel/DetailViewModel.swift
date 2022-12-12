@@ -12,7 +12,6 @@ import RxCocoa
 import RxSwift
 
 protocol DetailViewModelInput {
-  func fetchProductDetail()
   func deleteButtonDidTap() -> Observable<Void>
   func selectEditAlertAction(_ actionTitle: String)
   func selectDeleteAlertAction(_ actionTitle: String)
@@ -20,12 +19,13 @@ protocol DetailViewModelInput {
 
 protocol DetailViewModelOutput {
   var isMyProduct: Observable<Bool> { get }
-  var productInfomation: Observable<DetailViewModelItem> { get }
+  var requestProductDetail: Observable<DetailViewModelItem> { get }
   var productImageURL: Observable<[String]> { get }
   var productImageCount: Observable<Int> { get }
   var product: Product? { get }
   var editAction: Observable<Void> { get }
   var deleteAction: Observable<Void> { get }
+  var printErrorMessage: Observable<String> { get }
 }
 
 protocol DetailViewModelable: DetailViewModelInput, DetailViewModelOutput {}
@@ -35,11 +35,11 @@ final class DetailViewModel: DetailViewModelable {
   private let productId: Int
   private(set) var product: Product?
   
-  private let productBuffer = ReplaySubject<Product>.create(bufferSize: 1)
   private let editActionObserver = PublishRelay<Void>()
   private let deleteActionObserver = PublishRelay<Void>()
   private let deletionObserver = PublishRelay<Void>()
-  private let disposeBag = DisposeBag()
+  private let productObserver = PublishRelay<Product>()
+  private let errorMessage = PublishRelay<String>()
   
   private let numberFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
@@ -57,20 +57,12 @@ final class DetailViewModel: DetailViewModelable {
     return deletionObserver
       .withUnretained(self)
       .flatMap { owner, _ in owner.useCase.productURL(id: owner.productId, password: UserInformation.password) }
+      .catch {
+        self.errorMessage.accept($0.localizedDescription)
+        return .empty()
+      }
       .withUnretained(self)
       .flatMap { owner, url in owner.useCase.deleteProduct(url: url) }
-  }
-  
-  func fetchProductDetail() {
-    useCase
-      .fetchOne(id: productId)
-      .subscribe(onNext: { [weak self] in
-        self?.product = $0
-        self?.productBuffer.onNext($0)
-      }, onError: { [weak self] in
-        self?.productBuffer.onError($0)
-      })
-      .disposed(by: disposeBag)
   }
   
   func selectEditAlertAction(_ actionTitle: String) {
@@ -94,23 +86,16 @@ final class DetailViewModel: DetailViewModelable {
   }
   
   var isMyProduct: Observable<Bool> {
-    return productBuffer
+    return productObserver
       .map {
         $0.vendor?.name == UserInformation.id
       }
   }
   
-  var productInfomation: Observable<DetailViewModelItem> {
-    return productBuffer
-      .map { [weak self] in
-        DetailViewModelItem(product: $0, formatter: self?.numberFormatter)
-      }
-  }
-  
   var productImageURL: Observable<[String]> {
-    return productBuffer
-      .compactMap { item in
-        item.images?.compactMap { $0.url }
+    return productObserver
+      .compactMap {
+        $0.images?.compactMap { $0.url }
       }
   }
   
@@ -125,5 +110,25 @@ final class DetailViewModel: DetailViewModelable {
   
   var deleteAction: Observable<Void> {
     return deleteActionObserver.asObservable()
+  }
+  
+  var requestProductDetail: Observable<DetailViewModelItem> {
+    return useCase
+      .fetchOne(id: productId)
+      .catch { error in
+        self.errorMessage.accept(error.localizedDescription)
+        return .empty()
+      }.map { [weak self] in
+        self?.product = $0
+        self?.productObserver.accept($0)
+        return DetailViewModelItem(
+          product: $0,
+          formatter: self?.numberFormatter
+        )
+      }
+  }
+  
+  var printErrorMessage: Observable<String> {
+    return errorMessage.asObservable()
   }
 }

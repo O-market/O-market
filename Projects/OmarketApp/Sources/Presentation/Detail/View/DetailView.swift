@@ -8,6 +8,7 @@
 
 import UIKit
 
+import RxSwift
 import ODesignSystem
 import SnapKit
 
@@ -222,19 +223,21 @@ final class DetailView: UIView {
     }
   }
   
-  func setContent(content: DetailViewModelItem) {
-    titleLabel.text = content.title
-    informationLabel.text = content.body
-    currencyLabel.text = content.currency
-    stockLabel.text = content.stock
-    bargainPriceLabel.text = content.bargainPrice
-    if content.discountPercentage == "0%" {
-      priceLabel.isHidden = true
-      discountPercentageLabel.isHidden = true
-    } else {
-      priceLabel.text = content.price
-      addStroke(label: priceLabel)
-      discountPercentageLabel.text = content.discountPercentage
+  var setContent: Binder<DetailViewModelItem> {
+    return Binder(self) { owner, content in
+      owner.titleLabel.text = content.title
+      owner.informationLabel.text = content.body
+      owner.currencyLabel.text = content.currency
+      owner.stockLabel.text = content.stock
+      owner.bargainPriceLabel.text = content.bargainPrice
+      if content.discountPercentage == "0%" {
+        owner.priceLabel.isHidden = true
+        owner.discountPercentageLabel.isHidden = true
+      } else {
+        owner.priceLabel.text = content.price
+        owner.addStroke(label: owner.priceLabel)
+        owner.discountPercentageLabel.text = content.discountPercentage
+      }
     }
   }
 }

@@ -35,7 +35,7 @@ final class DetailViewModelTest: XCTestCase {
       discountedPrice: 1,
       stock: 1,
       images: [productImage],
-      vendor: nil,
+      vendor: Vendor(id: 1, name: ""),
       createdAt: "2022/08/23",
       issuedAt: "2022/08/23"
     )
@@ -53,18 +53,18 @@ final class DetailViewModelTest: XCTestCase {
     dummyProduct = nil
   }
   
-  func testProductInfomation를_호출했을_때_dummy와_동일한_DetailViewModelItem이_나와야한다() {
+  func test_requestProductDetail를_호출했을_때_dummy와_동일한_DetailViewModelItem이_나와야한다() {
     // given
     let input = DetailViewModelItem(product: dummyProduct)
     
     // when
-    sut.productInfomation
+    sut.requestProductDetail
       .subscribe { product in
-        
         // then
         XCTAssertEqual(product, input)
       }
       .disposed(by: disposeBag)
+    _ = sut.requestProductDetail.subscribe()
   }
   
   func testProductImageURL을_호출했을_때_dummy와_동일한_URL_배열이_나와야한다() {
@@ -72,11 +72,12 @@ final class DetailViewModelTest: XCTestCase {
     let input = dummyProduct.images!.map { $0.url }
     // when
     sut.productImageURL
-      .subscribe { imageURL in
+      .bind { imageURL in
         // then
         XCTAssertEqual(imageURL, input)
       }
       .disposed(by: disposeBag)
+    _ = sut.requestProductDetail.subscribe()
   }
   
   func testProductImageCount을_호출했을_때_dummy의_images개수와_동일한_Count값이_나와야한다() {
