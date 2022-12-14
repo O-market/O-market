@@ -31,4 +31,4 @@ tuist clean
 ## 실행화면
 |전반적인 앱 구동|
 |:---:|
-|<img width="250px" src="https://i.imgur.com/e04dPKH.gif"/>|
+|<img src="https://user-images.githubusercontent.com/91936941/207610790-6346d3fc-d903-4edb-be98-18c0573cbfd2.gif" width="200">|
